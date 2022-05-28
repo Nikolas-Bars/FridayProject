@@ -5,12 +5,12 @@ import Routess from "./Components/Routes/Routes";
 import NavBar from "./Components/NavBar/NavBar";
 
 function App() {
-  return (
-    <div className="App">
-      <NavBar/>
-    <Routess/>
-    </div>
-  );
+    return (
+        <div className="App">
+            <NavBar/>
+            <Routess/>
+        </div>
+    );
 }
 
 export default App;
