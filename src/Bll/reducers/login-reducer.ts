@@ -7,6 +7,8 @@ let initialState = {
     password: '',
     rememberMe: false,
     error: '',
+    auth: false,
+    loadingStatus: false,
 }
 
 export type LoginStateType = {
@@ -14,6 +16,8 @@ export type LoginStateType = {
     password: string,
     rememberMe: boolean,
     error: string
+    auth: boolean,
+    loadingStatus: boolean
 }
 
 export const LoginReducer = (state: LoginStateType = initialState, action: LoginActionType) => {
@@ -42,7 +46,16 @@ export const LoginReducer = (state: LoginStateType = initialState, action: Login
                 ...state,
                 error: action.value
             }
-
+        case "login/SET_AUTH":
+            return {
+                ...state,
+                auth: action.value
+            }
+        case "login/LOADING_STATUS":
+            return {
+                ...state,
+                loadingStatus: action.value
+        }
 
         default: {
             return state
@@ -55,14 +68,26 @@ export type LoginActionType =
     | ReturnType<typeof setLoginAC>
     | ReturnType<typeof setPasswordAC>
     | ReturnType<typeof setRememberMeAC>
+    | ReturnType<typeof setAuthAC>
+    | ReturnType<typeof setLoadingStatusAC>
 
 export const setLoginAC = (value: string) => ({type: 'login/SET_LOGIN', value} as const)
 export const setPasswordAC = (value: string) => ({type: 'login/SET_PASSWORD', value} as const)
 export const setRememberMeAC = (value: boolean) => ({type: 'login/SET_REMEMBER_ME', value} as const)
 export const setErrorAC = (value: string) => ({type: 'login/SET_ERROR', value} as const)
+export const setAuthAC = (value: boolean) => ({type: 'login/SET_AUTH', value} as const)
+export const setLoadingStatusAC = (value: boolean) => ({type: 'login/LOADING_STATUS', value} as const)
 
-export const loginTC =(data: LoginDataType)=>(dispatch: Dispatch<LoginActionType>)=>{
-    loginAPI.login(data).then(res => console.log(res)).catch(err => {
+export const loginTC = (data: LoginDataType) => (dispatch: Dispatch<LoginActionType>) => {
+    dispatch(setLoadingStatusAC(true))
+    loginAPI.login(data).then(res => {
+        if (res.status === 200) {
+            debugger
+            dispatch(setAuthAC(true))
+        }
+    }).catch(err => {
         let error = err.response ? dispatch(setErrorAC(err.response.data.error)) : dispatch(setErrorAC('Упс... Что-то пошло не так...'))
+    }).finally(()=>{
+        dispatch(setLoadingStatusAC(false))
     })
 }
