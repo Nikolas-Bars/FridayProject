@@ -3,36 +3,44 @@ import SuperInputText from "../../Common/c1-SuperInputText/SuperInputText";
 import s from "../../Common/HW4.module.css";
 import SuperCheckbox from "../../Common/c3-SuperCheckbox/SuperCheckbox";
 import {useDispatch, useSelector} from "react-redux";
-import {setLoginAC, setPasswordAC} from "../../Bll/reducers/login-reducer";
+import {setErrorAC, setLoginAC, setPasswordAC, setRememberMeAC} from "../../Bll/reducers/login-reducer";
 import {AppStoreType} from "../../Bll/store";
 
 const Login = () => {
 
-    const [error, setError] = useState<string | undefined>()
 
-    const [checked, setChecked] = useState<boolean>(false)
 
     const loginValue = useSelector<AppStoreType, string>(state => state.login.login)
     const passwordValue = useSelector<AppStoreType, string>(state => state.login.password)
+    const errorValue = useSelector<AppStoreType, string>(state => state.login.error)
+    const rememberMeValue = useSelector<AppStoreType, boolean>(state => state.login.rememberMe)
 
     const dispatch = useDispatch()
 
     const onChangeLoginText =(newValue: string)=>{
         dispatch(setLoginAC(newValue))
-        setError(undefined)
+        setError('')
     }
 
     const onChangeLoginPassword =(newPassword: string)=>{
         dispatch(setPasswordAC(newPassword))
-        setError(undefined)
+        setError('')
+    }
+
+    const setRememberMe = (value: boolean) =>{
+        dispatch(setRememberMeAC(value))
+    }
+
+    const setError = (error: string) =>{
+        dispatch(setErrorAC(error))
     }
 
     const showAlert =()=>{
         if(loginValue.trim() !== ''){
             alert(loginValue)
-            setError(undefined)
+            setError('')
         } else {
-            setError('проверьте правильность введенных данных')
+            setError('заполните все поля')
         }
     }
 
@@ -43,9 +51,9 @@ const Login = () => {
 
                 <SuperInputText type={'email'} placeholder={'Login'} value={loginValue} onChangeText={onChangeLoginText} onEnter={showAlert} spanClassName={s.testSpanError} className={s.testInputClassName}/>
                 <SuperInputText type={'password'} placeholder={'Your password'} value={passwordValue} onChangeText={onChangeLoginPassword} onEnter={showAlert} spanClassName={s.testSpanError} className={s.testInputClassName}/>
-                {error && <span style={{border: '1px solid red'}}>{error}</span>}
+                {errorValue && <span  style={{padding: '8px', margin: '0 auto', width: '60%', color: 'red', border: '2px solid red', borderRadius: '5px'}}>{errorValue}</span>}
 
-                <SuperCheckbox checked={checked} onChangeChecked={setChecked}>Remember me</SuperCheckbox>
+                <SuperCheckbox checked={rememberMeValue} onChangeChecked={setRememberMe}>Remember me</SuperCheckbox>
 
                 <button style={{width: '70px', margin: '10px auto'}}>Submit</button>
             </div>

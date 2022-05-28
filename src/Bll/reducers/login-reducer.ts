@@ -1,16 +1,18 @@
 let initialState = {
     login: '',
     password: '',
-    rememberMe: false
+    rememberMe: false,
+    error: '',
 }
 
 export type LoginStateType = {
     login: string,
     password: string,
-    rememberMe: boolean
+    rememberMe: boolean,
+    error: string
 }
 
-export const LoginReducer =(state: LoginStateType = initialState, action: LoginActionType)=>{
+export const LoginReducer = (state: LoginStateType = initialState, action: LoginActionType) => {
     switch (action.type) {
         case "login/SET_LOGIN":
             console.log(state.login)
@@ -23,14 +25,34 @@ export const LoginReducer =(state: LoginStateType = initialState, action: LoginA
             return {
                 ...state,
                 password: action.value
-        }
-        default:{
+            }
+        case "login/SET_REMEMBER_ME":
+            console.log(state.rememberMe)
+            return {
+                ...state,
+                rememberMe: action.value
+            }
+        case "login/SET_ERROR":
+
+            return {
+                ...state,
+                error: action.value
+            }
+
+
+        default: {
             return state
         }
     }
 }
 
-export type LoginActionType = ReturnType<typeof setLoginAC> | ReturnType<typeof setPasswordAC>
+export type LoginActionType =
+    ReturnType<typeof setErrorAC>
+    | ReturnType<typeof setLoginAC>
+    | ReturnType<typeof setPasswordAC>
+    | ReturnType<typeof setRememberMeAC>
 
-export const setLoginAC = (value: string) =>({type: 'login/SET_LOGIN', value} as const)
-export const setPasswordAC = (value: string) =>({type: 'login/SET_PASSWORD', value} as const)
+export const setLoginAC = (value: string) => ({type: 'login/SET_LOGIN', value} as const)
+export const setPasswordAC = (value: string) => ({type: 'login/SET_PASSWORD', value} as const)
+export const setRememberMeAC = (value: boolean) => ({type: 'login/SET_REMEMBER_ME', value} as const)
+export const setErrorAC = (value: string) => ({type: 'login/SET_ERROR', value} as const)
