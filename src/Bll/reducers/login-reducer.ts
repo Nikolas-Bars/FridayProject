@@ -1,3 +1,7 @@
+import {loginAPI, LoginDataType} from "../api";
+import {Dispatch} from "redux";
+import {log} from "util";
+
 let initialState = {
     login: '',
     password: '',
@@ -56,3 +60,9 @@ export const setLoginAC = (value: string) => ({type: 'login/SET_LOGIN', value} a
 export const setPasswordAC = (value: string) => ({type: 'login/SET_PASSWORD', value} as const)
 export const setRememberMeAC = (value: boolean) => ({type: 'login/SET_REMEMBER_ME', value} as const)
 export const setErrorAC = (value: string) => ({type: 'login/SET_ERROR', value} as const)
+
+export const loginTC =(data: LoginDataType)=>(dispatch: Dispatch<LoginActionType>)=>{
+    loginAPI.login(data).then(res => console.log(res)).catch(err => {
+        let error = err.response ? dispatch(setErrorAC(err.response.data.error)) : dispatch(setErrorAC('Упс... Что-то пошло не так...'))
+    })
+}

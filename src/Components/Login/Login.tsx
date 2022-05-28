@@ -3,7 +3,7 @@ import SuperInputText from "../../Common/c1-SuperInputText/SuperInputText";
 import s from "../../Common/HW4.module.css";
 import SuperCheckbox from "../../Common/c3-SuperCheckbox/SuperCheckbox";
 import {useDispatch, useSelector} from "react-redux";
-import {setErrorAC, setLoginAC, setPasswordAC, setRememberMeAC} from "../../Bll/reducers/login-reducer";
+import {loginTC, setErrorAC, setLoginAC, setPasswordAC, setRememberMeAC} from "../../Bll/reducers/login-reducer";
 import {AppStoreType} from "../../Bll/store";
 
 const Login = () => {
@@ -35,14 +35,15 @@ const Login = () => {
         dispatch(setErrorAC(error))
     }
 
+    const setLoginData = () =>{
+        loginTC(({email:loginValue, password: passwordValue, rememberMe: rememberMeValue}))(dispatch)
+    }
+
     const showAlert =()=>{
         if(loginValue.trim() !== ''){
             alert(loginValue)
             setError('')
-        } else {
-            setError('заполните все поля')
-        }
-    }
+    } }
 
     return (
         <div style={{display: "flex", padding: '20px',  flexDirection: "column", width: '350px', margin: '20px auto', border: '1px solid black', borderRadius: '15px'}}>
@@ -51,11 +52,11 @@ const Login = () => {
 
                 <SuperInputText type={'email'} placeholder={'Login'} value={loginValue} onChangeText={onChangeLoginText} onEnter={showAlert} spanClassName={s.testSpanError} className={s.testInputClassName}/>
                 <SuperInputText type={'password'} placeholder={'Your password'} value={passwordValue} onChangeText={onChangeLoginPassword} onEnter={showAlert} spanClassName={s.testSpanError} className={s.testInputClassName}/>
-                {errorValue && <span  style={{padding: '8px', margin: '0 auto', width: '60%', color: 'red', border: '2px solid red', borderRadius: '5px'}}>{errorValue}</span>}
+                {errorValue && <span  style={{padding: '8px', margin: '0 auto', width: '80%', color: 'red', border: '2px solid red', borderRadius: '5px'}}>{errorValue}</span>}
 
                 <SuperCheckbox checked={rememberMeValue} onChangeChecked={setRememberMe}>Remember me</SuperCheckbox>
 
-                <button style={{width: '70px', margin: '10px auto'}}>Submit</button>
+                <button style={{ margin: '10px auto'}} onClick={setLoginData}>Submit</button>
             </div>
         </div>
     );
