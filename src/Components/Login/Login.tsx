@@ -6,10 +6,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {loginTC, setErrorAC, setLoginAC, setPasswordAC, setRememberMeAC} from "../../Bll/reducers/login-reducer";
 import {AppStoreType} from "../../Bll/store";
 import {Navigate, useNavigate} from "react-router-dom";
-import preloader from '../../img/Preloader.gif'
+import preloader from '../../Common/img/Preloader.gif'
+//import preloader from '../../img/Preloader.gif'
 
 const Login = () => {
-
 
 
     const loginValue = useSelector<AppStoreType, string>(state => state.login.login)
@@ -23,46 +23,65 @@ const Login = () => {
 
     const navigate = useNavigate()
 
-    const onChangeLoginText =(newValue: string)=>{
+    const onChangeLoginText = (newValue: string) => {
         dispatch(setLoginAC(newValue))
         setError('')
     }
 
-    const onChangeLoginPassword =(newPassword: string)=>{
+    const onChangeLoginPassword = (newPassword: string) => {
         dispatch(setPasswordAC(newPassword))
         setError('')
     }
 
-    const setRememberMe = (value: boolean) =>{
+    const setRememberMe = (value: boolean) => {
         dispatch(setRememberMeAC(value))
     }
 
-    const setError = (error: string) =>{
+    const setError = (error: string) => {
         dispatch(setErrorAC(error))
     }
 
-    const setLoginData = () =>{
-        loginTC(({email:loginValue, password: passwordValue, rememberMe: rememberMeValue}))(dispatch)
+    const setLoginData = () => {
+        loginTC(({email: loginValue, password: passwordValue, rememberMe: rememberMeValue}))(dispatch)
     }
 
-    if(loadingStatus){
+    if (loadingStatus) {
         return <img src={preloader} alt={'preloader'}/>
     }
 
     return (
 
-        <div style={{display: "flex", padding: '20px',  flexDirection: "column", width: '350px', margin: '20px auto', border: '1px solid black', borderRadius: '15px'}}>
+        <div style={{
+            display: "flex",
+            padding: '20px',
+            flexDirection: "column",
+            width: '350px',
+            margin: '20px auto',
+            border: '1px solid black',
+            borderRadius: '15px'
+        }}>
             {auth && <Navigate to={'/profile'}/>}
             <div style={{fontSize: '20px'}}>Login</div>
             <div style={{display: "flex", flexDirection: "column", width: '250px', margin: '0 auto'}}>
 
-                <SuperInputText type={'email'} placeholder={'Login'} value={loginValue} onChangeText={onChangeLoginText} onEnter={setLoginData} spanClassName={s.testSpanError} className={s.testInputClassName}/>
-                <SuperInputText type={'password'} placeholder={'Your password'} value={passwordValue} onChangeText={onChangeLoginPassword} onEnter={setLoginData} spanClassName={s.testSpanError} className={s.testInputClassName}/>
-                {errorValue && <span  style={{padding: '8px', margin: '0 auto', width: '80%', color: 'red', border: '2px solid red', borderRadius: '5px'}}>{errorValue}</span>}
+                <SuperInputText type={'email'} placeholder={'Login'} value={loginValue} onChangeText={onChangeLoginText}
+                                onEnter={setLoginData} spanClassName={s.testSpanError}
+                                className={s.testInputClassName}/>
+                <SuperInputText type={'password'} placeholder={'Your password'} value={passwordValue}
+                                onChangeText={onChangeLoginPassword} onEnter={setLoginData}
+                                spanClassName={s.testSpanError} className={s.testInputClassName}/>
+                {errorValue && <span style={{
+                    padding: '8px',
+                    margin: '0 auto',
+                    width: '80%',
+                    color: 'red',
+                    border: '2px solid red',
+                    borderRadius: '5px'
+                }}>{errorValue}</span>}
 
                 <SuperCheckbox checked={rememberMeValue} onChangeChecked={setRememberMe}>Remember me</SuperCheckbox>
 
-                <button style={{ margin: '10px auto'}} onClick={setLoginData}>Submit</button>
+                <button style={{margin: '10px auto'}} onClick={setLoginData}>Submit</button>
             </div>
         </div>
     );
