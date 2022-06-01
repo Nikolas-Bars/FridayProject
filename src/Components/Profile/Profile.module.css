@@ -1,0 +1,43 @@
+.container {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile {
+    background: #FEFEFF;
+    width: 1000px;
+    height: 636px;
+    border-radius: 10px;
+    font-family: Arial, serif;
+}
+
+.profile_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 243px;
+    height: 216px;
+    background: #D9D9F1;
+}
+
+.avatar {
+    padding-top: 24px;
+    border-radius: 50%;
+    width: 96px;
+}
+
+.name {
+    padding-top: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D2E46;
+}
+
+.job {
+    padding-top: 4px;
+    font-size: 14px;
+    color: #2D2E46;
+    opacity: 0.5;
+}
