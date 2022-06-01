@@ -39,8 +39,10 @@ export const setUserInfo = (info: UserInfoResponse | null) =>
 
 
 export const checkAuthTC = (data: UserInfoResponse) => (dispatch: Dispatch) => {
+
     loginAPI.checkAuth().then(res => {
         if (res.status === 200) {
+
             dispatch(setIsLoggedIn(true));
             dispatch(setUserInfo(res.data));
         }

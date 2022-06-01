@@ -9,21 +9,20 @@ import {loginAPI} from "../../Bll/api";
 import {checkAuthTC} from '../../Bll/reducers/profile-reducer';
 
 
-const Profile: FC = () => {
-    const { isLoggedIn } = useSelector<AppStoreType, any>(state=> state.profile.isLoggedIn);
+const Profile: FC = React.memo (() => {
+    const isLoggedIn  = useSelector<AppStoreType, any>(state=> state.profile.isLoggedIn);
     const user = useSelector<AppStoreType, any>(state => state.profile.info);
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        debugger
         // @ts-ignore
         dispatch(checkAuthTC());
     }, [dispatch]);
 
-    if (!isLoggedIn) return <div>"Надо залогиниться"</div>
-    // <Navigate to="/login"/>;
+    if (!isLoggedIn) return <Navigate to="/login"/>;
+
 
     return (
         user && (
@@ -38,6 +37,6 @@ const Profile: FC = () => {
             </div>
         )
     );
-};
+})
 
 export default Profile;

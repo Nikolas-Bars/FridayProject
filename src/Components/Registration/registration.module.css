@@ -1,0 +1,16 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    width: 413px;
+    height: 400px;
+    margin: 50px auto;
+    background-color: #F9F9FE;
+    justify-content: center;
+}
+.error {
+    color: red;
+    border: 1px solid red;
+    padding: 5px;
+    width: 300px;
+    margin: 0 auto;
+}

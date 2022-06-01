@@ -42,7 +42,9 @@ const Login = () => {
     }
 
     const setLoginData = () => {
-        loginTC(({email: loginValue, password: passwordValue, rememberMe: rememberMeValue}))(dispatch)
+        // @ts-ignore
+        dispatch(loginTC({email: loginValue, password: passwordValue, rememberMe: rememberMeValue}))
+
     }
 
     if (loadingStatus) {
@@ -58,7 +60,8 @@ const Login = () => {
             width: '350px',
             margin: '20px auto',
             border: '1px solid black',
-            borderRadius: '15px'
+            borderRadius: '15px',
+            backgroundColor: 'white'
         }}>
             {auth && <Navigate to={'/profile'}/>}
             <div style={{fontSize: '20px'}}>Login</div>
@@ -81,7 +84,10 @@ const Login = () => {
 
                 <SuperCheckbox checked={rememberMeValue} onChangeChecked={setRememberMe}>Remember me</SuperCheckbox>
 
-                <button style={{margin: '10px auto'}} onClick={setLoginData}>Submit</button>
+                <button style={{margin: '15px auto'}} onClick={setLoginData}>Submit</button>
+
+                <span style={{fontSize: '8px'}} onClick={()=>{navigate('/RestorePassword')}}>Forgot your password?</span>
+
             </div>
         </div>
     );
