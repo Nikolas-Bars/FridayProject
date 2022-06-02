@@ -7,7 +7,7 @@ import {loginTC, setErrorAC, setLoginAC, setPasswordAC, setRememberMeAC} from ".
 import {AppStoreType} from "../../Bll/store";
 import {Navigate, useNavigate} from "react-router-dom";
 import preloader from '../../Common/img/Preloader.gif'
-//import preloader from '../../img/Preloader.gif'
+import style from './Login.module.css'
 
 const Login = () => {
 
@@ -17,7 +17,7 @@ const Login = () => {
     const errorValue = useSelector<AppStoreType, string>(state => state.login.error)
     const rememberMeValue = useSelector<AppStoreType, boolean>(state => state.login.rememberMe)
     const auth = useSelector<AppStoreType, boolean>(state => state.login.auth)
-    const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus)
+    const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
 
     const dispatch = useDispatch()
 
@@ -47,24 +47,22 @@ const Login = () => {
 
     }
 
+    debugger
     if (loadingStatus) {
-        return <img src={preloader} alt={'preloader'}/>
+        return <div style={{display: "flex",
+            width: '100%',
+            height: '100vh',
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: 'white'}}><img src={preloader} alt={'preloader'}/></div>
     }
 
     return (
 
-        <div style={{
-            display: "flex",
-            padding: '20px',
-            flexDirection: "column",
-            width: '350px',
-            margin: '20px auto',
-            border: '1px solid black',
-            borderRadius: '15px',
-            backgroundColor: 'white'
-        }}>
+        <div className={style.mainBlock}>
+        <div className={style.loginContainer}>
             {auth && <Navigate to={'/profile'}/>}
-            <div style={{fontSize: '20px'}}>Login</div>
+            <div style={{fontSize: '20px', margin: '0 auto'}}>Login</div>
             <div style={{display: "flex", flexDirection: "column", width: '250px', margin: '0 auto'}}>
 
                 <SuperInputText type={'email'} placeholder={'Login'} value={loginValue} onChangeText={onChangeLoginText}
@@ -89,7 +87,7 @@ const Login = () => {
                 <span style={{fontSize: '8px'}} onClick={()=>{navigate('/RestorePassword')}}>Forgot your password?</span>
 
             </div>
-        </div>
+        </div></div>
     );
 };
 
