@@ -33,7 +33,6 @@ export const setUserInfo = (info: UserInfoResponse | null) =>
 export const checkAuthTC = () => (dispatch: Dispatch) => {
     loginAPI.checkAuth().then(res => {
         if (res.status === 200) {
-            debugger
             dispatch(setLoadingStatusAC(true)) // добавил preloader при запросе
             dispatch(setUserInfo(res.data));
         }

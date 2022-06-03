@@ -11,7 +11,6 @@ import style from './Login.module.css'
 
 const Login = () => {
 
-
     const loginValue = useSelector<AppStoreType, string>(state => state.login.login)
     const passwordValue = useSelector<AppStoreType, string>(state => state.login.password)
     const errorValue = useSelector<AppStoreType, string>(state => state.login.error)
