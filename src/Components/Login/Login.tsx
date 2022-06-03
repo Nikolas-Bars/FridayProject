@@ -47,7 +47,7 @@ const Login = () => {
 
     }
 
-    debugger
+
     if (loadingStatus) {
         return <div style={{display: "flex",
             width: '100%',
