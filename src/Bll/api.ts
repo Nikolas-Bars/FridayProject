@@ -1,9 +1,8 @@
 import axios, {AxiosResponse} from "axios";
 
-
 export const instance = axios.create({
-    baseURL: 'http://localhost:7542/2.0/',
-    //baseURL: 'https://neko-back.herokuapp.com/2.0',
+    //baseURL: 'http://localhost:7542/2.0/',
+    baseURL: 'https://neko-back.herokuapp.com/2.0',
     withCredentials: true
 })
 
@@ -17,6 +16,29 @@ export const loginAPI = {
     regisration(data: RegisterDataType){
         return instance.post('/auth/register', data)
     }
+}
+
+export const PasswordAPI = {
+    sendInstruction(data: SendInstructionsDataType){ // на локальном не работает - только на хероку
+        return instance.post('/auth/forgot', data)
+    },
+    setNewPassword(data: SetPaswordDataType){
+        debugger
+        return instance.post('/auth/set-new-password', data)
+    }
+}
+
+
+
+export type SetPaswordDataType = {
+    password: string,
+    resetPasswordToken: string
+}
+
+export type SendInstructionsDataType = {
+    email: string
+    from: string
+    message: string
 }
 
 export type RegisterDataType = {

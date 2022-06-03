@@ -29,8 +29,6 @@ const Profile: FC = () => {
         return <img src={preloader} alt={'preloader'}/>
     }
 
-
-
     return (
         user && (
             <div className={styles.container}>
