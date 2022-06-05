@@ -1,0 +1,21 @@
+.main{
+    /* Rectangle 442 */
+    display: flex;
+    width: 1008px;
+    height: 636px;
+    margin: 10px auto;
+    background: #FEFEFF;
+    border-radius: 8px;
+}
+.sidebar {
+    display: flex;
+    width: 243px;
+    height: 636px;
+    left: 136px;
+    top: 84px;
+    background: #ECECF9;
+}
+.btn {
+    display: flex;
+    justify-content: center;
+}

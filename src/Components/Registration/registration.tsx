@@ -49,14 +49,18 @@ const Registration = () => {
 
     return (
         <div className={s.main}>
-            <div>It-incubator</div>
-            <div>Sign Up</div>
+            <div className={s.container}>
+            <h2>It-incubator</h2>
+            <h4>Sign Up</h4>
             <SuperInputText  type={'email'} onChangeText={onChangeEmail} placeholder={'Email'} className={s.input}/>
             <SuperInputText type={'password'} onChangeText={onChangePassword} placeholder={'password'} className={s.input}/>
             <SuperInputText type={'password'} onChangeText={onChangeConfirmPassword} placeholder={'Confirm password'} className={s.input}/>
             {error && <div className={s.error}>{error}</div>}
-            <div style={{display: 'flex', flexDirection: 'row', margin: '0 auto'}}><SuperButton>Cansel</SuperButton><SuperButton onClick={submit}>Register</SuperButton></div>
 
+            <div style={{display: 'flex', flexDirection: 'row', margin: '0 auto'}}>
+                <SuperButton>Cansel</SuperButton><SuperButton onClick={submit}>Register</SuperButton>
+            </div>
+        </div>
         </div>
     );
 };

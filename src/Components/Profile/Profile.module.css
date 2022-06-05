@@ -1,16 +1,21 @@
 .container {
-    padding-top: 10px;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .profile {
-    background: #FEFEFF;
-    width: 1000px;
-    height: 636px;
-    border-radius: 10px;
-    font-family: Arial, serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 413px;
+    height: 400px;
+    top: 60px;
+    background: #F9F9FE;
+    border-radius: 8px;
+
 }
 
 .profile_info {

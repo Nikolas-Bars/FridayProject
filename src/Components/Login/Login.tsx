@@ -8,6 +8,7 @@ import {AppStoreType} from "../../Bll/store";
 import {Navigate, useNavigate} from "react-router-dom";
 import preloader from '../../Common/img/Preloader.gif'
 import style from './Login.module.css'
+import Preloader from "../../Common/Preloader/Preloader";
 
 const Login = () => {
 
@@ -48,12 +49,7 @@ const Login = () => {
 
 
     if (loadingStatus) {
-        return <div style={{display: "flex",
-            width: '100%',
-            height: '100vh',
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: 'white'}}><img src={preloader} alt={'preloader'}/></div>
+        return <Preloader />
     }
 
     return (

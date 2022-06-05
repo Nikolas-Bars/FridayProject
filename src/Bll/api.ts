@@ -18,6 +18,29 @@ export const loginAPI = {
     }
 }
 
+export const PasswordAPI = {
+    sendInstruction(data: SendInstructionsDataType){ // на локальном не работает - только на хероку
+        return instance.post('/auth/forgot', data)
+    },
+    setNewPassword(data: SetPaswordDataType){
+        debugger
+        return instance.post('/auth/set-new-password', data)
+    }
+}
+
+
+
+export type SetPaswordDataType = {
+    password: string,
+    resetPasswordToken: string
+}
+
+export type SendInstructionsDataType = {
+    email: string
+    from: string
+    message: string
+}
+
 export type RegisterDataType = {
     email: string
     password: string
