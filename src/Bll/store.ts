@@ -4,13 +4,15 @@ import {ProfileActionsType, ProfileReducer} from "./reducers/profile-reducer";
 import {LoginActionType, LoginReducer} from "./reducers/login-reducer";
 import {RegistrationReducer} from "./reducers/registration-reducer";
 import thunk from 'redux-thunk'
+import {CardsReducer} from "./reducers/card-reducer";
 
 
 const reducers = combineReducers({
     login: LoginReducer,
     password: PasswordReducer,
     profile: ProfileReducer,
-    registration: RegistrationReducer
+    registration: RegistrationReducer,
+    cards: CardsReducer,
 })
 
 export const store = createStore(reducers, applyMiddleware(thunk))

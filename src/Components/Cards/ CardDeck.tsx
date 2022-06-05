@@ -1,14 +1,23 @@
 import React from 'react';
 import s from './Cards.module.css'
 
-export const CardDeck = (props: any) => {
+export type CardDeckPropsType = {
+    name: string
+    cardsCount: string | number
+    lastUpdate: string
+    createdBy: string
+    actions: string
+
+}
+
+export const CardDeck = (props: CardDeckPropsType) => {
     return (
         <div className={s.deck}>
-                <div>{props.name}Name</div>
-                <div>{props.carsCount}CardsCount</div>
-                <div>{props.lastUpdate}Last Updated</div>
-                <div>{props.createdBy}Created by</div>
-                <div>{props.actions}Actions</div>
+                <div>{props.name}</div>
+                <div>{props.cardsCount}</div>
+                <div>{props.lastUpdate}</div>
+                <div>{props.createdBy}</div>
+                <div>{props.actions}</div>
         </div>
     );
 }

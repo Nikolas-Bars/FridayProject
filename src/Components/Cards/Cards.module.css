@@ -2,7 +2,7 @@
     /* Rectangle 442 */
     display: flex;
     width: 1008px;
-    height: 636px;
+    min-height: 636px;
     margin: 10px auto;
     background: #FEFEFF;
     border-radius: 8px;
@@ -23,10 +23,20 @@
 
 .cardsBlock {
     display: flex;
+    width: 80%;
     flex-direction: column;
     align-items: start;
     margin-left: 20px;
+    min-height: 100%;
 }
+
+.paginationBlock {
+    display: flex;
+    width: 80%;
+    align-items: end;
+    flex-wrap: wrap;
+    margin: 0 auto;
+ }
 
 .inputBlock {
     display: flex;
@@ -65,3 +75,4 @@
     background-color: gray;
     color: white;
 }
+

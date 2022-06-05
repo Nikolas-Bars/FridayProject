@@ -8,6 +8,7 @@ import {AppStoreType} from "../../Bll/store";
 import {loginAPI} from "../../Bll/api";
 import {checkAuthTC} from '../../Bll/reducers/profile-reducer';
 import preloader from "../../Common/img/Preloader.gif";
+import Preloader from "../../Common/Preloader/Preloader";
 
 
 const Profile: FC = () => {
@@ -18,15 +19,10 @@ const Profile: FC = () => {
 
     const navigate = useNavigate()
 
-    // useEffect(() => {
-    //     // @ts-ignore
-    //     dispatch(checkAuthTC());
-    // }, [dispatch]);
-
     if (!auth) return <Navigate to="/login"/>;
 
-    if (loadingStatus) {
-        return <img src={preloader} alt={'preloader'}/>
+    if (loadingStatus && !user) {
+        return  <Preloader />
     }
 
     return (

@@ -28,7 +28,45 @@ export const PasswordAPI = {
     }
 }
 
+export const cardsAPI = {
+    getCards(request: string){
+        // @ts-ignore
+        return instance.get<AxiosResponse<CardsDataType>>(`/cards/pack?` + `${request}`)
+    }
+}
 
+export type CardsDataType = {
+    packName?: string // не обязательно
+    min?: number  // не обязательно
+    max?: number // не обязательно
+    sortPacks?: string //0updated // не обязательно
+    page?: number // не обязательно
+    pageCount?: number // не обязательно
+    user_id?: string
+}
+
+export type ResponseDataCardType = {
+    data:{
+    cardPacks: [
+        {
+            _id: string
+            user_id: string
+            name: string
+            cardsCount: number
+            created: string
+            updated: string
+        },
+    ]
+    cardPacksTotalCount: number
+    // количество колод
+    maxCardsCount: number
+    minCardsCount: number
+    page: number // выбранная страница
+    pageCount: number
+    // количество элементов на странице
+
+}
+}
 
 export type SetPaswordDataType = {
     password: string,
