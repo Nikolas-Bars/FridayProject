@@ -8,9 +8,9 @@
     border-radius: 8px;
 }
 .sidebar {
+    flex-direction: column;
     display: flex;
     width: 243px;
-    height: 636px;
     left: 136px;
     top: 84px;
     background: #ECECF9;
@@ -18,4 +18,50 @@
 .btn {
     display: flex;
     justify-content: center;
+    margin-top: 15px;
+}
+
+.cardsBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 20px;
+}
+
+.inputBlock {
+    display: flex;
+    flex-direction: row;
+}
+
+.headerWindowOfCards {
+    /* Rectangle 7 */
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 10px;
+    border-radius: 3px;
+    width: 669px;
+    height: 25px;
+   background: #ECECF9;
+
+}
+
+.deck{
+    /* Rectangle 7 */
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    border-radius: 3px;
+    width: 676px;
+    min-height: 25px;
+    border: 1px solid darkgray;
+    margin-top: 2px;
+    background: #FFFFFF;
+
+}
+.deck:hover {
+    background-color: gray;
+    color: white;
 }
