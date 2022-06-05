@@ -12,6 +12,7 @@ import {useSelector} from "react-redux";
 import {AppStoreType} from "../../Bll/store";
 import CheckEmail from "../NewPassword/CheckEmail";
 import {RestorePassword} from "../RestorePassword/RestorePassword";
+import Cards from "../Cards/Cards";
 
 function Routess() {
   const auth = useSelector<AppStoreType, boolean>(state => state.login.auth)
@@ -28,6 +29,7 @@ function Routess() {
                 <Route path={'*'} element={<Notfound/>}/>
                 <Route path={'/profile'} element={<Profile/>}/>
                 <Route path={'/registration'} element={<Registration/>}/>
+                <Route path={'/cards'} element={<Cards />}/>
             </Routes>
         </div>
     );
