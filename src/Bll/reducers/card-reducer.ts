@@ -51,9 +51,9 @@ export type CardsActionType = ReturnType<typeof setCardsAC>
 
 export const setCardsAC = (cards: CardReduserStateType) => ({type: 'SET_CARDS', cards} as const)
 
-export const setCardsTC = (request: string) => (dispatch: Dispatch) => {
+export const setCardsTC = (data?: CardsDataType) => (dispatch: Dispatch) => {
     dispatch(setLoadingStatusAC(true))
-    cardsAPI.getCards(request)
+    cardsAPI.getCards({...data})
         .then(res => {
             // @ts-ignore
             dispatch(setCardsAC(res.data))

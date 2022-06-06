@@ -7,65 +7,66 @@ export const instance = axios.create({
 })
 
 export const loginAPI = {
-    login(data: LoginDataType){
+    login(data: LoginDataType) {
         return instance.post('/auth/login', data)
     },
     checkAuth() {
         return instance.post<{}, AxiosResponse<UserInfoResponse>>('/auth/me', {})
     },
-    regisration(data: RegisterDataType){
+    regisration(data: RegisterDataType) {
         return instance.post('/auth/register', data)
     }
 }
 
 export const PasswordAPI = {
-    sendInstruction(data: SendInstructionsDataType){ // на локальном не работает - только на хероку
+    sendInstruction(data: SendInstructionsDataType) { // на локальном не работает - только на хероку
         return instance.post('/auth/forgot', data)
     },
-    setNewPassword(data: SetPaswordDataType){
+    setNewPassword(data: SetPaswordDataType) {
         debugger
         return instance.post('/auth/set-new-password', data)
     }
 }
 
 export const cardsAPI = {
-    getCards(request: string){
-        // @ts-ignore
-        return instance.get<AxiosResponse<CardsDataType>>(`/cards/pack?` + `${request}`)
-    }
+    getCards(data: CardsDataType) {
+    return  instance.get<AxiosResponse<CardsDataType>>(`/cards/pack`, {params:{
+        ...data
+        }})
+     }
 }
 
 export type CardsDataType = {
-    packName?: string // не обязательно
-    min?: number  // не обязательно
-    max?: number // не обязательно
-    sortPacks?: string //0updated // не обязательно
-    page?: number // не обязательно
-    pageCount?: number // не обязательно
-    user_id?: string
+    pageCount?: number;
+    page?: number;
+    sortPacks?: string;
+    packName?: string;
+    min?: number;
+    max?: number;
+    user_id?: string;
 }
 
 export type ResponseDataCardType = {
-    data:{
-    cardPacks: [
-        {
-            _id: string
-            user_id: string
-            name: string
-            cardsCount: number
-            created: string
-            updated: string
-        },
-    ]
-    cardPacksTotalCount: number
-    // количество колод
-    maxCardsCount: number
-    minCardsCount: number
-    page: number // выбранная страница
-    pageCount: number
-    // количество элементов на странице
+    data: {
+        cardPacks: [
+            {
+                _id: string
+                user_id: string
+                name: string
+                cardsCount: number
+                created: string
+                updated: string
+            },
+        ]
+        cardPacksTotalCount: number
+        // количество колод
+        maxCardsCount: number
+        minCardsCount: number
+        page: number // выбранная страница
+        pageCount: number
+        // количество элементов на странице
 
-}
+    }
 }
 
 export type SetPaswordDataType = {

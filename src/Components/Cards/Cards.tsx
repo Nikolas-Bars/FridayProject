@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import s from './Cards.module.css'
 import SuperButton from "../../Common/c2-SuperButton/SuperButton";
 import SuperDoubleRange from "../../Common/c8-SuperDoubleRange/SuperDoubleRange";
@@ -10,31 +10,40 @@ import {Dispatch} from "redux";
 import {AppStoreType} from "../../Bll/store";
 import {Navigate} from "react-router-dom";
 import Preloader from "../../Common/Preloader/Preloader";
+import {CardsDataType} from "../../Bll/api";
 
 const Cards = () => {
 
     const dispatch: Dispatch<any> = useDispatch()
 
-    useEffect(() => {
-        dispatch(setCardsTC('pageCount=10'))
-    }, [])
+    const [pageCount, setPageCount] = useState<number>(20)
 
+    const [selectValue, setSelectValue] = useState<number>(10)
+
+    useEffect(() => {
+            dispatch(setCardsTC(responseData))
+        }
+        , [])
+
+    let responseData: CardsDataType = {}
 
     const cardsPacks = useSelector<AppStoreType, CardType[]>(state => state.cards.cardPacks)
     const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
     const cards = useSelector<AppStoreType, CardReduserStateType>(state => state.cards)
-    // const data = {
-    //     min: 3,  // не обязательно
-    //     max:  12,
-    //     page:15,
-    //     pageCount: 5,
-    //
-    //
-    // }
 
+    const setPageNumber = (pageNumber: number) => {
+        responseData.page = pageNumber
+        dispatch(setCardsTC(responseData))
+    }
+
+    const selectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+        responseData.pageCount = Number(e.currentTarget.value)
+        setSelectValue(Number(e.currentTarget.value))
+        dispatch(setCardsTC(responseData))
+    }
 
     if (loadingStatus) {
-        return <Preloader />
+        return <Preloader/>
     }
 
     let pageArray = []
@@ -42,6 +51,7 @@ const Cards = () => {
     for (let i = 0; i <= cards.cardPacksTotalCount / cards.pageCount; i++) {
         pageArray.push(i + 1)
     }
+
 
     return (
         <div className={s.main}>
@@ -71,8 +81,22 @@ const Cards = () => {
                                                   actions={'action'}/>)}
 
 
+                <select value={selectValue} onChange={selectHandler}>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                </select>
+
                 <div className={s.paginationBlock}>
-                    {pageArray.map((pageNumber, index) => <div key={index}>{pageNumber}</div>)}
+                    {pageArray.map((pageNumber, index) => <div key={index} style={{
+                        color: 'white',
+                        backgroundColor: "black",
+                        padding: '3px',
+                        border: '1px solid gold'
+                    }} onClick={() => {
+                        setPageNumber(pageNumber)
+                    }}>{pageNumber}</div>)}
                 </div>
             </div>
 
