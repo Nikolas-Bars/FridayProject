@@ -11,6 +11,7 @@ import {AppStoreType} from "../../Bll/store";
 import {Navigate} from "react-router-dom";
 import Preloader from "../../Common/Preloader/Preloader";
 import {CardsDataType} from "../../Bll/api";
+import Paginator from "../../Common/Paginator/Paginator";
 
 const Cards = () => {
 
@@ -19,6 +20,8 @@ const Cards = () => {
     const [pageCount, setPageCount] = useState<number>(20)
 
     const [selectValue, setSelectValue] = useState<number>(10)
+
+    const [currentPage, setCurrentPage] = useState<number>(1)
 
     useEffect(() => {
             dispatch(setCardsTC(responseData))
@@ -87,6 +90,10 @@ const Cards = () => {
                     <option value={50}>50</option>
                     <option value={100}>100</option>
                 </select>
+
+                <Paginator totalItemsCount={cards.cardPacksTotalCount} currentPage={currentPage} pageSize={cards.pageCount} portionSize={5} onPageChange={()=>{}}/>
+
+
 
                 <div className={s.paginationBlock}>
                     {pageArray.map((pageNumber, index) => <div key={index} style={{

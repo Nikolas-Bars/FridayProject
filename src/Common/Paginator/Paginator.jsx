@@ -1,12 +1,11 @@
 import React, {useState} from "react";
 import s from './Paginator.module.css'
-import cn from 'classnames'
 
-const Paginator = ({totalItemsCount, pageSize, currentPage, onPageChange, portionSize = 10}) => {
 
+const Paginator = ({totalItemsCount, pageSize, currentPage, onPageChange, portionSize}) => {
+debugger
 
        let pagesCount = Math.ceil(totalItemsCount / pageSize) // количество страниц (порций)
-
 
         let pages = []; // каждый номер страницы
 
@@ -26,9 +25,7 @@ const Paginator = ({totalItemsCount, pageSize, currentPage, onPageChange, portio
             {pages
                 .filter(p=>p >= leftPortionPageNumber && p <= rightPortionPageNumber)
                 .map((p)=>{
-                    return <span className={ cn ({
-                    [s.selectedPage]: currentPage === p
-                    }, s.pageNumber)} //стиль pageNumber применится в любом случае,
+                    return <span  //стиль pageNumber применится в любом случае,
                                  key={p}
                                  onClick={(e)=>{
                                      onPageChange(p)
