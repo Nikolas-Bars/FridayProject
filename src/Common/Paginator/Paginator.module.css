@@ -5,7 +5,9 @@
 }
 
 .paginator {
-    margin: 10px;
+
+    display: flex;
+    margin: 20px auto;
 }
 
 .pageNumber {

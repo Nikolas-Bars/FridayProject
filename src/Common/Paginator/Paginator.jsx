@@ -25,11 +25,16 @@ debugger
             {pages
                 .filter(p=>p >= leftPortionPageNumber && p <= rightPortionPageNumber)
                 .map((p)=>{
-                    return <span  //стиль pageNumber применится в любом случае,
+                    return <div style={{
+                        color: 'white',
+                        backgroundColor: "black",
+                        padding: '3px',
+                        border: '1px solid gold'
+                    }} //стиль pageNumber применится в любом случае,
                                  key={p}
                                  onClick={(e)=>{
                                      onPageChange(p)
-                                 }}>{p}</span>
+                                 }}>{p}</div>
                     })}
 
 
