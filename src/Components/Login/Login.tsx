@@ -49,7 +49,7 @@ const Login = () => {
 
 
     if (loadingStatus) {
-        return <Preloader />
+        return <div style={{display: "flex", alignItems: 'center', height: '100vh'}}><Preloader /></div>
     }
 
     return (

@@ -13,9 +13,17 @@
 .pageNumber {
     padding: 2px;
     border: 1px solid gray;
+
+}
+.pageNumber:hover {
+    cursor: pointer;
 }
 
-.pageNumber .selectedPage {
-    font-weight: bold;
-    border-color: black;
+
+.active{
+    padding: 2px;
+    background-color: black;
+    color: #F9F9FE;
+    border: 1px solid gold;
 }
+

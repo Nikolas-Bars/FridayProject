@@ -17,19 +17,22 @@ const Cards = () => {
 
     const dispatch: Dispatch<any> = useDispatch()
 
-    const [selectValue, setSelectValue] = useState<number>(10)
-
-    const [pageCount, setPageCount] = useState<number>(10)
+    const [selectValue, setSelectValue] = useState<number>(10) // количество элементов на одной странице
 
     const [currentPage, setCurrentPage] = useState<number>(1)
 
+    const [rangeValue, setRangeValue] = useState<[number, number]>([0, 20])
+
     useEffect(() => {
-            responseData.pageCount = selectValue
             dispatch(setCardsTC(responseData))
         }
         , [])
 
-    let responseData: CardsDataType = {}
+    let responseData: CardsDataType = {
+        pageCount: selectValue,
+        min: rangeValue[0],
+        max: rangeValue[1],
+    }
 
     const cardsPacks = useSelector<AppStoreType, CardType[]>(state => state.cards.cardPacks)
     const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
@@ -37,8 +40,8 @@ const Cards = () => {
 
     const setPageNumber = (pageNumber: number) => {
         responseData.page = pageNumber // страница по счету которую нужно отобразить
-        responseData.pageCount = selectValue  // сколько элементов будет отображено
         dispatch(setCardsTC(responseData))
+        setCurrentPage(pageNumber)
     }
 
     const selectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -47,9 +50,14 @@ const Cards = () => {
         dispatch(setCardsTC(responseData))
     }
 
-    if (loadingStatus) {
-        return <Preloader/>
+    const onMouseUpHandler =()=>{
+        dispatch(setCardsTC(responseData))
     }
+
+
+    // if (loadingStatus) {
+    //     return <Preloader/>
+    // }
 
     let pageArray = []
 
@@ -60,19 +68,22 @@ const Cards = () => {
 
     return (
         <div className={s.main}>
+
             <div className={s.sidebar}>
                 <div style={{margin: '20px auto 20px auto'}}>Show packs cards</div>
                 <div className={s.btn}><SuperButton>My</SuperButton><SuperButton>All</SuperButton></div>
 
                 <div style={{margin: '50px auto 30px auto'}}> Number of cards</div>
-                <div style={{margin: '0 auto'}}><SuperDoubleRange width={'150px'} value={[15, 36]} handleChange={() => {
-                    console.log(5)
+                <div style={{margin: '0 auto'}}><SuperDoubleRange width={'150px'} value={rangeValue}
+                                                                  onMouseFunc={onMouseUpHandler} handleChange={(value1, value2) => {
+                    setRangeValue([value1, value2])
                 }}/></div>
             </div>
 
             <div className={s.cardsBlock}>
                 <h3>Packs list</h3>
-                <div className={s.inputBlock}><SuperInputText/> <SuperButton>Add new pack</SuperButton></div>
+                <div className={s.inputBlock}><SuperInputText/> <SuperButton>Add new pack</SuperButton>{loadingStatus &&
+                <Preloader/>}</div>
 
                 <div className={s.headerWindowOfCards}>
                     <div>Name</div>
@@ -86,19 +97,23 @@ const Cards = () => {
                                                   lastUpdate={card.updated} createdBy={card.created}
                                                   actions={'action'}/>)}
 
-<div className={s.selectBlock}>
-                <select value={selectValue} onChange={selectHandler}>
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                    <option value={50}>50</option>
-                    <option value={100}>100</option>
-                </select>
-            </div>
-              {/*  // totalItemsCount - кол-во всех элементов пришедших с сервера
+
+                <div className={s.selectBlock}>
+                    <select value={selectValue} onChange={selectHandler}>
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={50}>50</option>
+                        <option value={100}>100</option>
+                    </select>
+                </div>
+                {/*  // totalItemsCount - кол-во всех элементов пришедших с сервера
                 //currentPage - стартовая страница
                 //pageSize - кол-во элементов на одной странице
                 //portionSize - количество отображаемых на пагинаторе элементов (а справа и слева будут кнопки - уже есть в самом пагинаторе)*/}
-                <Paginator totalItemsCount={cards.cardPacksTotalCount} currentPage={currentPage} pageSize={cards.pageCount} portionSize={5} onPageChange={(el: number)=>{setPageNumber(el)}}/>
+                <Paginator totalItemsCount={cards.cardPacksTotalCount} currentPage={currentPage}
+                           pageSize={cards.pageCount} portionSize={5} onPageChange={(el: number) => {
+                    setPageNumber(el)
+                }}/>
 
 
             </div>

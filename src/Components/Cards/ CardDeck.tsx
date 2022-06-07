@@ -12,12 +12,14 @@ export type CardDeckPropsType = {
 
 export const CardDeck = (props: CardDeckPropsType) => {
     return (
-        <div className={s.deck}>
-                <div>{props.name}</div>
-                <div>{props.cardsCount}</div>
-                <div>{props.lastUpdate}</div>
-                <div>{props.createdBy}</div>
-                <div>{props.actions}</div>
-        </div>
+        <table>
+            <tbody>
+        <tr className={s.deck}>
+                <td style={{width: '100px'}}>{props.name}</td>
+                <td>{props.cardsCount}</td>
+                <td>{props.lastUpdate}</td>
+                <td>{props.createdBy}</td>
+                <td>{props.actions}</td>
+        </tr></tbody></table>
     );
 }

@@ -8,6 +8,7 @@ import Slider from '@material-ui/core/Slider';
 type PropsType ={
     value: number[],
     handleChange: (num1: number, num2: number) => void
+    onMouseFunc?: ()=> void
     width?: string
 }
 
@@ -29,6 +30,10 @@ export default function SuperDoubleRange(props: PropsType) {
        // setValue(newValue as number[]);
     };
 
+    const onMouseUpHandler = () =>{
+        props.onMouseFunc && props.onMouseFunc()
+    }
+
     const style={
         marginLeft: '10px',
         width: props.width
@@ -43,7 +48,7 @@ export default function SuperDoubleRange(props: PropsType) {
                         onChange={handleChange}
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider"
-
+                        onMouseUp={onMouseUpHandler}
                     />
                 </div>
             </>
