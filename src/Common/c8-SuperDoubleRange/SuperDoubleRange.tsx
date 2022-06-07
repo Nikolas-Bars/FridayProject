@@ -49,7 +49,7 @@ export default function SuperDoubleRange(props: PropsType) {
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider"
                         onMouseUp={onMouseUpHandler}
-                        max={15}
+                        max={120}
                     />
                 </div>
             </>

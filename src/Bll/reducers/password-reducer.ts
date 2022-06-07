@@ -44,14 +44,15 @@ export const setErrorAC = (error: string) => ({type: SET_ERROR, error} as const)
 
 export const SendInstructionsTC = (data: SendInstructionsDataType) => (dispatch: Dispatch) => {
     dispatch(setLoadingStatusAC(true))
+    debugger
     PasswordAPI.sendInstruction(data).then(res => {
         if (res.status === 200) {
             dispatch(sendInstructionsAC(true))
             console.log(res)
         }
     }).catch((err)=>{
-        debugger
         dispatch(setErrorAC(err.message))
+        console.log(err)
     }).finally(()=>{
         dispatch(setLoadingStatusAC(false))
     })
@@ -63,7 +64,6 @@ export const SetNewPasswordTC = (data: SetPaswordDataType) => (dispatch: Dispatc
     debugger
     PasswordAPI.setNewPassword(data)
         .then(res => {
-        debugger
         dispatch(sendNewPasswordAC(true))
         console.log(res)})
         .catch((err)=>{console.log(err)})

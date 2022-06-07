@@ -20,7 +20,6 @@ export const RegistrationReducer = (state: StateType = initialState, action: Act
         case "REGISTER":
             return {...state, success: true}
         case "SET_ERROR":
-            debugger
             return {...state, error: action.error}
         default: {
             return state

@@ -12,6 +12,7 @@ let initialState = {
     error: '',
     auth: false,
     loadingStatus: false,
+    id: '',
 }
 
 export type LoginStateType = {
@@ -21,6 +22,7 @@ export type LoginStateType = {
     error: string
     auth: boolean,
     loadingStatus: boolean
+    id: string
 }
 
 export const LoginReducer = (state: LoginStateType = initialState, action: LoginActionType) => {
@@ -52,7 +54,9 @@ export const LoginReducer = (state: LoginStateType = initialState, action: Login
         case "login/SET_AUTH":
             return {
                 ...state,
-                auth: action.value
+                auth: action.value,
+                id: action.userId
+
             }
         case "login/LOADING_STATUS":
             return {
@@ -78,15 +82,16 @@ export const setLoginAC = (value: string) => ({type: 'login/SET_LOGIN', value} a
 export const setPasswordAC = (value: string) => ({type: 'login/SET_PASSWORD', value} as const)
 export const setRememberMeAC = (value: boolean) => ({type: 'login/SET_REMEMBER_ME', value} as const)
 export const setErrorAC = (value: string) => ({type: 'login/SET_ERROR', value} as const)
-export const setAuthAC = (value: boolean) => ({type: 'login/SET_AUTH', value} as const)
+export const setAuthAC = (value: boolean, userId: string) => ({type: 'login/SET_AUTH', value, userId} as const)
 export const setLoadingStatusAC = (value: boolean) => ({type: 'login/LOADING_STATUS', value} as const)
 
 export const loginTC = (data: LoginDataType): ThunkAction<void,  AppStoreType, unknown, AppActionType> => (dispatch: ThunkDispatch<any, any, any>) => {
     dispatch(setLoadingStatusAC(true))
     loginAPI.login(data).then(res => {
         if (res.status === 200) {
-            dispatch(setAuthAC(true))
+            dispatch(setAuthAC(true, res.data._id))
             dispatch(checkAuthTC()); // если залогинились успешно, то запрашиваем данные пользователя.
+            console.log(res.data._id)
         }
     }).catch(err => {
         let error = err.response ? dispatch(setErrorAC(err.response.data.error)) : dispatch(setErrorAC('Упс... Что-то пошло не так...'))

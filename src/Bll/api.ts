@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from "axios";
+import stream from "node:stream";
 
 export const instance = axios.create({
     //baseURL: 'http://localhost:7542/2.0/',
@@ -20,6 +21,7 @@ export const loginAPI = {
 
 export const PasswordAPI = {
     sendInstruction(data: SendInstructionsDataType) { // на локальном не работает - только на хероку
+        debugger
         return instance.post('/auth/forgot', data)
     },
     setNewPassword(data: SetPaswordDataType) {
@@ -33,6 +35,9 @@ export const cardsAPI = {
     return  instance.get<AxiosResponse<CardsDataType>>(`/cards/pack`, {params:{
         ...data
         }})
+     },
+    newCardPack(data: PostCardPack){
+        return instance.post('/cards/pack', data)
      }
 }
 
@@ -45,6 +50,13 @@ export type CardsDataType = {
     max?: number;
     user_id?: string;
 }
+
+export type PostCardPack = {
+    cardsPack:{
+        name: string,
+        deckCover: string,
+        private: boolean
+    }}
 
 export type ResponseDataCardType = {
     data: {

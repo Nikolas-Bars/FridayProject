@@ -1,4 +1,4 @@
-import {cardsAPI, CardsDataType, ResponseDataCardType} from "../api";
+import {cardsAPI, CardsDataType, PostCardPack, ResponseDataCardType} from "../api";
 import {Dispatch} from "redux";
 import {setLoadingStatusAC} from "./login-reducer";
 
@@ -39,7 +39,6 @@ export type CardReduserStateType = {
 export const CardsReducer = (state: CardReduserStateType = initialState, action: CardsActionType): CardReduserStateType => {
     switch (action.type) {
         case "SET_CARDS":
-            debugger
             return action.cards
         default: {
             return state
@@ -62,4 +61,8 @@ export const setCardsTC = (data?: CardsDataType) => (dispatch: Dispatch) => {
         .finally(() => {
             dispatch(setLoadingStatusAC(false))
         })
+}
+
+export const newCardPackTC =(data: PostCardPack)=>(dispatch: Dispatch)=>{
+    cardsAPI.newCardPack(data).then(res=>console.log(res)).catch(err=>console.log(err))
 }
