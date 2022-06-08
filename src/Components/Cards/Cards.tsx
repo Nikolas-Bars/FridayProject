@@ -5,17 +5,24 @@ import SuperDoubleRange from "../../Common/c8-SuperDoubleRange/SuperDoubleRange"
 import SuperInputText from "../../Common/c1-SuperInputText/SuperInputText";
 import {CardDeck} from "./ CardDeck";
 import {useDispatch, useSelector} from "react-redux";
-import {CardReduserStateType, CardType, newCardPackTC, setCardsTC} from "../../Bll/reducers/card-reducer";
+import {
+    CardReduserStateType,
+    CardType,
+    newCardPackTC,
+    setCardsTC,
+    setSearchTextAC, setSelectValueAC
+} from "../../Bll/reducers/card-reducer";
 import {Dispatch} from "redux";
 import {AppStoreType} from "../../Bll/store";
 import {Navigate} from "react-router-dom";
 import Preloader from "../../Common/Preloader/Preloader";
 import {CardsDataType} from "../../Bll/api";
 import Paginator from "../../Common/Paginator/Paginator";
+import Search from "./Search/Search";
+import AddPack from "./AddPack/AddPack";
+import MyAll from "./MyAll/MyAll";
 
 const Cards = () => {
-
-    const userId = useSelector<AppStoreType, string>(state => state.login.id)
 
     const dispatch: Dispatch<any> = useDispatch()
 
@@ -23,13 +30,7 @@ const Cards = () => {
 
     const [currentPage, setCurrentPage] = useState<number>(1)
 
-    const [myAllToggle, setMyAll] = useState<string>("")
-
     const [rangeValue, setRangeValue] = useState<[number, number]>([0, 20])
-
-    const [searchText, setSearchText] = useState<string>('')
-
-    const [newCardTitle, setNewCardTitle] = useState<string>('')
 
     const cardsPacks = useSelector<AppStoreType, CardType[]>(state => state.cards.cardPacks)
 
@@ -37,7 +38,7 @@ const Cards = () => {
 
     const cards = useSelector<AppStoreType, CardReduserStateType>(state => state.cards)
 
-
+   // const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue)
 
     useEffect(() => {
             dispatch(setCardsTC(responseData))
@@ -48,61 +49,26 @@ const Cards = () => {
         pageCount: selectValue,
         min: rangeValue[0],
         max: rangeValue[1],
-        user_id: myAllToggle  // от этого будет зависеть все колоды показывать или только мои
+        user_id: ''  // от этого будет зависеть все колоды показывать или только мои
     }
 
-
     const setPageNumber = (pageNumber: number) => {
+        debugger
         responseData.page = pageNumber // страница по счету которую нужно отобразить
         dispatch(setCardsTC(responseData))
         setCurrentPage(pageNumber)
-        setSearchText('')
+        dispatch(setSearchTextAC(''))
     }
 
     const selectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-        setSelectValue(Number(e.currentTarget.value))
+        setSelectValueAC(Number(e.currentTarget.value))
         responseData.pageCount = Number(e.currentTarget.value)
         dispatch(setCardsTC(responseData))
-        setSearchText('')
+        dispatch(setSearchTextAC(''))
     }
 
     const onMouseUpHandler = () => {
             dispatch(setCardsTC(responseData))
-    }
-
-    const cardPackObject = {
-        cardsPack: {
-            name: newCardTitle,
-            deckCover: 'base64',
-            private: false
-        }
-    }
-
-    const addNewPack = () => {
-        if (newCardTitle !== '') {
-            dispatch(newCardPackTC(cardPackObject))
-        }
-    }
-
-    const search = () => {
-        if (searchText.trim() !== '') {
-            responseData = {};
-            responseData.packName = searchText
-            dispatch(setCardsTC(responseData))
-        }
-    }
-
-    const myAll = (type: 'my' | 'all') => {
-        if (type === "all") {
-            setMyAll("")
-            responseData.user_id = ''
-            dispatch(setCardsTC(responseData))
-        } else {
-            setMyAll(userId)
-            responseData.user_id = userId
-            dispatch(setCardsTC(responseData))
-        }
-
     }
 
     let pageArray = []
@@ -111,17 +77,17 @@ const Cards = () => {
         pageArray.push(i + 1)
     }
 
-
     return (
         <div className={s.main}>
 
             <div className={s.sidebar}>
                 <div style={{margin: '20px auto 20px auto'}}>Show packs cards</div>
+
                 <div className={s.btn}>
 
-                    <SuperButton onClick={() => {myAll("my")}}>My</SuperButton>
+                    <MyAll/>
 
-                    <SuperButton onClick={() => {myAll("all")}}>All</SuperButton></div>
+                </div>
 
                 <div style={{margin: '50px auto 30px auto'}}> Number of cards</div>
                 <div style={{margin: '0 auto'}}><SuperDoubleRange width={'150px'} value={rangeValue}
@@ -135,11 +101,13 @@ const Cards = () => {
             <div className={s.cardsBlock}>
                 <h3>Packs list</h3>
                 <div className={s.inputBlock}>
-                    <SuperInputText value={searchText} onChangeText={setSearchText}/>
-                    <SuperButton onClick={search}>search</SuperButton>
-                    <SuperInputText value={newCardTitle} onChangeText={setNewCardTitle}/>
-                    <SuperButton onClick={addNewPack}>Add new pack</SuperButton>{loadingStatus &&
-                <Preloader/>}</div>
+
+                    <Search />
+                    <AddPack />
+
+  {loadingStatus && <Preloader/>}
+
+                </div>
 
                 <div className={s.headerWindowOfCards}>
                     <div>Name</div>
@@ -152,7 +120,6 @@ const Cards = () => {
                 {cardsPacks.map(card => <CardDeck key={card._id} name={card.name} cardsCount={card.cardsCount}
                                                   lastUpdate={card.updated} createdBy={card.created}
                                                   actions={'action'}/>)}
-
 
                 <div className={s.selectBlock}>
                     <select value={selectValue} onChange={selectHandler}>
@@ -171,9 +138,7 @@ const Cards = () => {
                     setPageNumber(el)
                 }}/>
 
-
             </div>
-
 
         </div>
     );

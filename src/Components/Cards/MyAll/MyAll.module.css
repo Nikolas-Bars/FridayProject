@@ -1,0 +1,36 @@
+.main {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+.my {
+    width: 60px;
+    background-color: #e74c3c;
+    border: 1px solid black;
+    padding: 3px;
+    color: #D9D9F1;
+    border-radius: 5px;
+}
+.my:hover{
+    background-color: #00acee;
+    color: #e74c3c;
+    cursor: pointer;
+}
+
+
+.all{
+    width: 60px;
+    background-color: #e74c3c;
+    border: 1px solid black;
+    margin-left: 2px;
+    padding: 3px;
+    color: #D9D9F1;
+    border-radius: 5px;
+}
+
+.all:hover{
+    background-color: #00acee;
+    color: #e74c3c;
+    cursor: pointer;
+}
