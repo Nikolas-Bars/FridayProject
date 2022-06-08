@@ -18,8 +18,7 @@ let initialState: CardReduserStateType = {
 
 export type CardReduserStateType = {
     cardPacks: CardType[]
-    cardPacksTotalCount: number
-    // количество колод
+    cardPacksTotalCount: number // количество колод
     maxCardsCount: number
     minCardsCount: number
     page: number // выбранная страница
@@ -49,6 +48,7 @@ export const CardsReducer = (state: CardReduserStateType = initialState, action:
         case "SET_MYALL":
             return {...state, myAll: action.newValue}
         case "SET_SELECT_VALUE":
+
             return {...state, selectValue: action.selectValue}
         default: {
             return state
@@ -56,16 +56,19 @@ export const CardsReducer = (state: CardReduserStateType = initialState, action:
     }
 }
 
-export type CardsActionType = ReturnType<typeof setCardsAC> | ReturnType<typeof setSearchTextAC> | ReturnType<typeof setMyAllAC> | ReturnType<typeof setSelectValueAC>
+export type CardsActionType =
+    ReturnType<typeof setCardsAC>
+    | ReturnType<typeof setSearchTextAC>
+    | ReturnType<typeof setMyAllAC>
+    | ReturnType<typeof setSelectValueAC>
 
-export const setSearchTextAC =(text: string)=>({type: 'SET_SEARCH_TEXT', text}as const)
+export const setSearchTextAC = (text: string) => ({type: 'SET_SEARCH_TEXT', text} as const)
 
-export const setMyAllAC =(newValue: string)=>({type: 'SET_MYALL', newValue}as const) // перключатель - мои либо все колоды отображаются
+export const setMyAllAC = (newValue: string) => ({type: 'SET_MYALL', newValue} as const) // перключатель - мои либо все колоды отображаются
 
 export const setCardsAC = (cards: CardReduserStateType) => ({type: 'SET_CARDS', cards} as const)
 
 export const setSelectValueAC = (selectValue: number) => ({type: 'SET_SELECT_VALUE', selectValue} as const)
-
 
 
 export const setCardsTC = (data?: CardsDataType) => (dispatch: Dispatch) => {
@@ -74,13 +77,14 @@ export const setCardsTC = (data?: CardsDataType) => (dispatch: Dispatch) => {
         .then(res => {
             // @ts-ignore
             dispatch(setCardsAC(res.data))
-            console.log(res)
         }).catch(err => console.log(err))
         .finally(() => {
             dispatch(setLoadingStatusAC(false))
         })
 }
 
-export const newCardPackTC =(data: PostCardPack)=>(dispatch: Dispatch)=>{
-    cardsAPI.newCardPack(data).then(res=>console.log(res)).catch(err=>console.log(err))
+export const newCardPackTC = (data: PostCardPack) => (dispatch: Dispatch) => {
+    cardsAPI.newCardPack(data)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
 }

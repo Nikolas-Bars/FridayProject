@@ -18,7 +18,7 @@ import {Navigate} from "react-router-dom";
 import Preloader from "../../Common/Preloader/Preloader";
 import {CardsDataType} from "../../Bll/api";
 import Paginator from "../../Common/Paginator/Paginator";
-import Search from "./Search/Search";
+import Search from "../Search/Search";
 import AddPack from "./AddPack/AddPack";
 import MyAll from "./MyAll/MyAll";
 
@@ -26,7 +26,7 @@ const Cards = () => {
 
     const dispatch: Dispatch<any> = useDispatch()
 
-    const [selectValue, setSelectValue] = useState<number>(10) // количество элементов на одной странице
+    //const [selectValue, setSelectValue] = useState<number>(10)
 
     const [currentPage, setCurrentPage] = useState<number>(1)
 
@@ -38,7 +38,8 @@ const Cards = () => {
 
     const cards = useSelector<AppStoreType, CardReduserStateType>(state => state.cards)
 
-   // const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue)
+
+    const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
 
     useEffect(() => {
             dispatch(setCardsTC(responseData))
@@ -46,7 +47,7 @@ const Cards = () => {
         , [])
 
     let responseData: CardsDataType = {
-        pageCount: selectValue,
+        pageCount: 10,
         min: rangeValue[0],
         max: rangeValue[1],
         user_id: ''  // от этого будет зависеть все колоды показывать или только мои
@@ -61,7 +62,7 @@ const Cards = () => {
     }
 
     const selectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-        setSelectValueAC(Number(e.currentTarget.value))
+        dispatch(setSelectValueAC(Number(e.currentTarget.value)))
         responseData.pageCount = Number(e.currentTarget.value)
         dispatch(setCardsTC(responseData))
         dispatch(setSearchTextAC(''))

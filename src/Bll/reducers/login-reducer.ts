@@ -28,13 +28,13 @@ export type LoginStateType = {
 export const LoginReducer = (state: LoginStateType = initialState, action: LoginActionType) => {
     switch (action.type) {
         case "login/SET_LOGIN":
-            console.log(state.login)
+
             return {
                 ...state,
                 login: action.value
             }
         case "login/SET_PASSWORD":
-            console.log(state.password)
+
             return {
                 ...state,
                 password: action.value

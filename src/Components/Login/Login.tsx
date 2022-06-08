@@ -9,6 +9,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 import preloader from '../../Common/img/Preloader.gif'
 import style from './Login.module.css'
 import Preloader from "../../Common/Preloader/Preloader";
+import {Dispatch} from "redux";
 
 const Login = () => {
 
@@ -19,7 +20,7 @@ const Login = () => {
     const auth = useSelector<AppStoreType, boolean>(state => state.login.auth)
     const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<Dispatch<any>>()
 
     const navigate = useNavigate()
 
@@ -42,9 +43,7 @@ const Login = () => {
     }
 
     const setLoginData = () => {
-        // @ts-ignore
         dispatch(loginTC({email: loginValue, password: passwordValue, rememberMe: rememberMeValue}))
-
     }
 
 

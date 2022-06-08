@@ -3,7 +3,7 @@ import SuperInputText from "../../../Common/c1-SuperInputText/SuperInputText";
 import SuperButton from "../../../Common/c2-SuperButton/SuperButton";
 import {newCardPackTC} from "../../../Bll/reducers/card-reducer";
 import {useDispatch} from "react-redux";
-import s from '../Search/Search.module.css'
+import s from '../../Search/Search.module.css'
 
 const AddPack = () => {
 
