@@ -8,7 +8,7 @@ import {CardsDataType} from "../../../Bll/api";
 
 const MyAll = () => {
 
-    const userId = useSelector<AppStoreType, string>(state=> state.login.id)
+    const userId = useSelector<AppStoreType, string>(state => state.login.id)
 
     const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
 
@@ -23,12 +23,12 @@ const MyAll = () => {
     }
 
 
-    const myAllToggle = (toggle: 'my'|'all') => {
-        if(toggle === "my"){
+    const myAllToggle = (toggle: 'my' | 'all') => {
+        if (toggle === "my") {
             responseData.user_id = userId
             dispatch(setCardsTC(responseData))
             dispatch(setMyAllAC(true))
-        }else{
+        } else {
             responseData.user_id = ''
             dispatch(setCardsTC(responseData))
             dispatch(setMyAllAC(false))
@@ -37,8 +37,14 @@ const MyAll = () => {
 
     return (
         <div className={s.main}>
-            <div className={s.my} onClick={()=>{myAllToggle("my")}}>My</div>
-            <div className={s.all} onClick={()=>{myAllToggle("all")}}>All</div>
+            <div className={s.my} onClick={() => {
+                myAllToggle("my")
+            }}>My
+            </div>
+            <div className={s.all} onClick={() => {
+                myAllToggle("all")
+            }}>All
+            </div>
         </div>
     );
 };

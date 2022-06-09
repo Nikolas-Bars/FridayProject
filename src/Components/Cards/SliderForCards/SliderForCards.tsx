@@ -8,24 +8,19 @@ import {Dispatch} from "redux";
 import {CardsDataType} from "../../../Bll/api";
 import {AppStoreType} from "../../../Bll/store";
 
-
-
 const SliderForCards = () => {
 
     const dispatch = useDispatch<Dispatch<any>>()
 
-    const userId = useSelector<AppStoreType, string>(state=> state.login.id)
+    const userId = useSelector<AppStoreType, string>(state => state.login.id)
 
     const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
 
     const my = useSelector<AppStoreType, boolean>(state => state.cards.myAll)
 
- //   const [rangeValue, setRangeValue] = useState<[number, number]>([0, 20])
-
     const rangeValue = useSelector<AppStoreType, number[]>(state => state.cards.rangeValue)
 
-
-    const responseData:CardsDataType ={
+    const responseData: CardsDataType = {
         pageCount: selectValue,
         min: rangeValue[0],
         max: rangeValue[1],
@@ -37,11 +32,10 @@ const SliderForCards = () => {
 
     }
 
-    const setRangeValue =(newRangeValue: number[])=>{
+    const setRangeValue = (newRangeValue: number[]) => {
         console.log(rangeValue)
         dispatch(setRangeValueAC(newRangeValue))
     }
-
 
     return (
         <div className={s.sidebar}>

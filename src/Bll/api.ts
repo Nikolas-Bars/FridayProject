@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 import stream from "node:stream";
+import {UserType} from "./reducers/profile-reducer";
 
 export const instance = axios.create({
     //baseURL: 'http://localhost:7542/2.0/',
@@ -16,6 +17,9 @@ export const loginAPI = {
     },
     regisration(data: RegisterDataType) {
         return instance.post('/auth/register', data)
+    },
+    changeUserName(name: string){
+        return instance.put<AxiosResponse<UserType>>('/auth/me', {name: name})
     }
 }
 
@@ -116,3 +120,4 @@ export type UserInfoResponse = {
     rememberMe: boolean;
     error?: string;
 };
+

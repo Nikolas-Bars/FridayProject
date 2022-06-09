@@ -29,7 +29,7 @@ const Select = () => {
     }
 
     return (
-        <div >
+        <div>
             <select value={selectValue} onChange={selectHandler}>
                 <option value={10}>10</option>
                 <option value={20}>20</option>

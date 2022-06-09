@@ -3,7 +3,7 @@ import s from './Cards.module.css'
 import SuperButton from "../../Common/c2-SuperButton/SuperButton";
 import SuperDoubleRange from "../../Common/c8-SuperDoubleRange/SuperDoubleRange";
 import SuperInputText from "../../Common/c1-SuperInputText/SuperInputText";
-import {CardDeck} from "./ CardDeck";
+import {CardDeck} from "../Cards/CardDeck";
 import {useDispatch, useSelector} from "react-redux";
 import {
     CardReduserStateType,
@@ -28,11 +28,7 @@ const Cards = () => {
 
     const dispatch: Dispatch<any> = useDispatch()
 
-    //const [selectValue, setSelectValue] = useState<number>(10)
-
     const [currentPage, setCurrentPage] = useState<number>(1)
-
-    //const [rangeValue, setRangeValue] = useState<[number, number]>([0, 20])
 
     const cardsPacks = useSelector<AppStoreType, CardType[]>(state => state.cards.cardPacks)
 
@@ -65,12 +61,6 @@ const Cards = () => {
         dispatch(setSearchTextAC(''))
     }
 
-/*
-    const onMouseUpHandler = () => {
-            dispatch(setCardsTC(responseData))
-    }
-*/
-
     let pageArray = []
 
     for (let i = 0; i <= cards.cardPacksTotalCount / cards.pageCount; i++) {
@@ -80,34 +70,16 @@ const Cards = () => {
     return (
         <div className={s.main}>
 
-           {/* <div className={s.sidebar}>
-                <div style={{margin: '20px auto 20px auto'}}>Show packs cards</div>
-
-                <div className={s.btn}>
-
-                    <MyAll/>
-
-                </div>
-
-                <div style={{margin: '50px auto 30px auto'}}> Number of cards</div>
-                <div style={{margin: '0 auto'}}><SuperDoubleRange width={'150px'} value={rangeValue}
-                                                                  onMouseFunc={onMouseUpHandler}
-                                                                  handleChange={(value1, value2) => {
-                                                                      setRangeValue([value1, value2])
-                                                                  }}/>
-                </div>
-            </div>*/}
-
             <SliderForCards/>
 
             <div className={s.cardsBlock}>
                 <h3>Packs list</h3>
                 <div className={s.inputBlock}>
 
-                    <Search />
-                    <AddPack />
+                    <Search/>
+                    <AddPack/>
 
-  {loadingStatus && <Preloader/>}
+                    {loadingStatus && <Preloader/>}
 
                 </div>
 
@@ -122,7 +94,7 @@ const Cards = () => {
                 {cardsPacks.map(card => <CardDeck key={card._id} name={card.name} cardsCount={card.cardsCount}
                                                   lastUpdate={card.updated} createdBy={card.created}
                                                   actions={'action'}/>)}
-                                                  <Select />
+                <Select/>
 
                 {/*  // totalItemsCount - кол-во всех элементов пришедших с сервера
                 //currentPage - стартовая страница
