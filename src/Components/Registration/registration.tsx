@@ -58,7 +58,9 @@ const Registration = () => {
             {error && <div className={s.error}>{error}</div>}
 
             <div style={{display: 'flex', flexDirection: 'row', margin: '0 auto'}}>
-                <SuperButton>Cansel</SuperButton><SuperButton onClick={submit}>Register</SuperButton>
+                <SuperButton onClick={() => {
+                    navigate('/login')
+                }}>Cansel</SuperButton><SuperButton onClick={submit}>Register</SuperButton>
             </div>
         </div>
         </div>

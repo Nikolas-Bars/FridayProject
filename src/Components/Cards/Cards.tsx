@@ -10,7 +10,7 @@ import {
     CardType,
     newCardPackTC,
     setCardsTC,
-    setSearchTextAC, setSelectValueAC
+    setSearchTextAC, setSelectValueAC, setSortPacksAC
 } from "../../Bll/reducers/card-reducer";
 import {Dispatch} from "redux";
 import {AppStoreType} from "../../Bll/store";
@@ -40,6 +40,8 @@ const Cards = () => {
 
     const rangeValue = useSelector<AppStoreType, number[]>(state => state.cards.rangeValue)
 
+    const sort = useSelector<AppStoreType, string>(state => state.cards.sortPacks)
+
     useEffect(() => {
             dispatch(setCardsTC(responseData))
         }
@@ -49,7 +51,8 @@ const Cards = () => {
         pageCount: 10,
         min: rangeValue[0],
         max: rangeValue[1],
-        user_id: ''  // от этого будет зависеть все колоды показывать или только мои
+        user_id: '',  // от этого будет зависеть все колоды показывать или только мои
+        sortPacks: sort,
     }
 
     const setPageNumber = (pageNumber: number) => {
@@ -59,6 +62,13 @@ const Cards = () => {
         dispatch(setCardsTC(responseData))
         setCurrentPage(pageNumber)
         dispatch(setSearchTextAC(''))
+    }
+
+    const setSort =(newSort: string)=>{
+        dispatch(setSortPacksAC(newSort))
+        responseData.sortPacks = newSort
+        debugger
+        dispatch(setCardsTC(responseData))
     }
 
     let pageArray = []
@@ -84,10 +94,10 @@ const Cards = () => {
                 </div>
 
                 <div className={s.headerWindowOfCards}>
-                    <div>Name</div>
-                    <div>Cards</div>
-                    <div>Last Updated</div>
-                    <div>Created by</div>
+                    <div>Name <button onClick={()=>{setSort('1name')}}>+</button><button onClick={()=>{setSort('0name')}}>-</button></div>
+                    <div>Cards <button onClick={()=>{setSort('1cardsCount')}}>+</button><button onClick={()=>{setSort('0cardsCount')}}>-</button></div>
+                    <div>Last Updated <button onClick={()=>{setSort('1updated')}}>+</button><button onClick={()=>{setSort('0updated')}}>-</button></div>
+                    <div>Created <button onClick={()=>{setSort('1created')}}>+</button><button onClick={()=>{setSort('0created')}}>-</button></div>
                     <div>Actions</div>
                 </div>
 

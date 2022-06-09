@@ -35,10 +35,9 @@ export type UserType = {
 export const ProfileReducer = (state: UserType = initialState, action: ProfileActionsType): UserType => {
     switch (action.type) {
         case "login/SET_USER_INFO":
-            // @ts-ignore
             return {...action.info};
         case "login/CHANGE_USER_NAME":
-            // @ts-ignore
+
             return {...state, name: action.name}
         default:
             return state;
@@ -47,16 +46,15 @@ export const ProfileReducer = (state: UserType = initialState, action: ProfileAc
 
 export type ProfileActionsType = ReturnType<typeof setUserInfoAC> | ReturnType<typeof changeUserNameInfoAC>;
 
-export const setUserInfoAC = (info: UserType | null) => ({type: 'login/SET_USER_INFO', info} as const)
+export const setUserInfoAC = (info: UserType) => ({type: 'login/SET_USER_INFO', info} as const)
 
-export const changeUserNameInfoAC = (name: string | null) => ({type: 'login/CHANGE_USER_NAME', name} as const)
+export const changeUserNameInfoAC = (name: string) => ({type: 'login/CHANGE_USER_NAME', name} as const)
 
 
 export const checkAuthTC = () => (dispatch: Dispatch) => {
     dispatch(setLoadingStatusAC(true)) // добавил preloader при запросе
     loginAPI.checkAuth().then(res => {
         if (res.status === 200) {
-            // @ts-ignore
             dispatch(setUserInfoAC(res.data));
         }
     }).catch(err => {
@@ -68,8 +66,9 @@ export const checkAuthTC = () => (dispatch: Dispatch) => {
 
 export const changeUserNameTC = (data:{name?: string, avatar?: string}) => (dispatch: Dispatch<any>) => {
     loginAPI.changeUserName(data).then(res => {
-            debugger// @ts-ignore
-            dispatch(setUserInfoAC(res.data.updatedUser))
+            debugger
+            // @ts-ignore
+        dispatch(setUserInfoAC(res.data.updatedUser))
         })
         .catch(err => {
             let error = err.response ? dispatch(setErrorAC(err.response.data.error)) : dispatch(setErrorAC('Упс... Что-то пошло не так...'))

@@ -14,7 +14,8 @@ let initialState: CardReduserStateType = {
     searchText: '',
     myAll: false, // переключатель мои либо все колоды. false - показываем все
     selectValue: 10,
-    rangeValue: [1, 110]
+    rangeValue: [0, 110],
+    sortPacks: '',
 }
 
 export type CardReduserStateType = {
@@ -28,7 +29,7 @@ export type CardReduserStateType = {
     myAll: boolean // переключатель мои либо все колоды
     selectValue: number,
     rangeValue: number[],
-
+    sortPacks: string
 }
 
 export type CardType = {
@@ -53,6 +54,8 @@ export const CardsReducer = (state: CardReduserStateType = initialState, action:
             return {...state, selectValue: action.selectValue}
         case "SET_RANGE_VALUE":
             return {...state, rangeValue: action.rangeValue}
+        case "SET_SORT_PACKS":
+            return {...state, sortPacks: action.sort}
         default: {
             return state
         }
@@ -64,9 +67,12 @@ export type CardsActionType =
     | ReturnType<typeof setSearchTextAC>
     | ReturnType<typeof setMyAllAC>
     | ReturnType<typeof setSelectValueAC>
-|ReturnType<typeof setRangeValueAC>
+    | ReturnType<typeof setRangeValueAC>
+    | ReturnType<typeof setSortPacksAC>
 
 export const setSearchTextAC = (text: string) => ({type: 'SET_SEARCH_TEXT', text} as const)
+
+export const setSortPacksAC = (sort: string) => ({type: 'SET_SORT_PACKS', sort} as const)
 
 export const setMyAllAC = (newValue: boolean) => ({type: 'SET_MYALL', newValue} as const) // перключатель - мои либо все колоды отображаются
 

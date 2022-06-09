@@ -22,6 +22,7 @@ const AddPack = () => {
     const addNewPack = () => {
         if (newCardTitle !== '') {
             dispatch(newCardPackTC(cardPackObject))
+            setNewCardTitle('')
         }
     }
 

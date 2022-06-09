@@ -46,7 +46,7 @@ export const RestorePassword = () => {
         <div className={s.main}>
             {sendSuccess && <Navigate to={'/check-email'}/>}
             <div className={s.mainBlock}>
-                <div>It-incubator</div>
+                <div style={{marginTop: '15px'}}>It-incubator</div>
                 <h4>Forgot your password?</h4>
                 <SuperInputText type={'email'} onChangeText={onChangeHandler} placeholder={'Email'}
                                 className={s.input} error={error && 'Проверьте правильность введенных данных.'}/>
@@ -54,9 +54,9 @@ export const RestorePassword = () => {
                 <div className={s.text}>Enter your email address and we will send you further instructions</div>
                 <SuperButton onClick={onClickHandler}>Send Instructions</SuperButton>
                 <div className={s.text}>Did you remember your password?</div>
-                <span onClick={() => {
+                <div className={s.textButton} onClick={() => {
                     navigate('/login')
-                }}>Try logging in</span>
+                }}>Try logging in</div>
 
             </div>
         </div>

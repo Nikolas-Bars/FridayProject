@@ -1,13 +1,11 @@
-import React, {ChangeEvent, FC, useEffect, useState} from 'react';
+import React, {ChangeEvent, FC, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {Navigate, useNavigate} from 'react-router-dom';
 
 import styles from './Profile.module.css';
 import {AppStoreType} from "../../Bll/store";
-import {loginAPI} from "../../Bll/api";
-import {changeUserNameInfoAC, changeUserNameTC, checkAuthTC} from '../../Bll/reducers/profile-reducer';
-import preloader from "../../Common/img/Preloader.gif";
+import {changeUserNameInfoAC, changeUserNameTC} from '../../Bll/reducers/profile-reducer';
 import Preloader from "../../Common/Preloader/Preloader";
 
 
@@ -25,18 +23,19 @@ const Profile: FC = () => {
 
     const dispatch = useDispatch<any>()
 
-    const navigate = useNavigate()
-
     const onBlurHandler = () => {
         dispatch(changeUserNameTC({name: userName}))
         setToggleInput(false)
     }
 
     const onBlurHandlerForImage = () => {
-        if(urlNewImage !== ''){
-        dispatch(changeUserNameTC({avatar: urlNewImage}))
-        setToggleChangeImageInput(false)
-    }}
+        if (urlNewImage !== '') {
+            dispatch(changeUserNameTC({avatar: urlNewImage}))
+            setToggleChangeImageInput(false)
+        }else{
+            setToggleChangeImageInput(false)
+        }
+    }
 
     const onChangeText = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(changeUserNameInfoAC(e.currentTarget.value))
@@ -57,17 +56,17 @@ const Profile: FC = () => {
 
                     <div className={styles.profile_info}>
 
-                        {toggleChangeImageInput ? <input onChange={(e)=>{setUrlNewImage(e.currentTarget.value)}} autoFocus placeholder={"url for new avatar"} onBlur={onBlurHandlerForImage}/>
-                        : <img onDoubleClick={() => setToggleChangeImageInput(true)} src={user.avatar} alt="avatar"
-                                    className={styles.avatar}/>}
+                        {toggleChangeImageInput ? <div className={styles.inputForImage}><input onChange={(e) => {
+                                setUrlNewImage(e.currentTarget.value)
+                            }} autoFocus placeholder={"url for new avatar"} onBlur={onBlurHandlerForImage}/></div>
+                            : <img onDoubleClick={() => setToggleChangeImageInput(true)} src={user.avatar} alt="avatar"
+                                   className={styles.avatar}/>}
 
                         {toggleInput ?
                             <input autoFocus value={userName} onChange={onChangeText} onBlur={onBlurHandler}/>
-                           : <span onDoubleClick={() => {
+                            : <span onDoubleClick={() => {
                                 setToggleInput(true)
                             }} className={styles.name}>{user.name}</span>}
-
-
 
                         <span className={styles.job}>Frontend Developer</span>
                     </div>

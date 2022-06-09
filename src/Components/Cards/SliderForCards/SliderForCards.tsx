@@ -24,10 +24,11 @@ const SliderForCards = () => {
         pageCount: selectValue,
         min: rangeValue[0],
         max: rangeValue[1],
-        user_id: my ? userId : ''
+        user_id: ''
     }
 
     const onMouseUpHandler = () => {
+        responseData.user_id = my ? userId : ''
         dispatch(setCardsTC(responseData))
 
     }

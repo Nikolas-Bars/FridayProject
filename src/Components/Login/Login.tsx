@@ -78,8 +78,8 @@ const Login = () => {
 
                 <button style={{margin: '15px auto'}} onClick={setLoginData}>Submit</button>
 
-                <span style={{fontSize: '8px'}} onClick={()=>{navigate('/RestorePassword')}}>Forgot your password?</span>
-
+                <div className={style.forgotPasswordText} style={{fontSize: '12px'}} onClick={()=>{navigate('/RestorePassword')}}>Forgot your password?</div>
+                <div className={style.forgotPasswordText} style={{fontSize: '10px'}} onClick={()=>{navigate('/registration')}}>Don't have an account? Register here!</div>
             </div>
         </div></div>
     );

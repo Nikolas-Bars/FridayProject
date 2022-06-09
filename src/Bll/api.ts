@@ -13,13 +13,13 @@ export const loginAPI = {
         return instance.post('/auth/login', data)
     },
     checkAuth() {
-        return instance.post<{}, AxiosResponse<UserInfoResponse>>('/auth/me', {})
+        return instance.post<{}, AxiosResponse<UserType>>('/auth/me', {})
     },
     regisration(data: RegisterDataType) {
         return instance.post('/auth/register', data)
     },
     changeUserName(data:{name?: string, avatar?: string}){
-        return instance.put<AxiosResponse<UserType>>('/auth/me', data)
+        return instance.put<{name?: string, avatar?: string},AxiosResponse<UserType>>('/auth/me', data)
     }
 }
 
@@ -42,7 +42,7 @@ export const cardsAPI = {
      },
     newCardPack(data: PostCardPack){
         return instance.post('/cards/pack', data)
-     }
+     },
 }
 
 
