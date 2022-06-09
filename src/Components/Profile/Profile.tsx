@@ -14,23 +14,31 @@ import Preloader from "../../Common/Preloader/Preloader";
 const Profile: FC = () => {
 
 
-    const auth  = useSelector<AppStoreType, any>(state=> state.login.auth);
+    const auth = useSelector<AppStoreType, any>(state => state.login.auth);
     const user = useSelector<AppStoreType, any>(state => state.profile);
     const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
     const userName = useSelector<AppStoreType, string>(state => state.profile.name)
 
     const [toggleInput, setToggleInput] = useState<boolean>(false)
+    const [toggleChangeImageInput, setToggleChangeImageInput] = useState<boolean>(false)
+    const [urlNewImage, setUrlNewImage] = useState<string>('')
 
     const dispatch = useDispatch<any>()
 
     const navigate = useNavigate()
 
-    const onBlurHandler =()=>{
-        dispatch(changeUserNameTC(userName))
+    const onBlurHandler = () => {
+        dispatch(changeUserNameTC({name: userName}))
         setToggleInput(false)
     }
 
-    const onChangeText =(e: ChangeEvent<HTMLInputElement>)=>{
+    const onBlurHandlerForImage = () => {
+        if(urlNewImage !== ''){
+        dispatch(changeUserNameTC({avatar: urlNewImage}))
+        setToggleChangeImageInput(false)
+    }}
+
+    const onChangeText = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(changeUserNameInfoAC(e.currentTarget.value))
         console.log(userName)
     }
@@ -38,18 +46,29 @@ const Profile: FC = () => {
     if (!auth) return <Navigate to="/login"/>;
 
     if (loadingStatus && !user) {
-        return  <Preloader />
+        return <Preloader/>
     }
-
 
 
     return (
         user && (
             <div className={styles.container}>
                 <div className={styles.profile}>
+
                     <div className={styles.profile_info}>
-                        <img src={user.avatar} alt="avatar" className={styles.avatar}/>
-                        {toggleInput ? <input autoFocus value={userName} onChange={onChangeText} onBlur={onBlurHandler}/>  : <span onDoubleClick={()=>{setToggleInput(true)}} className={styles.name}>{user.name}</span>}
+
+                        {toggleChangeImageInput ? <input onChange={(e)=>{setUrlNewImage(e.currentTarget.value)}} autoFocus placeholder={"url for new avatar"} onBlur={onBlurHandlerForImage}/>
+                        : <img onDoubleClick={() => setToggleChangeImageInput(true)} src={user.avatar} alt="avatar"
+                                    className={styles.avatar}/>}
+
+                        {toggleInput ?
+                            <input autoFocus value={userName} onChange={onChangeText} onBlur={onBlurHandler}/>
+                           : <span onDoubleClick={() => {
+                                setToggleInput(true)
+                            }} className={styles.name}>{user.name}</span>}
+
+
+
                         <span className={styles.job}>Frontend Developer</span>
                     </div>
                 </div>

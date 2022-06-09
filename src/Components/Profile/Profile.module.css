@@ -27,6 +27,10 @@
     background: #D9D9F1;
 }
 
+.profile_info img {
+    cursor: pointer;
+}
+
 .avatar {
     padding-top: 24px;
     border-radius: 50%;

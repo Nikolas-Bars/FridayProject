@@ -66,9 +66,8 @@ export const checkAuthTC = () => (dispatch: Dispatch) => {
     })
 }
 
-export const changeUserNameTC = (name: string) => (dispatch: Dispatch<any>) => {
-    loginAPI.changeUserName(name)
-        .then(res => {
+export const changeUserNameTC = (data:{name?: string, avatar?: string}) => (dispatch: Dispatch<any>) => {
+    loginAPI.changeUserName(data).then(res => {
             debugger// @ts-ignore
             dispatch(setUserInfoAC(res.data.updatedUser))
         })

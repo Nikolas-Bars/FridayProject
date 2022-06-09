@@ -18,8 +18,8 @@ export const loginAPI = {
     regisration(data: RegisterDataType) {
         return instance.post('/auth/register', data)
     },
-    changeUserName(name: string){
-        return instance.put<AxiosResponse<UserType>>('/auth/me', {name: name})
+    changeUserName(data:{name?: string, avatar?: string}){
+        return instance.put<AxiosResponse<UserType>>('/auth/me', data)
     }
 }
 
@@ -44,6 +44,8 @@ export const cardsAPI = {
         return instance.post('/cards/pack', data)
      }
 }
+
+
 
 export type CardsDataType = {
     pageCount?: number;
