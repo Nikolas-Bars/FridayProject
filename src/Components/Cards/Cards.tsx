@@ -21,6 +21,7 @@ import Paginator from "../../Common/Paginator/Paginator";
 import Search from "../Search/Search";
 import AddPack from "./AddPack/AddPack";
 import MyAll from "./MyAll/MyAll";
+import Select from "./Select/Select";
 
 const Cards = () => {
 
@@ -37,7 +38,6 @@ const Cards = () => {
     const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
 
     const cards = useSelector<AppStoreType, CardReduserStateType>(state => state.cards)
-
 
     const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
 
@@ -56,15 +56,9 @@ const Cards = () => {
     const setPageNumber = (pageNumber: number) => {
         debugger
         responseData.page = pageNumber // страница по счету которую нужно отобразить
+        responseData.pageCount = selectValue
         dispatch(setCardsTC(responseData))
         setCurrentPage(pageNumber)
-        dispatch(setSearchTextAC(''))
-    }
-
-    const selectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setSelectValueAC(Number(e.currentTarget.value)))
-        responseData.pageCount = Number(e.currentTarget.value)
-        dispatch(setCardsTC(responseData))
         dispatch(setSearchTextAC(''))
     }
 
@@ -121,15 +115,8 @@ const Cards = () => {
                 {cardsPacks.map(card => <CardDeck key={card._id} name={card.name} cardsCount={card.cardsCount}
                                                   lastUpdate={card.updated} createdBy={card.created}
                                                   actions={'action'}/>)}
+                                                  <Select />
 
-                <div className={s.selectBlock}>
-                    <select value={selectValue} onChange={selectHandler}>
-                        <option value={10}>10</option>
-                        <option value={20}>20</option>
-                        <option value={50}>50</option>
-                        <option value={100}>100</option>
-                    </select>
-                </div>
                 {/*  // totalItemsCount - кол-во всех элементов пришедших с сервера
                 //currentPage - стартовая страница
                 //pageSize - кол-во элементов на одной странице

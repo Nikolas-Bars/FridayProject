@@ -42,13 +42,13 @@ export type CardType = {
 export const CardsReducer = (state: CardReduserStateType = initialState, action: CardsActionType): CardReduserStateType => {
     switch (action.type) {
         case "SET_CARDS":
-            return action.cards
+            return {...state, ...action.cards}
         case "SET_SEARCH_TEXT":
             return {...state, searchText: action.text}
         case "SET_MYALL":
             return {...state, myAll: action.newValue}
         case "SET_SELECT_VALUE":
-
+debugger
             return {...state, selectValue: action.selectValue}
         default: {
             return state

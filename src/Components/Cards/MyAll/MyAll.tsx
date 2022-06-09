@@ -10,9 +10,13 @@ const MyAll = () => {
 
     const userId = useSelector<AppStoreType, string>(state=> state.login.id)
 
+    const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
+
     const dispatch = useDispatch<any>()
 
-    let responseData: CardsDataType = {} // от этого будет зависеть все колоды показывать или только мои
+    let responseData: CardsDataType = {
+        pageCount: selectValue,
+    }
 
 
     const myAllToggle = (toggle: 'my'|'all') => {
