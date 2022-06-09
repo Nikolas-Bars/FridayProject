@@ -12,8 +12,9 @@ let initialState: CardReduserStateType = {
     page: 0, // выбранная страница
     pageCount: 0,    // количество элементов на странице
     searchText: '',
-    myAll: '', // переключатель мои либо все колоды
+    myAll: false, // переключатель мои либо все колоды. false - показываем все
     selectValue: 10,
+    rangeValue: [1, 110]
 }
 
 export type CardReduserStateType = {
@@ -24,8 +25,9 @@ export type CardReduserStateType = {
     page: number // выбранная страница
     pageCount: number
     searchText: string
-    myAll: string // переключатель мои либо все колоды
-    selectValue: number
+    myAll: boolean // переключатель мои либо все колоды
+    selectValue: number,
+    rangeValue: number[],
 
 }
 
@@ -48,8 +50,9 @@ export const CardsReducer = (state: CardReduserStateType = initialState, action:
         case "SET_MYALL":
             return {...state, myAll: action.newValue}
         case "SET_SELECT_VALUE":
-debugger
             return {...state, selectValue: action.selectValue}
+        case "SET_RANGE_VALUE":
+            return {...state, rangeValue: action.rangeValue}
         default: {
             return state
         }
@@ -61,14 +64,17 @@ export type CardsActionType =
     | ReturnType<typeof setSearchTextAC>
     | ReturnType<typeof setMyAllAC>
     | ReturnType<typeof setSelectValueAC>
+|ReturnType<typeof setRangeValueAC>
 
 export const setSearchTextAC = (text: string) => ({type: 'SET_SEARCH_TEXT', text} as const)
 
-export const setMyAllAC = (newValue: string) => ({type: 'SET_MYALL', newValue} as const) // перключатель - мои либо все колоды отображаются
+export const setMyAllAC = (newValue: boolean) => ({type: 'SET_MYALL', newValue} as const) // перключатель - мои либо все колоды отображаются
 
 export const setCardsAC = (cards: CardReduserStateType) => ({type: 'SET_CARDS', cards} as const)
 
 export const setSelectValueAC = (selectValue: number) => ({type: 'SET_SELECT_VALUE', selectValue} as const)
+
+export const setRangeValueAC = (rangeValue: number[]) => ({type: 'SET_RANGE_VALUE', rangeValue} as const)
 
 
 export const setCardsTC = (data?: CardsDataType) => (dispatch: Dispatch) => {

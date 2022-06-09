@@ -12,10 +12,14 @@ const MyAll = () => {
 
     const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
 
+    const rangeValue = useSelector<AppStoreType, number[]>(state => state.cards.rangeValue)
+
     const dispatch = useDispatch<any>()
 
     let responseData: CardsDataType = {
         pageCount: selectValue,
+        min: rangeValue[0],
+        max: rangeValue[1],
     }
 
 
@@ -23,9 +27,11 @@ const MyAll = () => {
         if(toggle === "my"){
             responseData.user_id = userId
             dispatch(setCardsTC(responseData))
+            dispatch(setMyAllAC(true))
         }else{
             responseData.user_id = ''
             dispatch(setCardsTC(responseData))
+            dispatch(setMyAllAC(false))
         }
     }
 

@@ -13,7 +13,12 @@ const Select = () => {
 
     const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
 
-    const responseData: CardsDataType = {}
+    const rangeValue = useSelector<AppStoreType, number[]>(state => state.cards.rangeValue)
+
+    const responseData: CardsDataType = {
+        min: rangeValue[0],
+        max: rangeValue[1],
+    }
 
 
     const selectHandler = (e: ChangeEvent<HTMLSelectElement>) => {

@@ -22,6 +22,7 @@ import Search from "../Search/Search";
 import AddPack from "./AddPack/AddPack";
 import MyAll from "./MyAll/MyAll";
 import Select from "./Select/Select";
+import SliderForCards from "./SliderForCards/SliderForCards";
 
 const Cards = () => {
 
@@ -31,7 +32,7 @@ const Cards = () => {
 
     const [currentPage, setCurrentPage] = useState<number>(1)
 
-    const [rangeValue, setRangeValue] = useState<[number, number]>([0, 20])
+    //const [rangeValue, setRangeValue] = useState<[number, number]>([0, 20])
 
     const cardsPacks = useSelector<AppStoreType, CardType[]>(state => state.cards.cardPacks)
 
@@ -40,6 +41,8 @@ const Cards = () => {
     const cards = useSelector<AppStoreType, CardReduserStateType>(state => state.cards)
 
     const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
+
+    const rangeValue = useSelector<AppStoreType, number[]>(state => state.cards.rangeValue)
 
     useEffect(() => {
             dispatch(setCardsTC(responseData))
@@ -62,9 +65,11 @@ const Cards = () => {
         dispatch(setSearchTextAC(''))
     }
 
+/*
     const onMouseUpHandler = () => {
             dispatch(setCardsTC(responseData))
     }
+*/
 
     let pageArray = []
 
@@ -75,7 +80,7 @@ const Cards = () => {
     return (
         <div className={s.main}>
 
-            <div className={s.sidebar}>
+           {/* <div className={s.sidebar}>
                 <div style={{margin: '20px auto 20px auto'}}>Show packs cards</div>
 
                 <div className={s.btn}>
@@ -91,7 +96,9 @@ const Cards = () => {
                                                                       setRangeValue([value1, value2])
                                                                   }}/>
                 </div>
-            </div>
+            </div>*/}
+
+            <SliderForCards/>
 
             <div className={s.cardsBlock}>
                 <h3>Packs list</h3>
