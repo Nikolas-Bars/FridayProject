@@ -64,7 +64,7 @@ const Profile: FC = () => {
 
                         {toggleInput ?
                             <input autoFocus value={userName} onChange={onChangeText} onBlur={onBlurHandler}/>
-                            : <span onDoubleClick={() => {
+                            : <span style={{cursor: 'pointer'}} onDoubleClick={() => {
                                 setToggleInput(true)
                             }} className={styles.name}>{user.name}</span>}
 

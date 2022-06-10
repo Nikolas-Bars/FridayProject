@@ -14,6 +14,8 @@ const MyAll = () => {
 
     const rangeValue = useSelector<AppStoreType, number[]>(state => state.cards.rangeValue)
 
+    const my = useSelector<AppStoreType, boolean>(state => state.cards.myAll)
+
     const dispatch = useDispatch<any>()
 
     let responseData: CardsDataType = {
@@ -24,11 +26,11 @@ const MyAll = () => {
 
 
     const myAllToggle = (toggle: 'my' | 'all') => {
-        if (toggle === "my") {
+        if (toggle === "my" && !my) {
             responseData.user_id = userId
             dispatch(setCardsTC(responseData))
             dispatch(setMyAllAC(true))
-        } else {
+        } else if(toggle === "all" && my) {
             responseData.user_id = ''
             dispatch(setCardsTC(responseData))
             dispatch(setMyAllAC(false))
@@ -39,11 +41,11 @@ const MyAll = () => {
         <div className={s.main}>
             <div className={s.my} onClick={() => {
                 myAllToggle("my")
-            }}>My
+            }} style={my ? {backgroundColor: 'white', color: 'blue'} : {}}>My
             </div>
             <div className={s.all} onClick={() => {
                 myAllToggle("all")
-            }}>All
+            }} style={my ? {}:{backgroundColor: 'white', color: 'blue'}}>All
             </div>
         </div>
     );

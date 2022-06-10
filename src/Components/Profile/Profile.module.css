@@ -10,8 +10,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 413px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     top: 60px;
     background: #F9F9FE;
     border-radius: 8px;
@@ -40,17 +40,24 @@
 }
 
 .name {
-    padding-top: 4px;
+    border-radius: 5px;
     font-size: 18px;
     font-weight: 600;
-    color: #2D2E46;
+    color: white;
+    background-color: #e74c3c;
+    margin: 10px;
+    padding: 10px;
 }
 
 .job {
-    padding-top: 4px;
+    border-radius: 2px;
+    margin: 5px 10px;
+    padding: 5px 10px;
     font-size: 14px;
-    color: #2D2E46;
+    color: white;
     opacity: 0.5;
+    background-color: dodgerblue;
+    cursor: pointer;
 }
 .inputForImage{
     display: flex;

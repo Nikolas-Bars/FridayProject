@@ -42,6 +42,10 @@ const Cards = () => {
 
     const sort = useSelector<AppStoreType, string>(state => state.cards.sortPacks)
 
+    const my = useSelector<AppStoreType, boolean>(state => state.cards.myAll)
+
+    const id = useSelector<AppStoreType, string>(state => state.login.id)
+
     useEffect(() => {
             dispatch(setCardsTC(responseData))
         }
@@ -51,7 +55,7 @@ const Cards = () => {
         pageCount: 10,
         min: rangeValue[0],
         max: rangeValue[1],
-        user_id: '',  // от этого будет зависеть все колоды показывать или только мои
+        user_id: my ? id : '',  // от этого будет зависеть все колоды показывать или только мои
         sortPacks: sort,
     }
 
