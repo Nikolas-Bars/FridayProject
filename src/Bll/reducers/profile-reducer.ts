@@ -50,20 +50,6 @@ export const setUserInfoAC = (info: UserType) => ({type: 'login/SET_USER_INFO', 
 
 export const changeUserNameInfoAC = (name: string) => ({type: 'login/CHANGE_USER_NAME', name} as const)
 
-
-export const checkAuthTC = () => (dispatch: Dispatch) => {
-    dispatch(setLoadingStatusAC(true)) // добавил preloader при запросе
-    loginAPI.checkAuth().then(res => {
-        if (res.status === 200) {
-            dispatch(setUserInfoAC(res.data));
-        }
-    }).catch(err => {
-        let error = err.response ? dispatch(setErrorAC(err.response.data.error)) : dispatch(setErrorAC('Упс... Что-то пошло не так...'))
-    }).finally(() => {
-        dispatch(setLoadingStatusAC(false))
-    })
-}
-
 export const changeUserNameTC = (data:{name?: string, avatar?: string}) => (dispatch: Dispatch<any>) => {
     loginAPI.changeUserName(data).then(res => {
             debugger

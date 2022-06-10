@@ -1,6 +1,6 @@
 import {loginAPI, LoginDataType} from "../api";
 import {Dispatch} from "redux";
-import {checkAuthTC} from "./profile-reducer";
+import {setUserInfoAC} from "./profile-reducer";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {AppActionType, AppStoreType} from "../store";
 
@@ -62,7 +62,7 @@ export const LoginReducer = (state: LoginStateType = initialState, action: Login
             return {
                 ...state,
                 loadingStatus: action.value
-        }
+            }
 
         default: {
             return state
@@ -85,17 +85,15 @@ export const setErrorAC = (value: string) => ({type: 'login/SET_ERROR', value} a
 export const setAuthAC = (value: boolean, userId: string) => ({type: 'login/SET_AUTH', value, userId} as const)
 export const setLoadingStatusAC = (value: boolean) => ({type: 'login/LOADING_STATUS', value} as const)
 
-export const loginTC = (data: LoginDataType): ThunkAction<void,  AppStoreType, unknown, AppActionType> => (dispatch: ThunkDispatch<any, any, any>) => {
+export const loginTC = (data: LoginDataType): ThunkAction<void, AppStoreType, unknown, AppActionType> => (dispatch: ThunkDispatch<any, any, any>) => {
     dispatch(setLoadingStatusAC(true))
     loginAPI.login(data).then(res => {
-        if (res.status === 200) {
             dispatch(setAuthAC(true, res.data._id))
-            dispatch(checkAuthTC()); // если залогинились успешно, то запрашиваем данные пользователя.
+            dispatch(setUserInfoAC(res.data)); // если залогинились успешно, то запрашиваем данные пользователя.
             console.log(res.data._id)
-        }
     }).catch(err => {
         let error = err.response ? dispatch(setErrorAC(err.response.data.error)) : dispatch(setErrorAC('Упс... Что-то пошло не так...'))
-    }).finally(()=>{
+    }).finally(() => {
         dispatch(setLoadingStatusAC(false))
     })
 }

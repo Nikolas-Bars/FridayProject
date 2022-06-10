@@ -1,26 +1,21 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './Cards.module.css'
-import SuperButton from "../../Common/c2-SuperButton/SuperButton";
-import SuperDoubleRange from "../../Common/c8-SuperDoubleRange/SuperDoubleRange";
-import SuperInputText from "../../Common/c1-SuperInputText/SuperInputText";
 import {CardDeck} from "../Cards/CardDeck";
 import {useDispatch, useSelector} from "react-redux";
 import {
     CardReduserStateType,
     CardType,
-    newCardPackTC,
     setCardsTC,
-    setSearchTextAC, setSelectValueAC, setSortPacksAC
+    setSearchTextAC,
+    setSortPacksAC
 } from "../../Bll/reducers/card-reducer";
 import {Dispatch} from "redux";
 import {AppStoreType} from "../../Bll/store";
-import {Navigate} from "react-router-dom";
 import Preloader from "../../Common/Preloader/Preloader";
 import {CardsDataType} from "../../Bll/api";
 import Paginator from "../../Common/Paginator/Paginator";
 import Search from "../Search/Search";
 import AddPack from "./AddPack/AddPack";
-import MyAll from "./MyAll/MyAll";
 import Select from "./Select/Select";
 import SliderForCards from "./SliderForCards/SliderForCards";
 

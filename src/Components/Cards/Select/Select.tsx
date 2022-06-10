@@ -15,9 +15,14 @@ const Select = () => {
 
     const rangeValue = useSelector<AppStoreType, number[]>(state => state.cards.rangeValue)
 
+    const my = useSelector<AppStoreType, boolean>(state => state.cards.myAll)
+
+    const id = useSelector<AppStoreType, string>(state => state.login.id)
+
     const responseData: CardsDataType = {
         min: rangeValue[0],
         max: rangeValue[1],
+        user_id: my ? id : '',
     }
 
 
