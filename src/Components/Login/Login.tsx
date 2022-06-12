@@ -1,88 +1,138 @@
-import React, {useEffect, useState} from 'react';
-import SuperInputText from "../../Common/c1-SuperInputText/SuperInputText";
-import s from "../../Common/HW4.module.css";
-import SuperCheckbox from "../../Common/c3-SuperCheckbox/SuperCheckbox";
-import {useDispatch, useSelector} from "react-redux";
-import {loginTC, setErrorAC, setLoginAC, setPasswordAC, setRememberMeAC} from "../../Bll/reducers/login-reducer";
-import {AppStoreType} from "../../Bll/store";
-import {Navigate, useNavigate} from "react-router-dom";
-import preloader from '../../Common/img/Preloader.gif'
 import style from './Login.module.css'
-import Preloader from "../../Common/Preloader/Preloader";
-import {Dispatch} from "redux";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as Yup from 'yup';
+import show_pass from "../../Common/img/show_hide_password/show.png";
+import hidden_pass from "../../Common/img/show_hide_password/hidden.png";
+import React, {useEffect, useState} from "react";
+import {NavLink, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {AppStoreType, useAppDispatch} from "../../Bll/store";
+import SuperButton from '../../Common/c2-SuperButton/SuperButton';
+import {loginTC, setErrorAC} from "../../Bll/reducers/login-reducer";
 
-const Login = () => {
 
-    const loginValue = useSelector<AppStoreType, string>(state => state.login.login)
-    const passwordValue = useSelector<AppStoreType, string>(state => state.login.password)
-    const errorValue = useSelector<AppStoreType, string>(state => state.login.error)
-    const rememberMeValue = useSelector<AppStoreType, boolean>(state => state.login.rememberMe)
-    const auth = useSelector<AppStoreType, boolean>(state => state.login.auth)
-    const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
+type FormikInputType = {
+    email: string,
+    password: string,
+    rememberMe: boolean,
+}
 
-    const dispatch = useDispatch<Dispatch<any>>()
-
+export const Login = () => {
+    const dispatch = useAppDispatch()
+    const usAuth = useSelector<AppStoreType, boolean>(state => state.login.auth)
+    const errorMessage = useSelector<AppStoreType, string | null>(state => state.login.error)
+    const disableButton = useSelector<AppStoreType, boolean>(state => state.login.disableButton)
+    const [showPass, setShowPass] = useState<boolean>(false)
     const navigate = useNavigate()
 
-    const onChangeLoginText = (newValue: string) => {
-        dispatch(setLoginAC(newValue))
-        setError('')
+    useEffect(() => {
+        if (usAuth) {
+            navigate('/')
+        }
+
+        return () => {
+            if (errorMessage) {
+                dispatch(setErrorAC(null))
+            }
+        }
+    }, [usAuth, errorMessage, dispatch, navigate])
+
+    const initialValues: FormikInputType = {
+        email: '',
+        password: '',
+        rememberMe: false
     }
+    const validate = Yup.object({
+        email: Yup.string().required('Required').email('must be a valid email'),
+        password: Yup.string()
+            .required('Password is required')
+            .min(8, 'Too short - should be 8 chars minimum.')
+    })
 
-    const onChangeLoginPassword = (newPassword: string) => {
-        dispatch(setPasswordAC(newPassword))
-        setError('')
-    }
-
-    const setRememberMe = (value: boolean) => {
-        dispatch(setRememberMeAC(value))
-    }
-
-    const setError = (error: string) => {
-        dispatch(setErrorAC(error))
-    }
-
-    const setLoginData = () => {
-        dispatch(loginTC({email: loginValue, password: passwordValue, rememberMe: rememberMeValue}))
-    }
-
-
-    if (loadingStatus) {
-        return <div style={{display: "flex", alignItems: 'center', height: '100vh'}}><Preloader /></div>
+    const onSubmit = (values: FormikInputType) => {
+        dispatch(loginTC({email: values.email, password: values.password, rememberMe: values.rememberMe}))
     }
 
     return (
-
-        <div className={style.mainBlock}>
-        <div className={style.loginContainer}>
-            {auth && <Navigate to={'/profile'}/>}
-            <div style={{fontSize: '20px', margin: '0 auto'}}>Login</div>
-            <div style={{display: "flex", flexDirection: "column", width: '250px', margin: '0 auto'}}>
-
-                <SuperInputText type={'email'} placeholder={'Login'} value={loginValue} onChangeText={onChangeLoginText}
-                                onEnter={setLoginData} spanClassName={s.testSpanError}
-                                className={s.testInputClassName}/>
-                <SuperInputText type={'password'} placeholder={'Your password'} value={passwordValue}
-                                onChangeText={onChangeLoginPassword} onEnter={setLoginData}
-                                spanClassName={s.testSpanError} className={s.testInputClassName}/>
-                {errorValue && <span style={{
-                    padding: '8px',
-                    margin: '0 auto',
-                    width: '80%',
-                    color: 'red',
-                    border: '2px solid red',
-                    borderRadius: '5px'
-                }}>{errorValue}</span>}
-
-                <SuperCheckbox checked={rememberMeValue} onChangeChecked={setRememberMe}>Remember me</SuperCheckbox>
-
-                <button style={{margin: '15px auto'}} onClick={setLoginData}>Submit</button>
-
-                <div className={style.forgotPasswordText} style={{fontSize: '12px'}} onClick={()=>{navigate('/RestorePassword')}}>Forgot your password?</div>
-                <div className={style.forgotPasswordText} style={{fontSize: '10px'}} onClick={()=>{navigate('/registration')}}>Don't have an account? Register here!</div>
+        <div className={style.login__container}>
+            <div className={style.login__edit_body}>
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={onSubmit}
+                    validationSchema={validate}
+                >
+                    <Form className={style.login__edit}>
+                        <h2>Sign in</h2>
+                        <div className={style.login__form_body}>
+                            <div className={style.login__edit}>
+                                <label>Email</label>
+                                <Field
+                                    className={style.login__edit_input}
+                                    name='email'
+                                    type='text'
+                                    placeholder='Enter your Email'
+                                />
+                                <ErrorMessage name="email" component="div"
+                                              className={style.login_error}/>
+                            </div>
+                            <div className={style.login__edit}>
+                                <label>Password</label>
+                                <Field
+                                    className={style.login__edit_input}
+                                    name='password'
+                                    type={showPass ? 'text' : 'password'}
+                                    placeholder='Enter the password'
+                                />
+                                <img
+                                    className={style.login__show_hide_pass}
+                                    src={showPass ? show_pass : hidden_pass}
+                                    onClick={() => setShowPass(!showPass)}
+                                    alt="show or hide"/>
+                                <ErrorMessage name="password" component="div"
+                                              className={style.login_error}/>
+                            </div>
+                            <div className={style.login__edit_checkbox_container}>
+                                Remember Me
+                                <Field
+                                    className={style.login__edit_checkbox}
+                                    name='rememberMe'
+                                    type='checkbox'
+                                />
+                            </div>
+                            {
+                                !errorMessage &&
+                                <div className={style.fakeDiv}/>
+                            }
+                            {
+                                errorMessage &&
+                                <div className={style.login_server_error}>
+                                    {errorMessage}
+                                </div>
+                            }
+                            <div className={style.login__forgotPass}>
+                                <NavLink to='/forgot'>Forgot password</NavLink>
+                            </div>
+                            <div className={style.login__edit_buttons}>
+                                <SuperButton
+                                    className={style.login__edit_buttonLogin}
+                                    type='submit'
+                                    disabled={disableButton}
+                                >
+                                    Login
+                                </SuperButton>
+                            </div>
+                        </div>
+                    </Form>
+                </Formik>
+                <div className={style.login_sign_up_container}>
+                    <div className={style.login__sign_up_account}>
+                        Don't have an account?
+                    </div>
+                    <div className={style.login__sign_up}>
+                        <NavLink to='/register'>Sign Up</NavLink>
+                    </div>
+                </div>
             </div>
-        </div></div>
-    );
+        </div>
+    )
 };
-
-export default Login;

@@ -2,7 +2,7 @@ import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import DemoSuperComponents from "../DemoSuperComponents/DemoSuperComponents";
 
-import Login from "../Login/Login";
+import {Login} from "../Login/Login";
 import NewPassword from "../NewPassword/NewPassword";
 import Notfound from "../NotFound/Notfound";
 import Profile from "../Profile/Profile";

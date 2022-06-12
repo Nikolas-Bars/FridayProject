@@ -1,28 +1,28 @@
 import {loginAPI, LoginDataType} from "../api";
-import {Dispatch} from "redux";
 import {setUserInfoAC} from "./profile-reducer";
-import {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {AppActionType, AppStoreType} from "../store";
+import {ThunksDispatch} from "../store";
 
 
 let initialState = {
     login: '',
     password: '',
     rememberMe: false,
-    error: '',
+    error: null,
     auth: false,
     loadingStatus: false,
     id: '',
+    disableButton: false
 }
 
 export type LoginStateType = {
     login: string,
     password: string,
     rememberMe: boolean,
-    error: string
+    error: string | null
     auth: boolean,
     loadingStatus: boolean
     id: string
+    disableButton: boolean
 }
 
 export const LoginReducer = (state: LoginStateType = initialState, action: LoginActionType) => {
@@ -81,18 +81,19 @@ export type LoginActionType =
 export const setLoginAC = (value: string) => ({type: 'login/SET_LOGIN', value} as const)
 export const setPasswordAC = (value: string) => ({type: 'login/SET_PASSWORD', value} as const)
 export const setRememberMeAC = (value: boolean) => ({type: 'login/SET_REMEMBER_ME', value} as const)
-export const setErrorAC = (value: string) => ({type: 'login/SET_ERROR', value} as const)
+export const setErrorAC = (value: string | null) => ({type: 'login/SET_ERROR', value} as const)
 export const setAuthAC = (value: boolean, userId: string) => ({type: 'login/SET_AUTH', value, userId} as const)
 export const setLoadingStatusAC = (value: boolean) => ({type: 'login/LOADING_STATUS', value} as const)
 
-export const loginTC = (data: LoginDataType): ThunkAction<void, AppStoreType, unknown, AppActionType> => (dispatch: ThunkDispatch<any, any, any>) => {
+export const loginTC = (data: LoginDataType) => (dispatch: ThunksDispatch) => {
     dispatch(setLoadingStatusAC(true))
-    loginAPI.login(data).then(res => {
+    loginAPI.login(data)
+        .then(res => {
             dispatch(setAuthAC(true, res.data._id))
             dispatch(setUserInfoAC(res.data)); // если залогинились успешно, то запрашиваем данные пользователя.
             console.log(res.data._id)
     }).catch(err => {
-        let error = err.response ? dispatch(setErrorAC(err.response.data.error)) : dispatch(setErrorAC('Упс... Что-то пошло не так...'))
+        err.response ? dispatch(setErrorAC(err.response.data.error)) : dispatch(setErrorAC('Упс... Что-то пошло не так...'))
     }).finally(() => {
         dispatch(setLoadingStatusAC(false))
     })
