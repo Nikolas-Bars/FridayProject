@@ -14,8 +14,6 @@ const NavBar = () => {
                 <div className={s.nav}><NavLink to={'/profile'}>Profile</NavLink></div>
                 <div className={s.nav}><NavLink to={'/registration'}>registration</NavLink></div>
                 <div className={s.nav}><NavLink to={'/cards'}>cards</NavLink></div>
-
-
             </div>
         </div>
     );

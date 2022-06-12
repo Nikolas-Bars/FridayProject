@@ -4,17 +4,13 @@ import DemoSuperComponents from "../DemoSuperComponents/DemoSuperComponents";
 import {Login} from "../Login/Login";
 import Notfound from "../NotFound/Notfound";
 import Profile from "../Profile/Profile";
-import {useSelector} from "react-redux";
-import {AppStoreType} from "../../Bll/store";
 import Cards from "../Cards/Cards";
 import {Registration} from "../Registration/Registration";
 import {RestorePassword} from "../RestorePassword/RestorePassword";
-import { CheckEmail } from '../RestorePassword/CheckEmail/CheckEmail';
-import { SetNewPassword } from '../RestorePassword/SetNewPassword/SetNewPassword';
+import {CheckEmail} from '../RestorePassword/CheckEmail/CheckEmail';
+import {SetNewPassword} from '../RestorePassword/SetNewPassword/SetNewPassword';
 
 function Routess() {
-
-    const auth = useSelector<AppStoreType, boolean>(state => state.profile.helpers.isLoggedIn)
 
     return (
         <div>

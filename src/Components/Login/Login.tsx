@@ -9,6 +9,7 @@ import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../Bll/store";
 import SuperButton from '../../Common/c2-SuperButton/SuperButton';
 import {loginTC, setErrorToProfileAC} from "../../Bll/reducers/profile-reducer";
+import Preloader from "../../Common/Preloader/Preloader";
 
 
 type FormikInputType = {
@@ -22,6 +23,7 @@ export const Login = () => {
     const isLoggedIn = useSelector<AppStoreType, boolean>(state => state.profile.helpers.isLoggedIn)
     const errorMessage = useSelector<AppStoreType, string | null>(state => state.profile.helpers.errorMessage)
     const disableButton = useSelector<AppStoreType, boolean>(state => state.profile.helpers.disableButton)
+    const loadingStatus = useSelector<AppStoreType, boolean>(state => state.profile.helpers.loadingStatus)
     const [showPass, setShowPass] = useState<boolean>(false)
     const navigate = useNavigate()
 
@@ -51,6 +53,10 @@ export const Login = () => {
 
     const onSubmit = (values: FormikInputType) => {
         dispatch(loginTC({email: values.email, password: values.password, rememberMe: values.rememberMe}))
+    }
+
+    if (loadingStatus) {
+        return <div style={{display: "flex", alignItems: 'center', height: '100vh'}}><Preloader /></div>
     }
 
     return (

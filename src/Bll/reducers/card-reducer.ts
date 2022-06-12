@@ -1,4 +1,4 @@
-import {cardsAPI, CardsDataType, PostCardPack, ResponseDataCardType} from "../api";
+import {cardsAPI, CardsDataType, PostCardPack} from "../api";
 import {Dispatch} from "redux";
 import {setLoadingStatusAC} from "./profile-reducer";
 

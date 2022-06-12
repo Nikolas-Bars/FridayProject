@@ -13,6 +13,7 @@ import {
 } from "../../Bll/reducers/profile-reducer";
 import SuperButton from '../../Common/c2-SuperButton/SuperButton';
 import {useSelector} from "react-redux";
+import Preloader from "../../Common/Preloader/Preloader";
 
 type FormikInputType = {
     email: string,
@@ -29,6 +30,8 @@ export const Registration = () => {
     const registrationCompleted = useSelector<AppStoreType, boolean>(state => state.profile.helpers.registerCompleted)
     const errorMessage = useSelector<AppStoreType, string | null>(state => state.profile.helpers.errorMessage)
     const disableButton = useSelector<AppStoreType, boolean>(state => state.profile.helpers.disableButton)
+    const loadingStatus = useSelector<AppStoreType, boolean>(store => store.profile.helpers.loadingStatus)
+
 
     useEffect(() => {
         let newTo: number
@@ -74,6 +77,10 @@ export const Registration = () => {
 
     const onSubmit = (values: FormikInputType) => {
         dispatch(registrationNewUserTC({email: values.email, password: values.password}))
+    }
+
+    if (loadingStatus) {
+        return <div style={{display: "flex", alignItems: 'center', height: '100vh'}}><Preloader/></div>
     }
 
     return (
