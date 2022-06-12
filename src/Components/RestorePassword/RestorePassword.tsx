@@ -1,65 +1,103 @@
-import React, {useState} from 'react';
-import s from './RestorePassword.module.css'
-import SuperInputText from "../../Common/c1-SuperInputText/SuperInputText";
+import React, {useEffect} from 'react';
+import * as Yup from "yup";
+import style from "./RestorePassword.module.css";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import {NavLink} from "react-router-dom";
+import {CheckEmail} from "./CheckEmail/CheckEmail";
+import {useSelector} from "react-redux";
+import {AppStoreType, useAppDispatch} from "../../Bll/store";
 import SuperButton from "../../Common/c2-SuperButton/SuperButton";
-import {Navigate, useNavigate, useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {SendInstructionsTC, setErrorAC} from "../../Bll/reducers/password-reducer";
-import {AppStoreType} from "../../Bll/store";
-import preloader from "../../Common/img/Preloader.gif";
-import Preloader from "../../Common/Preloader/Preloader";
+import {forgotPasswordTC, setErrorToProfileAC} from "../../Bll/reducers/profile-reducer";
 
-export const RestorePassword = () => {
+type FormikInputType = {
+    email: string
+}
 
-    const dispatch = useDispatch()
+export function RestorePassword() {
 
-    const sendSuccess = useSelector<AppStoreType, boolean>(state => state.password.sendSuccess)
-    const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
-    const error = useSelector<AppStoreType, string>(state => state.password.error)
+    const errorMessage = useSelector<AppStoreType, string | null>(store => store.profile.helpers.errorMessage)
+    const disableButton = useSelector<AppStoreType, boolean>(store => store.profile.helpers.disableButton)
+    const sendMessageToEmail = useSelector<AppStoreType, boolean>(store => store.profile.helpers.sendMessageToEmail)
+    const dispatch = useAppDispatch()
 
-    const [value, setValue] = useState<string>('')
+    const initialValues: FormikInputType = {
+        email: '',
+    }
+    const validate = Yup.object({
+        email: Yup.string().required('Required').email('must be a valid email'),
+    })
 
-    const navigate = useNavigate()
-
-    const onChangeHandler = (newValue: string) => {
-        setValue(newValue)
-        dispatch(setErrorAC(''))
+    const onSubmit = (values: FormikInputType) => {
+        dispatch(forgotPasswordTC(values.email))
     }
 
-    const message = `<div style="background-color: lime; padding: 15px">password recovery link: <a href='http://localhost:3000/RestorePassword/$token$'>link</a></div>`
+    useEffect(() => {
+        return () => {
+            if (errorMessage) {
+                dispatch(setErrorToProfileAC(null))
+            }
+        }
+    }, [errorMessage, dispatch])
 
-    const onClickHandler = () => {
-        // @ts-ignore
-        dispatch(SendInstructionsTC({email: value, from: "test-front-admin <kasp2409@mail.ru>", message}))
-        console.log(value)
+    if (sendMessageToEmail) {
+        return <CheckEmail/>
     }
-
-
-
-
-    if (loadingStatus) {
-        return <Preloader />
-    }
-
 
     return (
-        <div className={s.main}>
-            {sendSuccess && <Navigate to={'/check-email'}/>}
-            <div className={s.mainBlock}>
-                <div style={{marginTop: '15px'}}>It-incubator</div>
-                <h4>Forgot your password?</h4>
-                <SuperInputText type={'email'} onChangeText={onChangeHandler} placeholder={'Email'}
-                                className={s.input} error={error && 'Проверьте правильность введенных данных.'}/>
-
-                <div className={s.text}>Enter your email address and we will send you further instructions</div>
-                <SuperButton onClick={onClickHandler}>Send Instructions</SuperButton>
-                <div className={s.text}>Did you remember your password?</div>
-                <div className={s.textButton} onClick={() => {
-                    navigate('/login')
-                }}>Try logging in</div>
-
+        <div className={style.forgotPass__container}>
+            <div className={style.forgotPass__edit_body}>
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={onSubmit}
+                    validationSchema={validate}
+                >
+                    <Form className={style.forgotPass__edit}>
+                        <h2>Forgot your password?</h2>
+                        <div className={style.forgotPass__form_body}>
+                            <div className={style.forgotPass__edit}>
+                                <Field
+                                    className={style.forgotPass__edit_input}
+                                    name='email'
+                                    type='text'
+                                    placeholder='Email'
+                                />
+                                <ErrorMessage name="email" component="div"
+                                              className={style.forgotPass_error}/>
+                            </div>
+                            {
+                                !errorMessage &&
+                                <div className={style.fakeDiv}/>
+                            }
+                            {
+                                errorMessage &&
+                                <div className={style.forgotPass_server_error}>
+                                    {errorMessage}
+                                </div>
+                            }
+                            <div className={style.forgotPass__text_helper}>
+                                Enter your email address and we will send you further instructions
+                            </div>
+                            <div className={style.forgotPass__edit_buttons}>
+                                <SuperButton
+                                    className={style.forgotPass__edit_buttonForgotPass}
+                                    type='submit'
+                                    disabled={disableButton}
+                                >
+                                    Send Instructions
+                                </SuperButton>
+                            </div>
+                        </div>
+                    </Form>
+                </Formik>
+                <div className={style.forgotPass_sign_up_container}>
+                    <div className={style.forgotPass__sign_up_account}>
+                        Did you remember your password?
+                    </div>
+                    <div className={style.forgotPass__sign_up}>
+                        <NavLink to='/login'>Try logging in</NavLink>
+                    </div>
+                </div>
             </div>
         </div>
-    );
-};
-
+    )
+}

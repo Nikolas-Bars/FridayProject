@@ -8,7 +8,7 @@ import {CardsDataType} from "../../../Bll/api";
 
 const MyAll = () => {
 
-    const userId = useSelector<AppStoreType, string>(state => state.login.id)
+    const userId = useSelector<AppStoreType, string>(state => state.profile._id)
 
     const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
 

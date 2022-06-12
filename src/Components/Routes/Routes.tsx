@@ -1,35 +1,34 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import DemoSuperComponents from "../DemoSuperComponents/DemoSuperComponents";
-
 import {Login} from "../Login/Login";
-import NewPassword from "../NewPassword/NewPassword";
 import Notfound from "../NotFound/Notfound";
 import Profile from "../Profile/Profile";
-import Registration from "../Registration/registration";
-
 import {useSelector} from "react-redux";
 import {AppStoreType} from "../../Bll/store";
-import CheckEmail from "../NewPassword/CheckEmail";
-import {RestorePassword} from "../RestorePassword/RestorePassword";
 import Cards from "../Cards/Cards";
+import {Registration} from "../Registration/Registration";
+import {RestorePassword} from "../RestorePassword/RestorePassword";
+import { CheckEmail } from '../RestorePassword/CheckEmail/CheckEmail';
+import { SetNewPassword } from '../RestorePassword/SetNewPassword/SetNewPassword';
 
 function Routess() {
-  const auth = useSelector<AppStoreType, boolean>(state => state.login.auth)
+
+    const auth = useSelector<AppStoreType, boolean>(state => state.profile.helpers.isLoggedIn)
+
     return (
         <div>
             <Routes>
-                <Route path={'/'} element={<Profile/>}/>
-                <Route path={'/demo'} element={<DemoSuperComponents/>}/>
-                <Route path={'/check-email'} element={<CheckEmail/>}/>
-                <Route path={'/RestorePassword/'} element={<RestorePassword/>}/>
-                <Route path={'/RestorePassword/:token'} element={<NewPassword/>}/>
-                <Route path={'/newpassword/'} element={<NewPassword/>}/>
-                <Route path={'/login'} element={<Login/>}/>
-                <Route path={'*'} element={<Notfound/>}/>
-                <Route path={'/profile'} element={<Profile/>}/>
-                <Route path={'/registration'} element={<Registration/>}/>
-                <Route path={'/cards'} element={<Cards />}/>
+                <Route path='/' element={<Profile/>}/>
+                <Route path='/registration' element={<Registration/>}/>
+                <Route path='/login' element={<Login/>}/>
+                <Route path='/restore' element={<RestorePassword/>}/>
+                <Route path="/recover" element={<CheckEmail/>}/>
+                <Route path='/set-new-password/:token' element={<SetNewPassword/>}/>
+                <Route path='/demo' element={<DemoSuperComponents/>}/>
+                <Route path='*' element={<Notfound/>}/>
+                <Route path='/profile' element={<Profile/>}/>
+                <Route path='/cards' element={<Cards/>}/>
             </Routes>
         </div>
     );

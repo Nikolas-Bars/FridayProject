@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import s from './Cards.module.css'
-import {CardDeck} from "../Cards/CardDeck";
+import {CardDeck} from "./CardDeck";
 import {useDispatch, useSelector} from "react-redux";
 import {
     CardReduserStateType,
@@ -27,7 +27,7 @@ const Cards = () => {
 
     const cardsPacks = useSelector<AppStoreType, CardType[]>(state => state.cards.cardPacks)
 
-    const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
+    const loadingStatus = useSelector<AppStoreType, boolean>(state => state.profile.helpers.loadingStatus) // for preloader
 
     const cards = useSelector<AppStoreType, CardReduserStateType>(state => state.cards)
 
@@ -39,7 +39,7 @@ const Cards = () => {
 
     const my = useSelector<AppStoreType, boolean>(state => state.cards.myAll)
 
-    const id = useSelector<AppStoreType, string>(state => state.login.id)
+    const id = useSelector<AppStoreType, string>(state => state.profile._id)
 
     useEffect(() => {
             dispatch(setCardsTC(responseData))

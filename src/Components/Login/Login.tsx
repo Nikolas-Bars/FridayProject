@@ -8,7 +8,7 @@ import {NavLink, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../Bll/store";
 import SuperButton from '../../Common/c2-SuperButton/SuperButton';
-import {loginTC, setErrorAC} from "../../Bll/reducers/login-reducer";
+import {loginTC, setErrorToProfileAC} from "../../Bll/reducers/profile-reducer";
 
 
 type FormikInputType = {
@@ -19,23 +19,23 @@ type FormikInputType = {
 
 export const Login = () => {
     const dispatch = useAppDispatch()
-    const usAuth = useSelector<AppStoreType, boolean>(state => state.login.auth)
-    const errorMessage = useSelector<AppStoreType, string | null>(state => state.login.error)
-    const disableButton = useSelector<AppStoreType, boolean>(state => state.login.disableButton)
+    const isLoggedIn = useSelector<AppStoreType, boolean>(state => state.profile.helpers.isLoggedIn)
+    const errorMessage = useSelector<AppStoreType, string | null>(state => state.profile.helpers.errorMessage)
+    const disableButton = useSelector<AppStoreType, boolean>(state => state.profile.helpers.disableButton)
     const [showPass, setShowPass] = useState<boolean>(false)
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (usAuth) {
+        if (isLoggedIn) {
             navigate('/')
         }
 
         return () => {
             if (errorMessage) {
-                dispatch(setErrorAC(null))
+                dispatch(setErrorToProfileAC(null))
             }
         }
-    }, [usAuth, errorMessage, dispatch, navigate])
+    }, [isLoggedIn, errorMessage, dispatch, navigate])
 
     const initialValues: FormikInputType = {
         email: '',
@@ -129,7 +129,7 @@ export const Login = () => {
                         Don't have an account?
                     </div>
                     <div className={style.login__sign_up}>
-                        <NavLink to='/register'>Sign Up</NavLink>
+                        <NavLink to='/registration'>Sign Up</NavLink>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,4 @@
 import axios, {AxiosResponse} from "axios";
-import stream from "node:stream";
-import {UserType} from "./reducers/profile-reducer";
 
 export const instance = axios.create({
     //baseURL: 'http://localhost:7542/2.0/',
@@ -8,29 +6,33 @@ export const instance = axios.create({
     withCredentials: true
 })
 
-export const loginAPI = {
-    login(data: LoginDataType) {
-        return instance.post('/auth/login', data)
+export const userAPI = {
+    regisration(data: NewUserType) {
+        return instance.post<{ email: string, password: string }, AxiosResponse<RegistrationResponseType>>('/auth/register', data)
+    },
+    login(data: NewUserType) {
+        return instance.post<NewUserType, AxiosResponse<User>>('/auth/login', data)
+    },
+    logout() {
+        return instance.delete<null, AxiosResponse<{ info: string }>>('/auth/me')
+    },
+    forgotPassword(email: string) {
+        return instance.post<{ email: string }, AxiosResponse<{ info: string }>>('/auth/forgot', {
+            email,
+            message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='https://nikolas-bars.github.io/FridayProject/#/set-new-password/$token$'>link</a></div>`
+        })
+    },
+    setNewPassword(password: string, token: string) {
+        return instance.post<{ password: string, token: string }, AxiosResponse<{ info: string }>>('/auth/set-new-password', {
+            password,
+            resetPasswordToken: token
+        })
     },
     checkAuth() {
-        return instance.post<{}, AxiosResponse<UserType>>('/auth/me', {})
+        return instance.post<null, AxiosResponse<RegistrationResponseType>>('/auth/me')
     },
-    regisration(data: RegisterDataType) {
-        return instance.post('/auth/register', data)
-    },
-    changeUserName(data:{name?: string, avatar?: string}){
-        return instance.put<{name?: string, avatar?: string},AxiosResponse<UserType>>('/auth/me', data)
-    }
-}
-
-export const PasswordAPI = {
-    sendInstruction(data: SendInstructionsDataType) { // на локальном не работает - только на хероку
-        debugger
-        return instance.post('/auth/forgot', data)
-    },
-    setNewPassword(data: SetPaswordDataType) {
-        debugger
-        return instance.post('/auth/set-new-password', data)
+    changeUserData(data:{name?: string, avatar?: string}){
+        return instance.put<{name?: string, avatar?: string}, AxiosResponse<ResponseType<User>>>('/auth/me', data)
     }
 }
 
@@ -56,14 +58,12 @@ export type CardsDataType = {
     max?: number;
     user_id?: string;
 }
-
 export type PostCardPack = {
     cardsPack:{
         name: string,
         deckCover: string,
         private: boolean
     }}
-
 export type ResponseDataCardType = {
     data: {
         cardPacks: [
@@ -87,29 +87,19 @@ export type ResponseDataCardType = {
     }
 }
 
-export type SetPaswordDataType = {
-    password: string,
-    resetPasswordToken: string
-}
-
-export type SendInstructionsDataType = {
+export type RegistrationResponseType = {
+    created: string
     email: string
-    from: string
-    message: string
-}
-
-export type RegisterDataType = {
-    email: string
-    password: string
-}
-
-export type LoginDataType = {
-    email: string
-    password: string
+    isAdmin: boolean
+    name: string
+    publicCardPacksCount: number
     rememberMe: boolean
+    updated: string
+    verified: boolean
+    __v: number
+    _id: string
 }
-
-export type UserInfoResponse = {
+export type User = {
     _id: string;
     email: string;
     name: string;
@@ -118,8 +108,16 @@ export type UserInfoResponse = {
     created: Date;
     updated: Date;
     isAdmin: boolean;
-    verified: boolean;
-    rememberMe: boolean;
-    error?: string;
-};
-
+    verified: boolean
+    rememberMe: boolean
+}
+type ResponseType<D = {}> = {
+    token: string
+    tokenDeathTime: number
+    updatedUser: D
+}
+export type NewUserType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+}

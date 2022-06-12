@@ -1,5 +1,4 @@
 import React, {ChangeEvent} from 'react';
-import s from "../Cards.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../Bll/store";
 import {setCardsTC, setSearchTextAC, setSelectValueAC} from "../../../Bll/reducers/card-reducer";
@@ -17,7 +16,7 @@ const Select = () => {
 
     const my = useSelector<AppStoreType, boolean>(state => state.cards.myAll)
 
-    const id = useSelector<AppStoreType, string>(state => state.login.id)
+    const id = useSelector<AppStoreType, string>(state => state.profile._id)
 
     const responseData: CardsDataType = {
         min: rangeValue[0],

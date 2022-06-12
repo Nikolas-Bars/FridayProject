@@ -7,10 +7,10 @@ const NavBar = () => {
         <div className={s.nav__container}>
             <div className={s.nav__body}>
                 <div className={s.nav}><NavLink to={'/demo'}>Demo</NavLink></div>
-                <div className={s.nav}><NavLink to={'/check-email'}>Check Email</NavLink></div>
-                <div className={s.nav}><NavLink to={'/RestorePassword'}>Restore Password</NavLink></div>
+                <div className={s.nav}><NavLink to={'/recover'}>Check Email</NavLink></div>
+                <div className={s.nav}><NavLink to={'/restore'}>Restore Password</NavLink></div>
                 <div className={s.nav}><NavLink to={'/login'}>Login</NavLink></div>
-                <div className={s.nav}><NavLink to={'/newpassword'}>New Password</NavLink></div>
+                <div className={s.nav}><NavLink to={'/set-new-password/:token'}>New Password</NavLink></div>
                 <div className={s.nav}><NavLink to={'/profile'}>Profile</NavLink></div>
                 <div className={s.nav}><NavLink to={'/registration'}>registration</NavLink></div>
                 <div className={s.nav}><NavLink to={'/cards'}>cards</NavLink></div>

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {Navigate, useNavigate} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 
 import styles from './Profile.module.css';
 import {AppStoreType} from "../../Bll/store";
@@ -12,9 +12,9 @@ import Preloader from "../../Common/Preloader/Preloader";
 const Profile: FC = () => {
 
 
-    const auth = useSelector<AppStoreType, any>(state => state.login.auth);
+    const auth = useSelector<AppStoreType, boolean>(state => state.profile.helpers.isLoggedIn);
     const user = useSelector<AppStoreType, any>(state => state.profile);
-    const loadingStatus = useSelector<AppStoreType, boolean>(state => state.login.loadingStatus) // for preloader
+    const loadingStatus = useSelector<AppStoreType, boolean>(state => state.profile.helpers.loadingStatus) // for preloader
     const userName = useSelector<AppStoreType, string>(state => state.profile.name)
 
     const [toggleInput, setToggleInput] = useState<boolean>(false)

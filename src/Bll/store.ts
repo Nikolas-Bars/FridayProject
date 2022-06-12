@@ -1,17 +1,11 @@
 import {applyMiddleware, combineReducers, legacy_createStore as createStore} from "redux";
-import {PasswordReducer} from "./reducers/password-reducer";
-import {ProfileActionsType, ProfileReducer} from "./reducers/profile-reducer";
-import {LoginActionType, LoginReducer} from "./reducers/login-reducer";
-import {RegistrationReducer} from "./reducers/registration-reducer";
+import {ProfileActionsType, profileReducer} from "./reducers/profile-reducer";
 import thunk, {ThunkDispatch} from 'redux-thunk'
-import {CardsReducer} from "./reducers/card-reducer";
+import {CardsActionType, CardsReducer} from "./reducers/card-reducer";
 import {useDispatch} from "react-redux";
 
 const reducers = combineReducers({
-    login: LoginReducer,
-    password: PasswordReducer,
-    profile: ProfileReducer,
-    registration: RegistrationReducer,
+    profile: profileReducer,
     cards: CardsReducer,
 })
 
@@ -21,13 +15,11 @@ export const store = createStore(reducers, composeEnhancers(applyMiddleware(thun
 
 export type AppStoreType = ReturnType<typeof reducers>
 
-
-
 export type ThunksDispatch = ThunkDispatch<AppStoreType, any, AppActionType>
 export const useAppDispatch = () => useDispatch<ThunksDispatch>()
 
 
-export type AppActionType = LoginActionType | ProfileActionsType
+export type AppActionType = ProfileActionsType | CardsActionType
 
 // @ts-ignore
 window.store = store

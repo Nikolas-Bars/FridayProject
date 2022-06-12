@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Routess from "./Components/Routes/Routes";
 import NavBar from "./Components/NavBar/NavBar";
@@ -9,7 +8,7 @@ import {AppStoreType} from "./Bll/store";
 
 function App() {
 
-    const auth = useSelector<AppStoreType, boolean>(state => state.login.auth)
+    const auth = useSelector<AppStoreType, boolean>(state => state.profile.helpers.isLoggedIn)
 
     return (
         <div>
