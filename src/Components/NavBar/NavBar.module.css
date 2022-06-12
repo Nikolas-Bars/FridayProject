@@ -15,7 +15,7 @@
     background-color: #262626;
 }
 
-.nav a{
+.nav a {
     text-decoration: none;
     color: white;
 
@@ -27,7 +27,14 @@
 }
 
 .nav {
+    color: white;
     background-color: #e74c3c;
     padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.nav:hover {
+    color: gold;
     border-radius: 5px;
 }

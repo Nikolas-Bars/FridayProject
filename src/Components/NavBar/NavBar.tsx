@@ -1,8 +1,13 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
+import { logoutTC } from '../../Bll/reducers/profile-reducer';
+import { useAppDispatch } from '../../Bll/store';
 import s from './NavBar.module.css'
 
 const NavBar = () => {
+
+    const dispatch = useAppDispatch()
+
     return (
         <div className={s.nav__container}>
             <div className={s.nav__body}>
@@ -14,6 +19,11 @@ const NavBar = () => {
                 <div className={s.nav}><NavLink to={'/profile'}>Profile</NavLink></div>
                 <div className={s.nav}><NavLink to={'/registration'}>registration</NavLink></div>
                 <div className={s.nav}><NavLink to={'/cards'}>cards</NavLink></div>
+                <div
+                    className={s.nav}
+                    onClick={() => dispatch(logoutTC())}
+                    >Logout
+                </div>
             </div>
         </div>
     );
