@@ -24,7 +24,7 @@ export const ProfilePacks = () => {
 
     useEffect(() => {
         dispatch(setCardsTC())
-    }, [dispatch, my, sort, selectValue, page, searchText])
+    }, [dispatch, my,  sort, selectValue, page, searchText])
 
     return (
         <div className={style.packList__container}>

@@ -27,6 +27,7 @@ export default function SuperDoubleRange(props: PropsType) {
     };
 
     const onMouseUpHandler = () =>{
+        debugger
         props.onMouseFunc && props.onMouseFunc()
     }
 
