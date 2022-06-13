@@ -1,3 +1,9 @@
+.main{
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+}
+
 .registration__container {
     max-width: 415px;
     width: 100%;

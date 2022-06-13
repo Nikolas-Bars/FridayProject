@@ -20,6 +20,7 @@ export function CheckEmail() {
     }, [sendMessageToEmail, dispatch])
 
     return (
+        <div className={style.main}>
         <div className={style.checkEmail__container}>
             <img src={email_img} alt="email-send"/>
             <div className={style.checkEmail__text}>
@@ -28,6 +29,7 @@ export function CheckEmail() {
             <div className={style.checkEmail__send}>
                 We’ve sent an Email with instructions to {tempEmailToRecover}
             </div>
+        </div>
         </div>
     )
 }

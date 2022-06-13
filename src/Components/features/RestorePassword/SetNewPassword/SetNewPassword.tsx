@@ -48,6 +48,7 @@ export const SetNewPassword = () => {
         return <div style={{display: "flex", alignItems: 'center', height: '100vh'}}><Preloader/></div>
     } else
         return (
+            <div className={style.main}>
             <div className={style.newPass__container}>
                 <div className={style.newPass__edit_body}>
                     <Formik
@@ -99,6 +100,6 @@ export const SetNewPassword = () => {
                         </Form>
                     </Formik>
                 </div>
-            </div>
+            </div></div>
         )
 }

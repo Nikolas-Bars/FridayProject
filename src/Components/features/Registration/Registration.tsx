@@ -84,6 +84,7 @@ export const Registration = () => {
     }
 
     return (
+        <div className={style.main}>
         <div className={style.registration__container}>
             <div className={style.registration__edit_body}>
                 <Formik
@@ -169,6 +170,7 @@ export const Registration = () => {
                     </Form>
                 </Formik>
             </div>
+        </div>
         </div>
     )
 }
