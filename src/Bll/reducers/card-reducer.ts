@@ -2,7 +2,7 @@ import {cardsAPI, ResponseGetPacksType} from "../api";
 import {Dispatch} from "redux";
 import {setLoadingStatusAC} from "./profile-reducer";
 import {AppStoreType} from "../store";
-import {CardPacksType} from "../../../../../cardsback/cards/src/store/reducers/packs-reducer";
+import { CardPacksType } from "../../../../../cardsback/cards/src/store/reducers/cards-reducer";
 
 let initialState: CardReduserStateType = {
     cardPacks: [] as CardType[],
