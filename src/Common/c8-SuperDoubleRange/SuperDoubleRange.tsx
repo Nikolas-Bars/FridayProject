@@ -1,9 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import {makeStyles} from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
-
-
 
 type PropsType ={
     value: number[],
@@ -21,7 +18,6 @@ export default function SuperDoubleRange(props: PropsType) {
     });
 
     const classes = useStyles();
-    const [value, setValue] = React.useState<number[]>([52, 3]);
 
     const handleChange = (event: any, newValue: number | number[]) => {
 
@@ -48,7 +44,7 @@ export default function SuperDoubleRange(props: PropsType) {
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider"
                         onMouseUp={onMouseUpHandler}
-                        max={120}
+                        max={110}
                     />
                 </div>
         )

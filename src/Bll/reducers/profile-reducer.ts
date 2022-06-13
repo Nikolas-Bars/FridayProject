@@ -1,5 +1,3 @@
-
-
 //fakeUserWhenLogout
 import {NewUserType, User, userAPI} from "../api";
 import {ThunksDispatch} from "../store";
@@ -256,10 +254,8 @@ export type ProfileActionsType =
 export const registrationNewUserTC = (data: NewUserType) => (dispatch: ThunksDispatch) => {
     dispatch(setLoadingStatusAC(true))
     userAPI.regisration(data)
-        .then(res => {
-            if (res.status >= 200 && res.status < 400) {
-                dispatch(setRegistrationCompletedAC(true))
-            }
+        .then(() => {
+            dispatch(setRegistrationCompletedAC(true))
         })
         .catch(err => {
             if (err.response.data) {

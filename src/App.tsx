@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import Routess from "./Components/Routes/Routes";
-import NavBar from "./Components/NavBar/NavBar";
+import Routess from "./Components/features/Routes/Routes";
+import NavBar from "./Components/features/NavBar/NavBar";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "./Bll/store";
 import {isAuthUser} from './Bll/reducers/profile-reducer';

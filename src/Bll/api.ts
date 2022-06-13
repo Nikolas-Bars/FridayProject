@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from "axios";
+import {CardPacksType} from "../../../../cardsback/cards/src/store/reducers/packs-reducer";
 
 export const instance = axios.create({
     //baseURL: 'http://localhost:7542/2.0/',
@@ -37,13 +38,21 @@ export const userAPI = {
 }
 
 export const cardsAPI = {
-    getCards(data: CardsDataType) {
-    return  instance.get<AxiosResponse<CardsDataType>>(`/cards/pack`, {params:{
-        ...data
-        }})
-     },
-    newCardPack(data: PostCardPack){
-        return instance.post('/cards/pack', data)
+    getCards(packName: string, min: number, max: number, sortPacks: string, page: number, pageCount: number, user_id?: string) {
+        return instance.get<{}, AxiosResponse<ResponseGetPacksType<CardPacksType[]>>>('/cards/pack', {
+            params: {
+                packName,
+                min,
+                max,
+                sortPacks,
+                page,
+                pageCount,
+                user_id
+            }
+        })
+    },
+    newCardPack(){
+        return instance.post('/cards/pack')
      },
 }
 
@@ -120,4 +129,15 @@ export type NewUserType = {
     email: string
     password: string
     rememberMe?: boolean
+}
+
+export type ResponseGetPacksType<D = []> = {
+    cardPacks: D
+    cardPacksTotalCount: number
+    maxCardsCount: number
+    minCardsCount: number
+    page: number
+    pageCount: number
+    token: string
+    tokenDeathTime: number
 }
