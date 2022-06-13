@@ -20,6 +20,3 @@ export const useAppDispatch = () => useDispatch<ThunksDispatch>()
 
 
 export type AppActionType = ProfileActionsType | CardsActionType
-
-// @ts-ignore
-window.store = store

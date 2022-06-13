@@ -72,6 +72,8 @@ const initialState: InitialProfileStateType = {
 
 export enum ACTIONS_PROFILE_TYPE {
     SET_IS_LOGGED_IN = 'LOGIN/SET_IS_LOGGED_IN',
+    SET_NEW_NAME_AVATAR = 'LOGIN/SET_NEW_NAME_AVATAR',
+    SET_NEW_NAME = 'LOGIN/SET_NEW_NAME',
     REGISTER_COMPLETED = 'REGISTRATION/REGISTER_COMPLETED',
     FORGOT_PASSWORD = 'PASSWORD/FORGOT_PASSWORD',
     SEND_NEW_PASSWORD = 'PASSWORD/SEND_NEW_PASSWORD',
@@ -92,6 +94,18 @@ export const profileReducer = (state: InitialProfileStateType = initialState, ac
                     ...state.helpers,
                     isLoggedIn: action.isLoggedIn
                 }
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.SET_NEW_NAME: {
+            return {
+                ...state,
+                name: action.name
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.SET_NEW_NAME_AVATAR: {
+            return {
+                ...state,
+                ...action.info
             }
         }
         case ACTIONS_PROFILE_TYPE.REGISTER_COMPLETED: {
@@ -199,8 +213,8 @@ export const setLoadingStatusAC = (loading: boolean) => ({
     loading
 } as const)
 export const setInitializedContentAC = () => ({type: ACTIONS_PROFILE_TYPE.SET_INITIALIZED_CONTENT} as const)
-export const setUserInfoAC = (info: User) => ({type: 'login/SET_USER_INFO', info} as const)
-export const changeUserNameInfoAC = (name: string) => ({type: 'login/CHANGE_USER_NAME', name} as const)
+export const setUserInfoAC = (info: User) => ({type: ACTIONS_PROFILE_TYPE.SET_NEW_NAME_AVATAR, info} as const)
+export const changeUserNameInfoAC = (name: string) => ({type: ACTIONS_PROFILE_TYPE.SET_NEW_NAME, name} as const)
 export const setModalActiveAC = (active: boolean) => ({type: ACTIONS_PROFILE_TYPE.SET_MODAL_IS_ACTIVE, active} as const)
 
 

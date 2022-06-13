@@ -1,6 +1,5 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
-import DemoSuperComponents from "../DemoSuperComponents/DemoSuperComponents";
 import {Login} from "../Login/Login";
 import Notfound from "../NotFound/Notfound";
 import Profile from "../../Profile/Profile";
@@ -20,7 +19,6 @@ function Routess() {
             <Route path='/restore' element={<RestorePassword/>}/>
             <Route path="/recover" element={<CheckEmail/>}/>
             <Route path='/set-new-password/:token' element={<SetNewPassword/>}/>
-            <Route path='/demo' element={<DemoSuperComponents/>}/>
             <Route path='*' element={<Notfound/>}/>
             <Route path='/profile' element={<Profile/>}/>
             <Route path='/cards' element={<Cards/>}/>

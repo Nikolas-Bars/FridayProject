@@ -1,15 +1,22 @@
-import React, {useState} from "react";
-import s from './Paginator.module.css'
+import React, {useEffect, useState} from "react";
+import style from './Paginator.module.css'
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../Bll/store";
 import {setCurrentPageAC} from "../../Bll/reducers/card-reducer";
+import SuperButton from "../c2-SuperButton/SuperButton";
 
+type PaginatorType = {
+    totalItemsCount: number
+    pageSize: number
+    portionSize: number
+}
 
-const Paginator = ({totalItemsCount, pageSize, portionSize}: any) => {
+const Paginator = ({totalItemsCount, pageSize, portionSize}: PaginatorType) => {
 
-    const currentPage = useSelector<AppStoreType>(state => state.cards.page)
+    const currentPage = useSelector<AppStoreType, number>(state => state.cards.page)
 
     const dispatch = useAppDispatch()
+
     const onPageChange = (page: number) => {
         dispatch(setCurrentPageAC(page))
     }
@@ -23,33 +30,59 @@ const Paginator = ({totalItemsCount, pageSize, portionSize}: any) => {
     }
 
     let portionCount = Math.ceil(pages.length / portionSize) // делим количество страниц из массива на размер порций (151 / 10) (порция - количество отображаемых на пагинаторе элементов (а справа и слева будут кнопки))
-    let [portinonNumber, setPortionNumber] = useState(1)
-    let leftPortionPageNumber = (portinonNumber - 1) * portionSize + 1
-    let rightPortionPageNumber = portinonNumber * portionSize
+    let [portionNumber, setPortionNumber] = useState<number>(1)
+    let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1
+    let rightPortionPageNumber = portionNumber * portionSize
 
-    return <div className={s.paginator}>
-        {portinonNumber > 1 &&
-        <button onClick={() => {
-            setPortionNumber(portinonNumber - 1)
-        }}>PREV</button>}
-        {pages
-            .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
-            .map((p) => {
+    useEffect(() => {
+        setPortionNumber(Math.ceil(currentPage / portionSize))
+    }, [currentPage, portionSize])
 
-                return <div key={p}
-                            onClick={() => {
-                                onPageChange(p)
-                            }} className={p === currentPage ? s.active : s.pageNumber}>{p}</div>
-            })}
+    return (
+        <div className={style.paginator}>
+            {
+                (portionNumber === 1) &&
+                <div
+                    className={style.fakeDiv}
+                />
+            }
+            {
+                portionNumber > 1 &&
+                <SuperButton
+                    className={style.prev_button}
+                    onClick={() => setPortionNumber(portionNumber - 1)}
+                >
+                    &lt;
+                </SuperButton>
+            }
 
+            {
+                pages
+                    .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
+                    .map((p) => {
+                        return (
+                            <div
+                                key={p}
+                                onClick={() => onPageChange(p)}
+                                className={p === currentPage ? style.active : style.pageNumber}
+                            >
+                                {p}
+                            </div>
+                        )
+                    })}
 
-        {portionCount > portinonNumber &&
-        <button onClick={() => {
-            setPortionNumber(portinonNumber + 1)
-        }}>NEXT</button>}
+            {
+                portionCount > portionNumber &&
+                <SuperButton
+                    className={style.next_button}
+                    onClick={() => setPortionNumber(portionNumber + 1)}
+                >
+                    &gt;
+                </SuperButton>
+            }
 
-    </div>
-
+        </div>
+    )
 }
 
 

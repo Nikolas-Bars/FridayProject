@@ -22,11 +22,13 @@ const SliderForCards = () => {
 
     return (
         <div className={s.sidebar}>
-            <SuperDoubleRange width={'200px'} value={rangeValue}
-                              onMouseFunc={onMouseUpHandler}
-                              handleChange={(value1, value2) => {
-                                  setRangeValue([value1, value2])
-                              }}/>
+            <SuperDoubleRange
+                width={'200px'}
+                value={rangeValue}
+                onMouseFunc={onMouseUpHandler}
+                handleChange={(value1, value2) => {
+                    setRangeValue([value1, value2])
+                }}/>
         </div>
     );
 };
