@@ -1,22 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect} from 'react';
 import './App.css';
-import Routess from "./Components/Routes/Routes";
-import NavBar from "./Components/NavBar/NavBar";
+import Routess from "./Components/features/Routes/Routes";
+import NavBar from "./Components/features/NavBar/NavBar";
 import {useSelector} from "react-redux";
-import {AppStoreType} from "./Bll/store";
-
+import {AppStoreType, useAppDispatch} from "./Bll/store";
+import {isAuthUser} from './Bll/reducers/profile-reducer';
 
 function App() {
 
-    const auth = useSelector<AppStoreType, boolean>(state => state.login.auth)
+    const isInitializedContent = useSelector<AppStoreType, boolean>(state => state.profile.helpers.initializedContent)
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        if (!isInitializedContent) {
+            dispatch(isAuthUser())
+        }
+    }, [dispatch, isInitializedContent])
 
     return (
         <div>
-                <div className="App">
+            {
+                isInitializedContent && <div className="App">
                     <NavBar/>
                     <Routess/>
                 </div>
+            }
         </div>
     );
 }

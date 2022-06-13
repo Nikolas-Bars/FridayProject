@@ -1,86 +1,24 @@
-.main{
-    /* Rectangle 442 */
-    display: flex;
-    width: 1008px;
-    min-height: 636px;
-    margin: 10px auto;
-    background: #FEFEFF;
+.profile__container {
+    width: 100%;
     border-radius: 8px;
+    background-color: white;
 }
-.sidebar {
-    flex-direction: column;
+
+.profile__body {
     display: flex;
-    width: 243px;
-    left: 136px;
-    top: 84px;
-    background: #ECECF9;
-}
-.btn {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
+    min-height: 362px;
 }
 
-.cardsBlock {
-    display: flex;
-    width: 80%;
-    flex-direction: column;
-    align-items: start;
-    margin-left: 48px;
-    min-height: 100%;
+.profile__body_profile {
+    max-width: 250px;
+    width: 100%;
+    background-color: #ECECF9;
 }
 
-.paginationBlock {
-    display: flex;
-    width: 80%;
-    align-items: end;
-    flex-wrap: wrap;
-    margin: 0 auto;
- }
+/*___________________MAIN BLOCK______________________*/
 
-.inputBlock {
-    display: flex;
-    flex-direction: row;
-}
 
-.headerWindowOfCards {
-    /* Rectangle 7 */
-    font-size: 13px;
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    padding: 10px;
-    border-radius: 3px;
-    width: 669px;
-    height: 25px;
-   background: #ECECF9;
-
-}
-
-.deck{
-    /* Rectangle 7 */
-    font-size: 13px;
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
-    border-radius: 3px;
-    width: 676px;
-    min-height: 25px;
-    border: 1px solid darkgray;
-    margin-top: 2px;
-    background: #FFFFFF;
-
-}
-.deck:hover {
-    background-color: gray;
-    color: white;
-    cursor: pointer !important;
-}
-
-.selectBlock {
-    max-width: 8em; /* блок занимает ширину родителя, max-width её ограничивает */
-    min-height: 2em;
-    margin-left: auto;
-    margin-right: 72px;
-
+.profile__body_main {
+    margin: 15px 20px 25px 40px;
+    width: 100%;
 }

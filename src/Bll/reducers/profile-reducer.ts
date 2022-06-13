@@ -1,64 +1,389 @@
-import {loginAPI} from "../api";
-import {Dispatch} from "redux";
-import {setErrorAC, setLoadingStatusAC} from "./login-reducer";
+//fakeUserWhenLogout
+import {NewUserType, User, userAPI} from "../api";
+import {ThunksDispatch} from "../store";
 
-const initialState = {
-    created: '',
-    email: '',
-    isAdmin: false,
-    name: '',
-    publicCardPacksCount: 0,
-    rememberMe: false,
-    token: '',
-    tokenDeathTime: 0,
-    updated: '',
-    verified: false,
-    __v: 0,
-    _id: '',
-} as UserType;
-
-export type UserType = {
-    created: string
-    email: string
-    isAdmin: boolean
-    name: string
-    publicCardPacksCount: number
-    rememberMe: boolean
-    token: string
-    tokenDeathTime: number
-    updated: string
-    verified: boolean
-    __v: number
+export type FakeUserStateType = {
     _id: string
+    email: string
+    name: string
+    avatar?: string | undefined
+    publicCardPacksCount: number;
+    created: Date | string
+    updated: Date | string
+    isAdmin: boolean;
+    verified: boolean
+    rememberMe: boolean
 }
 
-export const ProfileReducer = (state: UserType = initialState, action: ProfileActionsType): UserType => {
-    switch (action.type) {
-        case "login/SET_USER_INFO":
-            return {...action.info};
-        case "login/CHANGE_USER_NAME":
+const fakeUser: FakeUserStateType = {
+    _id: '',
+    email: '',
+    name: '',
+    avatar: undefined,
+    publicCardPacksCount: 0,
+    created: '',
+    updated: '',
+    isAdmin: false,
+    verified: false,
+    rememberMe: false,
+}
 
-            return {...state, name: action.name}
-        default:
-            return state;
+// types
+export type InitialProfileStateType = FakeUserStateType & {
+    helpers: {
+        isLoggedIn: boolean
+        initializedContent: boolean
+        editProfile: boolean
+        disableButton: boolean
+        errorMessage: null | string
+        registerCompleted: boolean
+        sendMessageToEmail: boolean
+        tempEmailToRecover: string | null
+        loadingStatus: boolean
+        newPassSet: boolean
     }
 }
 
-export type ProfileActionsType = ReturnType<typeof setUserInfoAC> | ReturnType<typeof changeUserNameInfoAC>;
+const initialState: InitialProfileStateType = {
+    _id: '',
+    email: '',
+    name: '',
+    avatar: undefined,
+    publicCardPacksCount: 0,
+    created: '',
+    updated: '',
+    isAdmin: false,
+    verified: false,
+    rememberMe: false,
+    helpers: {
+        isLoggedIn: false,
+        initializedContent: false,
+        editProfile: false,
+        disableButton: false,
+        errorMessage: null,
+        registerCompleted: false,
+        sendMessageToEmail: false,
+        tempEmailToRecover: null,
+        loadingStatus: false,
+        newPassSet: false
+    }
+}
 
-export const setUserInfoAC = (info: UserType) => ({type: 'login/SET_USER_INFO', info} as const)
 
+export enum ACTIONS_PROFILE_TYPE {
+    SET_IS_LOGGED_IN = 'LOGIN/SET_IS_LOGGED_IN',
+    REGISTER_COMPLETED = 'REGISTRATION/REGISTER_COMPLETED',
+    FORGOT_PASSWORD = 'PASSWORD/FORGOT_PASSWORD',
+    SEND_NEW_PASSWORD = 'PASSWORD/SEND_NEW_PASSWORD',
+    CHANGE_NICKNAME_PROFILE = 'PROFILE/CHANGE_NICKNAME_PROFILE',
+    CHANGE_EDITMODE_PROFILE = 'PROFILE/CHANGE_EDITMODE_PROFILE',
+    DISABLE_BUTTON = 'PROFILE/DISABLE_BUTTON',
+    SET_ERROR_TO_PROFILE = 'PROFILE/SET_ERROR_TO_PROFILE',
+    SET_INITIALIZED_CONTENT = 'PROFILE/SET_INITIALIZED_CONTENT',
+    SET_LOADING_PAGE = 'PROFILE/SET_LOADING_PAGE',
+
+}
+
+export const profileReducer = (state: InitialProfileStateType = initialState, action: ProfileActionsType): InitialProfileStateType => {
+    switch (action.type) {
+        case ACTIONS_PROFILE_TYPE.SET_IS_LOGGED_IN: {
+            return {
+                ...state,
+                ...action.data,
+                helpers: {
+                    ...state.helpers,
+                    isLoggedIn: action.isLoggedIn
+                }
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.REGISTER_COMPLETED: {
+            return {
+                ...state,
+                helpers: {
+                    ...state.helpers,
+                    registerCompleted: action.register
+                }
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.FORGOT_PASSWORD: {
+            return {
+                ...state,
+                helpers: {
+                    ...state.helpers,
+                    sendMessageToEmail: action.sendMessageToEmail,
+                    tempEmailToRecover: action.email
+                }
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.SEND_NEW_PASSWORD: {
+            return {
+                ...state,
+                helpers: {
+                    ...state.helpers,
+                    newPassSet: action.completed
+                }
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.CHANGE_NICKNAME_PROFILE: {
+            return {
+                ...state,
+                name: action.name,
+                avatar: action.avatar
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.CHANGE_EDITMODE_PROFILE: {
+            return {
+                ...state,
+                helpers: {
+                    ...state.helpers,
+                    editProfile: action.editMode
+                }
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.DISABLE_BUTTON: {
+            return {
+                ...state,
+                helpers: {
+                    ...state.helpers,
+                    disableButton: action.disableButton
+                }
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.SET_ERROR_TO_PROFILE: {
+            return {
+                ...state,
+                helpers: {
+                    ...state.helpers,
+                    errorMessage: action.error
+                }
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.SET_LOADING_PAGE: {
+            return {
+                ...state,
+                helpers: {
+                    ...state.helpers,
+                    loadingStatus: action.loading
+                }
+            }
+        }
+        case ACTIONS_PROFILE_TYPE.SET_INITIALIZED_CONTENT: {
+            return {
+                ...state,
+                helpers: {
+                    ...state.helpers,
+                    initializedContent: true
+                }
+            }
+        }
+        default:
+            return state
+    }
+}
+// actions
+export const setLoggedInAC = (data: User | FakeUserStateType, isLoggedIn: boolean) => ({
+    type: ACTIONS_PROFILE_TYPE.SET_IS_LOGGED_IN,
+    data,
+    isLoggedIn
+} as const)
+export const setRegistrationCompletedAC = (register: boolean) => {
+    return {type: ACTIONS_PROFILE_TYPE.REGISTER_COMPLETED, register} as const
+}
+export const sendEmailToRecoverPasswordAC = (sendMessageToEmail: boolean, email: string | null) => {
+    return {type: ACTIONS_PROFILE_TYPE.FORGOT_PASSWORD, sendMessageToEmail, email} as const
+}
+export const setNewPasswordAC = (completed: boolean) => {
+    return {type: ACTIONS_PROFILE_TYPE.SEND_NEW_PASSWORD, completed} as const
+}
+export const editProfileAC = (name: string, avatar?: string) => ({
+    type: ACTIONS_PROFILE_TYPE.CHANGE_NICKNAME_PROFILE,
+    name,
+    avatar
+} as const)
+export const setEditProfileAC = (editMode: boolean) => ({
+    type: ACTIONS_PROFILE_TYPE.CHANGE_EDITMODE_PROFILE,
+    editMode
+} as const)
+export const setDisableButtonAC = (disableButton: boolean) => ({
+    type: ACTIONS_PROFILE_TYPE.DISABLE_BUTTON,
+    disableButton
+} as const)
+export const setErrorToProfileAC = (error: string | null) => ({
+    type: ACTIONS_PROFILE_TYPE.SET_ERROR_TO_PROFILE,
+    error
+} as const)
+export const setLoadingStatusAC = (loading: boolean) => ({
+    type: ACTIONS_PROFILE_TYPE.SET_LOADING_PAGE,
+    loading
+} as const)
+export const setInitializedContentAC = () => ({type: ACTIONS_PROFILE_TYPE.SET_INITIALIZED_CONTENT} as const)
+export const setUserInfoAC = (info: User) => ({type: 'login/SET_USER_INFO', info} as const)
 export const changeUserNameInfoAC = (name: string) => ({type: 'login/CHANGE_USER_NAME', name} as const)
 
-export const changeUserNameTC = (data:{name?: string, avatar?: string}) => (dispatch: Dispatch<any>) => {
-    loginAPI.changeUserName(data).then(res => {
-            debugger
-            // @ts-ignore
-        dispatch(setUserInfoAC(res.data.updatedUser))
+
+//Types Actions
+type LoginActionType = ReturnType<typeof setLoggedInAC>
+type EditProfileType = ReturnType<typeof editProfileAC>
+type SetEditProfileType = ReturnType<typeof setEditProfileAC>
+type SetDisableButtonSaveButtonEditProfileType = ReturnType<typeof setDisableButtonAC>
+type SetErrorToProfileType = ReturnType<typeof setErrorToProfileAC>
+type SetRegistrationCompleteType = ReturnType<typeof setRegistrationCompletedAC>
+type SendEmailToRecoverPasswordType = ReturnType<typeof sendEmailToRecoverPasswordAC>
+type SetNewPasswordType = ReturnType<typeof setNewPasswordAC>
+type SetInitializedContentType = ReturnType<typeof setInitializedContentAC>
+type SetLoadingStatusType = ReturnType<typeof setLoadingStatusAC>
+type SetUserInfoType = ReturnType<typeof setUserInfoAC>
+type ChangeUserNameInfoType = ReturnType<typeof changeUserNameInfoAC>
+
+
+export type ProfileActionsType =
+    LoginActionType
+    | SetRegistrationCompleteType
+    | SendEmailToRecoverPasswordType
+    | SetNewPasswordType
+    | EditProfileType
+    | SetEditProfileType
+    | SetDisableButtonSaveButtonEditProfileType
+    | SetErrorToProfileType
+    | SetInitializedContentType
+    | SetLoadingStatusType
+    | SetUserInfoType
+    | ChangeUserNameInfoType
+
+//Thunk
+export const registrationNewUserTC = (data: NewUserType) => (dispatch: ThunksDispatch) => {
+    dispatch(setLoadingStatusAC(true))
+    userAPI.regisration(data)
+        .then(() => {
+            dispatch(setRegistrationCompletedAC(true))
         })
         .catch(err => {
-            let error = err.response ? dispatch(setErrorAC(err.response.data.error)) : dispatch(setErrorAC('Упс... Что-то пошло не так...'))
-        }).finally(() => {
-        dispatch(setLoadingStatusAC(false))
-    })
+            if (err.response.data) {
+                dispatch(setErrorToProfileAC(err.response.data.error))
+            } else {
+                dispatch(setErrorToProfileAC(err.message))
+            }
+        })
+        .finally(() => {
+            dispatch(setLoadingStatusAC(false))
+        })
+}
+
+export const loginTC = (data: NewUserType) => {
+    return (dispatch: ThunksDispatch) => {
+        dispatch(setDisableButtonAC(true))
+        dispatch(setLoadingStatusAC(true))
+        userAPI.login(data)
+            .then((res) => {
+                dispatch(setLoggedInAC(res.data, true))
+            })
+            .catch(err => {
+                if (err.response.data) {
+                    dispatch(setErrorToProfileAC(err.response.data.error))
+                } else {
+                    dispatch(setErrorToProfileAC(err.message))
+                }
+            })
+            .finally(() => {
+                dispatch(setDisableButtonAC(false))
+                dispatch(setLoadingStatusAC(false))
+            })
+    }
+}
+
+export const isAuthUser = () => (dispatch: ThunksDispatch) => {
+    dispatch(setLoadingStatusAC(true))
+    userAPI.checkAuth()
+        .then(res => {
+            dispatch(setLoggedInAC(res.data, true))
+        })
+        .finally(() => {
+            dispatch(setInitializedContentAC())
+            dispatch(setLoadingStatusAC(false))
+        })
+}
+
+export const logoutTC = () => (dispatch: ThunksDispatch) => {
+    dispatch(setDisableButtonAC(true))
+    dispatch(setLoadingStatusAC(true))
+    userAPI.logout()
+        .then((res) => {
+            if (res.status >= 200 && res.status < 400) {
+                dispatch(setLoggedInAC(fakeUser, false))
+            }
+        })
+        .catch(err => {
+            if (err.response.data) {
+                dispatch(setErrorToProfileAC(err.response.data.error))
+            } else {
+                dispatch(setErrorToProfileAC(err.message))
+            }
+        })
+        .finally(() => {
+            dispatch(setDisableButtonAC(false))
+            dispatch(setLoadingStatusAC(false))
+        })
+}
+
+export const forgotPasswordTC = (email: string) => (dispatch: ThunksDispatch) => {
+    dispatch(setDisableButtonAC(true))
+    dispatch(setLoadingStatusAC(true))
+    userAPI.forgotPassword(email)
+        .then(res => {
+            if (res.status >= 200 && res.status < 400) {
+                dispatch(sendEmailToRecoverPasswordAC(true, email))
+                dispatch(setDisableButtonAC(false))
+            }
+        })
+        .catch((err => {
+            if (err.response.data) {
+                dispatch(setErrorToProfileAC(err.response.data.error))
+            } else {
+                dispatch(setErrorToProfileAC(err.message))
+            }
+        }))
+        .finally(() => {
+            dispatch(setDisableButtonAC(false))
+            dispatch(setLoadingStatusAC(false))
+        })
+}
+
+export const sendNewPasswordTC = (password: string, token: string) => (dispatch: ThunksDispatch) => {
+    dispatch(setDisableButtonAC(true))
+    dispatch(setLoadingStatusAC(true))
+    userAPI.setNewPassword(password, token)
+        .then(res => {
+            if (res.status >= 200 && res.status < 400) {
+
+            }
+        })
+        .catch(err => {
+            if (err.response.data) {
+                dispatch(setErrorToProfileAC(err.response.data.error))
+            } else {
+                dispatch(setErrorToProfileAC(err.message))
+            }
+        })
+        .finally(() => {
+            dispatch(setDisableButtonAC(false))
+            dispatch(setLoadingStatusAC(false))
+        })
+}
+
+export const changeUserNameTC = (data: { name?: string, avatar?: string }) => (dispatch: ThunksDispatch) => {
+    userAPI.changeUserData(data)
+        .then(res => {
+            dispatch(setUserInfoAC(res.data.updatedUser))
+        })
+        .catch(err => {
+            if (err.response.data) {
+                dispatch(setErrorToProfileAC(err.response.data.error))
+            } else {
+                dispatch(setErrorToProfileAC(err.message))
+            }
+        })
+        .finally(() => {
+            dispatch(setDisableButtonAC(false))
+            dispatch(setLoadingStatusAC(false))
+        })
 }
