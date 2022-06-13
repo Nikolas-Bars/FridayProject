@@ -16,7 +16,6 @@ export const ProfilePacks = () => {
     const page = useSelector<AppStoreType, number>(state => state.cards.page)
     const pageCount = useSelector<AppStoreType, number>(state => state.cards.pageCount)
     const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
-    const rangeValue = useSelector<AppStoreType, number[]>(state => state.cards.rangeValue)
     const sort = useSelector<AppStoreType, string>(state => state.cards.sortPacks)
     const my = useSelector<AppStoreType, boolean>(state => state.cards.myAll)
     const searchText = useSelector<AppStoreType, string>(state => state.cards.searchText)
@@ -25,7 +24,7 @@ export const ProfilePacks = () => {
 
     useEffect(() => {
         dispatch(setCardsTC())
-    }, [dispatch, my, rangeValue, sort, selectValue, page, searchText])
+    }, [dispatch, my,  sort, selectValue, page, searchText])
 
     return (
         <div className={style.packList__container}>

@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-import {CardPacksType} from "../../../../cardsback/cards/src/store/reducers/packs-reducer";
+
 
 export const instance = axios.create({
     //baseURL: 'http://localhost:7542/2.0/',
@@ -54,6 +54,16 @@ export const cardsAPI = {
     newCardPack(){
         return instance.post('/cards/pack')
      },
+}
+
+
+export type CardPacksType = {
+    _id: string
+    user_id: string
+    name: string
+    cardsCount: number
+    user_name: string
+    updated: string
 }
 
 
