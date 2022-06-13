@@ -1,7 +1,6 @@
 import {CardPacksType, cardsAPI, ResponseGetPacksType} from "../api";
-import {Dispatch} from "redux";
-import {setLoadingStatusAC} from "./profile-reducer";
-import {AppStoreType} from "../store";
+import {setDisableButtonAC, setErrorToProfileAC, setLoadingStatusAC, setModalActiveAC} from "./profile-reducer";
+import {AppStoreType, ThunksDispatch} from "../store";
 
 
 let initialState: CardReduserStateType = {
@@ -18,7 +17,6 @@ let initialState: CardReduserStateType = {
     rangeValue: [0, 110],
     sortPacks: '',
 }
-
 
 
 export type CardReduserStateType = {
@@ -48,6 +46,9 @@ export const CardsReducer = (state: CardReduserStateType = initialState, action:
     switch (action.type) {
         case "SET_CARDS":
             return {...state, ...action.cards}
+        case "ADD_NEW_CARD": {
+            return {...state, cardPacks: [action.card, ...state.cardPacks]}
+        }
         case "SET_CURRENT_PAGE":
             return {...state, page: action.page}
         case "SET_SEARCH_TEXT":
@@ -74,24 +75,19 @@ export type CardsActionType =
     | ReturnType<typeof setSelectValueAC>
     | ReturnType<typeof setRangeValueAC>
     | ReturnType<typeof setSortPacksAC>
-
-export const setSearchTextAC = (text: string) => ({type: 'SET_SEARCH_TEXT', text} as const)
-
-export const setCurrentPageAC = (page: number) => ({type: 'SET_CURRENT_PAGE', page} as const)
-
-export const setSortPacksAC = (sort: string) => ({type: 'SET_SORT_PACKS', sort} as const)
-
-export const setMyAllAC = (newValue: boolean) => ({type: 'SET_MYALL', newValue} as const) // перключатель - мои либо все колоды отображаются
+    | ReturnType<typeof addNewCardAC>
 
 export const setCardsAC = (cards: ResponseGetPacksType<CardPacksType[]>) => ({type: 'SET_CARDS', cards} as const)
-
+export const addNewCardAC = (card: any) => ({type: 'ADD_NEW_CARD', card} as const)
+export const setSearchTextAC = (text: string) => ({type: 'SET_SEARCH_TEXT', text} as const)
+export const setCurrentPageAC = (page: number) => ({type: 'SET_CURRENT_PAGE', page} as const)
+export const setSortPacksAC = (sort: string) => ({type: 'SET_SORT_PACKS', sort} as const)
+export const setMyAllAC = (newValue: boolean) => ({type: 'SET_MYALL', newValue} as const) // перключатель - мои либо все колоды отображаются
 export const setSelectValueAC = (selectValue: number) => ({type: 'SET_SELECT_VALUE', selectValue} as const)
-
 export const setRangeValueAC = (rangeValue: number[]) => ({type: 'SET_RANGE_VALUE', rangeValue} as const)
 
 
-
-export const setCardsTC = () => (dispatch: Dispatch, getState: () => AppStoreType) => {
+export const setCardsTC = () => (dispatch: ThunksDispatch, getState: () => AppStoreType) => {
 
     dispatch(setLoadingStatusAC(true))
 
@@ -123,8 +119,21 @@ export const setCardsTC = () => (dispatch: Dispatch, getState: () => AppStoreTyp
 
 }
 
-export const newCardPackTC = () => (dispatch: Dispatch) => {
-    cardsAPI.newCardPack()
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+export const newCardPackTC = (name: string) => (dispatch: ThunksDispatch) => {
+    dispatch(setDisableButtonAC(true))
+    cardsAPI.newCardPack(name)
+        .then(res => {
+            dispatch(addNewCardAC(res.data.newCardsPack))
+            dispatch(setModalActiveAC(false))
+        })
+        .catch(err => {
+            if (err.response.data) {
+                dispatch(setErrorToProfileAC(err.response.data.error))
+            } else {
+                dispatch(setErrorToProfileAC(err.message))
+            }
+        })
+        .finally(() => {
+            dispatch(setDisableButtonAC(false))
+        })
 }

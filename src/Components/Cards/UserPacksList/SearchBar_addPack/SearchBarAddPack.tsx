@@ -1,28 +1,31 @@
 import React, {useEffect, useState} from 'react';
-import style from "./SearchBar.module.css";
+import style from "./SearchBarAddPack.module.css";
 import {useAppDispatch} from "../../../../Bll/store";
 import {useDebounce} from "../../../features/CustomHooks/useDebounce/useDebounce";
 import SuperInputText from '../../../../Common/c1-SuperInputText/SuperInputText';
 import SuperButton from '../../../../Common/c2-SuperButton/SuperButton';
 import search from '../../../../Common/img/search_bar/search.png'
-import {newCardPackTC, setSearchTextAC} from "../../../../Bll/reducers/card-reducer";
-import { Modal } from '../../../../Common/Modal/Modal';
+import {setSearchTextAC} from "../../../../Bll/reducers/card-reducer";
+import {Modal} from '../../../../Common/Modal/Modal';
+import {AddPack} from "./AddPack/AddPack";
+import {setModalActiveAC} from "../../../../Bll/reducers/profile-reducer";
 
-export const SearchBar = () => {
+export const SearchBarAddPack = () => {
 
     const dispatch = useAppDispatch()
 
     const [searchPack, setSearchPack] = useState<string>('')
-    const [modalActive, setModalActive] = useState<boolean>(false)
 
     const debouncedValue = useDebounce<string>(searchPack, 750)
 
     const changeText = (value: string) => {
-        setSearchPack(value)
+        if (value.trim() !== '') {
+            setSearchPack(value)
+        }
     }
 
-    const addNewPack = () => {
-        dispatch(newCardPackTC())
+    const onClickOpenModal = () => {
+        dispatch(setModalActiveAC(true))
     }
 
     useEffect(() => {
@@ -41,14 +44,14 @@ export const SearchBar = () => {
                 className={style.profile__body_img_search}
                 src={search}
                 alt="search"/>
-
             <SuperButton
                 className={style.profile__body_input_button}
-                onClick={() => setModalActive(true)}
+                onClick={onClickOpenModal}
             >
                 Add new pack
             </SuperButton>
-            <Modal active={modalActive} setActive={setModalActive}>
+            <Modal>
+                <AddPack />
             </Modal>
         </div>
     )

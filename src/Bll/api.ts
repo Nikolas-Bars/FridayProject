@@ -33,7 +33,7 @@ export const userAPI = {
         return instance.post<null, AxiosResponse<RegistrationResponseType>>('/auth/me')
     },
     changeUserData(data:{name?: string, avatar?: string}){
-        return instance.put<{name?: string, avatar?: string}, AxiosResponse<ResponseType<User>>>('/auth/me', data)
+        return instance.put<{name?: string, avatar?: string}, AxiosResponse<ResponseTypeUser<User>>>('/auth/me', data)
     }
 }
 
@@ -51,8 +51,8 @@ export const cardsAPI = {
             }
         })
     },
-    newCardPack(){
-        return instance.post('/cards/pack')
+    newCardPack(name: string){
+        return instance.post<{}, AxiosResponse<ResponseNewCardType<CardPacksType>>>('/cards/pack', {cardsPack: {name}})
      },
 }
 
@@ -65,8 +65,6 @@ export type CardPacksType = {
     user_name: string
     updated: string
 }
-
-
 
 export type CardsDataType = {
     pageCount?: number;
@@ -85,16 +83,7 @@ export type PostCardPack = {
     }}
 export type ResponseDataCardType = {
     data: {
-        cardPacks: [
-            {
-                _id: string
-                user_id: string
-                name: string
-                cardsCount: number
-                created: string
-                updated: string
-            },
-        ]
+        cardPacks: CardPacksType[]
         cardPacksTotalCount: number
         // количество колод
         maxCardsCount: number
@@ -130,7 +119,7 @@ export type User = {
     verified: boolean
     rememberMe: boolean
 }
-type ResponseType<D = {}> = {
+type ResponseTypeUser<D = {}> = {
     token: string
     tokenDeathTime: number
     updatedUser: D
@@ -140,6 +129,14 @@ export type NewUserType = {
     password: string
     rememberMe?: boolean
 }
+
+
+type ResponseNewCardType<D = {}> = {
+    token: string
+    tokenDeathTime: number
+    newCardsPack: D
+}
+
 
 export type ResponseGetPacksType<D = []> = {
     cardPacks: D

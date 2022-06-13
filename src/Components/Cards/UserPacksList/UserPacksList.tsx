@@ -1,6 +1,6 @@
 import React from 'react';
 import style from "./UserPacksList.module.css";
-import {SearchBar} from "./SearchBar/SearchBar";
+import {SearchBarAddPack} from "./SearchBar_addPack/SearchBarAddPack";
 import {ProfilePacks} from './ProfilePacks/ProfilePacks';
 
 export const UserPacksList = () => {
@@ -11,7 +11,7 @@ export const UserPacksList = () => {
                 My packs list
             </h2>
 
-            <SearchBar />
+            <SearchBarAddPack />
 
             <ProfilePacks/>
 

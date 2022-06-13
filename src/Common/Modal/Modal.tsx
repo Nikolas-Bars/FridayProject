@@ -1,26 +1,27 @@
 import React, {useEffect} from 'react';
 import style from './Modal.module.css'
 import {useSelector} from "react-redux";
-import {AppStoreType} from "../../Bll/store";
+import {AppStoreType, useAppDispatch} from "../../Bll/store";
+import {setModalActiveAC} from "../../Bll/reducers/profile-reducer";
 
 type PropsType = {
-    active: boolean
-    setActive: (value: boolean) => void
     children: React.ReactNode
 }
 
-export const Modal = ({active, setActive, children}: PropsType) => {
+export const Modal = ({children}: PropsType) => {
 
-    const isAuth = useSelector<AppStoreType>(state => state.profile.helpers.isLoggedIn)
+    const active = useSelector<AppStoreType, boolean>(state => state.profile.helpers.activeModal)
+    const isAuth = useSelector<AppStoreType, boolean>(state => state.profile.helpers.isLoggedIn)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (isAuth) {
-            setActive(false)
+            dispatch(dispatch(setModalActiveAC(false)))
         }
-    }, [isAuth, setActive])
+    }, [isAuth, dispatch])
 
     return (
-        <div className={active ? `${style.modal} ${style.active}` : style.modal} onClick={() => setActive(false)}>
+        <div className={active ? `${style.modal} ${style.active}` : style.modal}>
             <div className={active ? `${style.modal__content} ${style.active}` : style.modal__content}
                  onClick={e => e.stopPropagation()}>
                 <div className={style.children}>
