@@ -124,3 +124,16 @@
     border: 2px solid #D7D8EF;
     color: #21268F;
 }
+
+.packList__name_none_clicked > a {
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    color: black;
+}
+
+.packList__name_none_clicked > a:visited {
+    color: black;
+}

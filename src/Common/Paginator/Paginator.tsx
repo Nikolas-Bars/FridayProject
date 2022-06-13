@@ -40,12 +40,14 @@ const Paginator = ({totalItemsCount, pageSize, portionSize}: PaginatorType) => {
 
     return (
         <div className={style.paginator}>
+
             {
                 (portionNumber === 1) &&
                 <div
                     className={style.fakeDiv}
                 />
             }
+
             {
                 portionNumber > 1 &&
                 <SuperButton

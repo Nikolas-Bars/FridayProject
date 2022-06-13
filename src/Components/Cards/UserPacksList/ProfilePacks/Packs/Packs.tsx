@@ -15,8 +15,6 @@ export const Packs = () => {
 
     const dispatch = useAppDispatch()
 
-    console.log(sortNumber)
-
     const handleSortField = (e: React.MouseEvent<HTMLSpanElement>) => {
         if (e.currentTarget.dataset.field) {
             const trigger: string = e.currentTarget.dataset.field
