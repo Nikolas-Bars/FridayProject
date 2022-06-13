@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import s from './Cards.module.css'
+import style from './Profile.module.css'
 import {CardDeck} from "./CardDeck";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -18,6 +19,8 @@ import Search from "../Search/Search";
 import AddPack from "./AddPack/AddPack";
 import Select from "./Select/Select";
 import SliderForCards from "./SliderForCards/SliderForCards";
+import { PacksCardsFilter } from './PacksCardsFilter/PacksCardsFilter';
+import { UserPacksList } from './UserPacksList/UserPacksList';
 
 const Cards = () => {
 
@@ -42,9 +45,8 @@ const Cards = () => {
     const id = useSelector<AppStoreType, string>(state => state.profile._id)
 
     useEffect(() => {
-            dispatch(setCardsTC(responseData))
-        }
-        , [])
+        dispatch(setCardsTC(responseData))
+    }, [dispatch])
 
     let responseData: CardsDataType = {
         pageCount: 10,
@@ -55,7 +57,6 @@ const Cards = () => {
     }
 
     const setPageNumber = (pageNumber: number) => {
-        debugger
         responseData.page = pageNumber // страница по счету которую нужно отобразить
         responseData.pageCount = selectValue
         dispatch(setCardsTC(responseData))
@@ -63,10 +64,9 @@ const Cards = () => {
         dispatch(setSearchTextAC(''))
     }
 
-    const setSort =(newSort: string)=>{
+    const setSort = (newSort: string) => {
         dispatch(setSortPacksAC(newSort))
         responseData.sortPacks = newSort
-        debugger
         dispatch(setCardsTC(responseData))
     }
 
@@ -77,46 +77,94 @@ const Cards = () => {
     }
 
     return (
-        <div className={s.main}>
 
-            <SliderForCards/>
+        <div className={style.profile__container}>
+            <div className={style.profile__body}>
+                <div className={style.profile__body_profile}>
 
-            <div className={s.cardsBlock}>
-                <h3>Packs list</h3>
-                <div className={s.inputBlock}>
+                    <PacksCardsFilter/>
 
-                    <Search/>
-                    <AddPack/>
-
-                    {loadingStatus && <Preloader/>}
+                    <SliderForCards/>
 
                 </div>
+                <div className={style.profile__body_main}>
 
-                <div className={s.headerWindowOfCards}>
-                    <div>Name <button onClick={()=>{setSort('1name')}}>+</button><button onClick={()=>{setSort('0name')}}>-</button></div>
-                    <div>Cards <button onClick={()=>{setSort('1cardsCount')}}>+</button><button onClick={()=>{setSort('0cardsCount')}}>-</button></div>
-                    <div>Last Updated <button onClick={()=>{setSort('1updated')}}>+</button><button onClick={()=>{setSort('0updated')}}>-</button></div>
-                    <div>Created <button onClick={()=>{setSort('1created')}}>+</button><button onClick={()=>{setSort('0created')}}>-</button></div>
-                    <div>Actions</div>
+                    <UserPacksList />
+
                 </div>
-
-                {cardsPacks.map(card => <CardDeck key={card._id} name={card.name} cardsCount={card.cardsCount}
-                                                  lastUpdate={card.updated} createdBy={card.created}
-                                                  actions={'action'}/>)}
-                <Select/>
-
-                {/*  // totalItemsCount - кол-во всех элементов пришедших с сервера
-                //currentPage - стартовая страница
-                //pageSize - кол-во элементов на одной странице
-                //portionSize - количество отображаемых на пагинаторе элементов (а справа и слева будут кнопки - уже есть в самом пагинаторе)*/}
-                <Paginator totalItemsCount={cards.cardPacksTotalCount} currentPage={currentPage}
-                           pageSize={cards.pageCount} portionSize={5} onPageChange={(el: number) => {
-                    setPageNumber(el)
-                }}/>
-
             </div>
-
         </div>
+
+
+
+        // <div className={s.main}>
+        //
+        //     <SliderForCards/>
+        //
+        //     <div className={s.cardsBlock}>
+        //         <h3>Packs list</h3>
+        //         <div className={s.inputBlock}>
+        //
+        //             <Search/>
+        //             <AddPack/>
+        //
+        //             {loadingStatus && <Preloader/>}
+        //
+        //         </div>
+        //
+        //         <div className={s.headerWindowOfCards}>
+        //             <div>Name <button onClick={() => {
+        //                 setSort('1name')
+        //             }}>+</button>
+        //                 <button onClick={() => {
+        //                     setSort('0name')
+        //                 }}>-
+        //                 </button>
+        //             </div>
+        //             <div>Cards <button onClick={() => {
+        //                 setSort('1cardsCount')
+        //             }}>+</button>
+        //                 <button onClick={() => {
+        //                     setSort('0cardsCount')
+        //                 }}>-
+        //                 </button>
+        //             </div>
+        //             <div>Last Updated <button onClick={() => {
+        //                 setSort('1updated')
+        //             }}>+</button>
+        //                 <button onClick={() => {
+        //                     setSort('0updated')
+        //                 }}>-
+        //                 </button>
+        //             </div>
+        //             <div>Created <button onClick={() => {
+        //                 setSort('1created')
+        //             }}>+</button>
+        //                 <button onClick={() => {
+        //                     setSort('0created')
+        //                 }}>-
+        //                 </button>
+        //             </div>
+        //             <div>Actions</div>
+        //         </div>
+        //
+        //         {cardsPacks.map(card => <CardDeck key={card._id} name={card.name} cardsCount={card.cardsCount}
+        //                                           lastUpdate={card.updated} createdBy={card.created}
+        //                                           actions={'action'}/>)}
+        //         <Select/>
+        //
+        //         {/*  // totalItemsCount - кол-во всех элементов пришедших с сервера
+        //         //currentPage - стартовая страница
+        //         //pageSize - кол-во элементов на одной странице
+        //         //portionSize - количество отображаемых на пагинаторе элементов (а справа и слева будут кнопки - уже есть в самом пагинаторе)*/}
+        //         <Paginator totalItemsCount={cards.cardPacksTotalCount} currentPage={currentPage}
+        //                    pageSize={cards.pageCount} portionSize={5} onPageChange={(el: number) => {
+        //             setPageNumber(el)
+        //         }}/>
+        //
+        //     </div>
+        //
+        // </div>
     );
 };
 

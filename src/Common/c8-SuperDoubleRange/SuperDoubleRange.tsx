@@ -40,7 +40,6 @@ export default function SuperDoubleRange(props: PropsType) {
     }
 
         return (
-            <>
                 <div className={classes.root} style={style}>
 
                     <Slider
@@ -52,7 +51,6 @@ export default function SuperDoubleRange(props: PropsType) {
                         max={120}
                     />
                 </div>
-            </>
         )
 
 }
