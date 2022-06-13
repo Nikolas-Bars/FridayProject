@@ -6,7 +6,6 @@ import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "./Bll/store";
 import {isAuthUser} from './Bll/reducers/profile-reducer';
 
-
 function App() {
 
     const isInitializedContent = useSelector<AppStoreType, boolean>(state => state.profile.helpers.initializedContent)
@@ -27,7 +26,6 @@ function App() {
                     <Routess/>
                 </div>
             }
-
         </div>
     );
 }
