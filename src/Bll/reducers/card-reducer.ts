@@ -15,7 +15,8 @@ let initialState: CardReducerStateType = {
     myAll: false, // переключатель мои либо все колоды. false - показываем все
     selectValue: 10,
     rangeValue: [0, 110],
-    sortPacks: '',
+    sortPacks: '0updated',
+    sortNumber: 0
 }
 
 export type CardReducerStateType = {
@@ -30,6 +31,7 @@ export type CardReducerStateType = {
     selectValue: number,
     rangeValue: number[],
     sortPacks: string
+    sortNumber: number
 }
 
 export type CardType = {
@@ -59,7 +61,7 @@ export const CardsReducer = (state: CardReducerStateType = initialState, action:
         case "SET_RANGE_VALUE":
             return {...state, rangeValue: action.rangeValue}
         case "SET_SORT_PACKS":
-            return {...state, sortPacks: action.sort}
+            return {...state, sortPacks: action.sort, sortNumber: action.sortNumber}
         default: {
             return state
         }
@@ -80,7 +82,7 @@ export const setCardsAC = (cards: ResponseGetPacksType<CardPacksType[]>) => ({ty
 export const addNewCardAC = (card: any) => ({type: 'ADD_NEW_CARD', card} as const)
 export const setSearchTextAC = (text: string) => ({type: 'SET_SEARCH_TEXT', text} as const)
 export const setCurrentPageAC = (page: number) => ({type: 'SET_CURRENT_PAGE', page} as const)
-export const setSortPacksAC = (sort: string) => ({type: 'SET_SORT_PACKS', sort} as const)
+export const setSortPacksAC = (sort: string, sortNumber: number) => ({type: 'SET_SORT_PACKS', sort, sortNumber} as const)
 export const setMyAllAC = (newValue: boolean) => ({type: 'SET_MYALL', newValue} as const) // перключатель - мои либо все колоды отображаются
 export const setSelectValueAC = (selectValue: number) => ({type: 'SET_SELECT_VALUE', selectValue} as const)
 export const setRangeValueAC = (rangeValue: number[]) => ({type: 'SET_RANGE_VALUE', rangeValue} as const)

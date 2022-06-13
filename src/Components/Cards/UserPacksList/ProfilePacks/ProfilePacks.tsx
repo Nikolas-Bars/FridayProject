@@ -32,7 +32,7 @@ export const ProfilePacks = () => {
                 loadingStatus
                     ? <Preloader/>
                     : <>
-                        <Packs/>
+                        <Packs />
                         <Select/>
 
                         <Paginator totalItemsCount={cardPacksTotalCount}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import style from './Packs.module.css'
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
@@ -7,22 +7,23 @@ import {CardType, setSortPacksAC} from '../../../../../Bll/reducers/card-reducer
 import SuperButton from '../../../../../Common/c2-SuperButton/SuperButton';
 import sortIcon from '../../../../../Common/img/sort/sort.png'
 
-
 export const Packs = () => {
 
     const packs = useSelector<AppStoreType, CardType[]>(state => state.cards.cardPacks)
+    const sortPacks = useSelector<AppStoreType, string>(state => state.cards.sortPacks)
+    const sortNumber = useSelector<AppStoreType, number>(state => state.cards.sortNumber)
+
     const dispatch = useAppDispatch()
 
-    const [sortNumber, setSortNumber] = useState(0);
+    console.log(sortNumber)
 
     const handleSortField = (e: React.MouseEvent<HTMLSpanElement>) => {
         if (e.currentTarget.dataset.field) {
             const trigger: string = e.currentTarget.dataset.field
-            dispatch(setSortPacksAC(sortNumber + trigger))
-            if (sortNumber === 0) {
-                setSortNumber(1)
+            if (!sortNumber) {
+                dispatch(setSortPacksAC(1 + trigger, 1))
             } else {
-                setSortNumber(0)
+                dispatch(setSortPacksAC(0 + trigger, 0))
             }
         }
     }
@@ -36,6 +37,14 @@ export const Packs = () => {
                     onClick={handleSortField}
                 >
                     Name
+                    {
+                        sortPacks.includes('name') &&
+                        <img
+                            className={sortNumber ? style.packList__updates_img_1 : style.packList__updates_img_0}
+                            src={sortIcon}
+                            alt="sort"
+                        />
+                    }
                 </span>
                 <span
                     className={style.packList__cards}
@@ -43,6 +52,14 @@ export const Packs = () => {
                     onClick={handleSortField}
                 >
                     Cards
+                    {
+                        sortPacks.includes('cardsCount') &&
+                        <img
+                            className={sortNumber ? style.packList__updates_img_1 : style.packList__updates_img_0}
+                            src={sortIcon}
+                            alt="sort"
+                        />
+                    }
                 </span>
                 <span
                     className={style.packList__updates}
@@ -50,11 +67,14 @@ export const Packs = () => {
                     onClick={handleSortField}
                 >
                         Last Updated
-                    <img
-                        className={sortNumber ? style.packList__updates_img_1 : style.packList__updates_img_0}
-                        src={sortIcon}
-                        alt="sort"
-                    />
+                    {
+                        sortPacks.includes('updated') &&
+                        <img
+                            className={sortNumber ? style.packList__updates_img_1 : style.packList__updates_img_0}
+                            src={sortIcon}
+                            alt="sort"
+                        />
+                    }
                 </span>
                 <span
                     className={style.packList__create}
@@ -62,6 +82,14 @@ export const Packs = () => {
                     onClick={handleSortField}
                 >
                     Created by
+                    {
+                        sortPacks.includes('user_name') &&
+                        <img
+                            className={sortNumber ? style.packList__updates_img_1 : style.packList__updates_img_0}
+                            src={sortIcon}
+                            alt="sort"
+                        />
+                    }
                 </span>
                 <span className={style.packList__action}>
                     Actions

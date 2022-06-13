@@ -13,20 +13,18 @@ import {SetNewPassword} from '../RestorePassword/SetNewPassword/SetNewPassword';
 function Routess() {
 
     return (
-        <div>
-            <Routes>
-                <Route path='/' element={<Profile/>}/>
-                <Route path='/registration' element={<Registration/>}/>
-                <Route path='/login' element={<Login/>}/>
-                <Route path='/restore' element={<RestorePassword/>}/>
-                <Route path="/recover" element={<CheckEmail/>}/>
-                <Route path='/set-new-password/:token' element={<SetNewPassword/>}/>
-                <Route path='/demo' element={<DemoSuperComponents/>}/>
-                <Route path='*' element={<Notfound/>}/>
-                <Route path='/profile' element={<Profile/>}/>
-                <Route path='/cards' element={<Cards/>}/>
-            </Routes>
-        </div>
+        <Routes>
+            <Route path='/' element={<Profile/>}/>
+            <Route path='/registration' element={<Registration/>}/>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/restore' element={<RestorePassword/>}/>
+            <Route path="/recover" element={<CheckEmail/>}/>
+            <Route path='/set-new-password/:token' element={<SetNewPassword/>}/>
+            <Route path='/demo' element={<DemoSuperComponents/>}/>
+            <Route path='*' element={<Notfound/>}/>
+            <Route path='/profile' element={<Profile/>}/>
+            <Route path='/cards' element={<Cards/>}/>
+        </Routes>
     );
 }
 

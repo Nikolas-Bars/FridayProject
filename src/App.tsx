@@ -19,12 +19,13 @@ function App() {
     }, [dispatch, isInitializedContent])
 
     return (
-        <div>
+        <div className="App">
             {
-                isInitializedContent && <div className="App">
+                isInitializedContent &&
+                <>
                     <NavBar/>
                     <Routess/>
-                </div>
+                </>
             }
         </div>
     );
