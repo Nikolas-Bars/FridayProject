@@ -1,10 +1,10 @@
 import React from 'react';
-import style from './Cards.module.css'
+import style from './PacksList.module.css'
 import SliderForCards from "./SliderForCards/SliderForCards";
 import {PacksCardsFilter} from './PacksCardsFilter/PacksCardsFilter';
 import {UserPacksList} from './UserPacksList/UserPacksList';
 
-const Cards = () => {
+const PacksList = () => {
 
     return (
         <div className={style.profile__container}>
@@ -26,4 +26,4 @@ const Cards = () => {
     );
 };
 
-export default Cards;
+export default PacksList;

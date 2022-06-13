@@ -23,6 +23,7 @@
 
 .question__answer {
     flex: 1 1 30%;
+    text-align: justify;
 }
 
 .question__updated {
@@ -31,4 +32,28 @@
 
 .question__grade {
     flex: 1 1 10%;
+}
+
+.question__list {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 16px 0 16px 24px;
+}
+
+.question__list:nth-child(even) {
+    background-color: #F8F7FD;
+}
+
+.question__list:nth-child(even) {
+    background-color: #F8F7FD;
+}
+
+.question__list > span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    color: #000000;
+    padding-right: 12px;
 }

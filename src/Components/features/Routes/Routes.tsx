@@ -3,12 +3,12 @@ import {Route, Routes} from "react-router-dom";
 import {Login} from "../Login/Login";
 import Notfound from "../NotFound/Notfound";
 import Profile from "../../Profile/Profile";
-import Cards from "../../Cards/Cards";
+import PacksList from "../../PacksList/PacksList";
 import {Registration} from "../Registration/Registration";
 import {RestorePassword} from "../RestorePassword/RestorePassword";
 import {CheckEmail} from '../RestorePassword/CheckEmail/CheckEmail';
 import {SetNewPassword} from '../RestorePassword/SetNewPassword/SetNewPassword';
-import { Pack } from '../../Cards/UserPacksList/ProfilePacks/Packs/Pack/Pack';
+import { Cards } from '../../PacksList/UserPacksList/ProfilePacks/Packs/Cards/Cards';
 
 function Routess() {
 
@@ -22,8 +22,8 @@ function Routess() {
             <Route path='/set-new-password/:token' element={<SetNewPassword/>}/>
             <Route path='*' element={<Notfound/>}/>
             <Route path='/profile' element={<Profile/>}/>
-            <Route path='/cards' element={<Cards/>}/>
-            <Route path='/cards/:card' element={<Pack/>}/>
+            <Route path='/packs' element={<PacksList/>}/>
+            <Route path='/packs/:card' element={<Cards/>}/>
         </Routes>
     );
 }

@@ -102,7 +102,7 @@ export const Packs = () => {
                             className={style.packList__list}
                         >
                             <span className={style.packList__name_none_clicked}>
-                                  <NavLink to={'/cards/' + pack._id}>
+                                  <NavLink to={'/packs/' + pack._id}>
                                      {pack.name}
                                   </NavLink>
                             </span>

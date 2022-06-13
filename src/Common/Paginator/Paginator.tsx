@@ -1,24 +1,19 @@
 import React, {useEffect, useState} from "react";
 import style from './Paginator.module.css'
-import {useSelector} from "react-redux";
-import {AppStoreType, useAppDispatch} from "../../Bll/store";
-import {setCurrentPageAC} from "../../Bll/reducers/pack-reducer";
 import SuperButton from "../c2-SuperButton/SuperButton";
 
 type PaginatorType = {
+    currentPage: number
     totalItemsCount: number
     pageSize: number
     portionSize: number
+    changePageNumber: (page: number) => void
 }
 
-const Paginator = ({totalItemsCount, pageSize, portionSize}: PaginatorType) => {
-
-    const currentPage = useSelector<AppStoreType, number>(state => state.packs.page)
-
-    const dispatch = useAppDispatch()
+const Paginator = ({currentPage, totalItemsCount, pageSize, portionSize, changePageNumber}: PaginatorType) => {
 
     const onPageChange = (page: number) => {
-        dispatch(setCurrentPageAC(page))
+        changePageNumber(page)
     }
 
     let pagesCount = Math.ceil(totalItemsCount / pageSize) // делим все приходящие с сервера элементы на кол-во элементов отображаемых на одной странице

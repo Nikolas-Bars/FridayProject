@@ -43,7 +43,7 @@ export type PacksType = {
     updated: string
 }
 
-export const packsReducer = (state: PacksReducerStateType = initialPacksState, action: CardsActionType): PacksReducerStateType => {
+export const packsReducer = (state: PacksReducerStateType = initialPacksState, action: PacksActionType): PacksReducerStateType => {
     switch (action.type) {
         case "SET_CARDS":
             return {...state, ...action.cards}
@@ -68,8 +68,8 @@ export const packsReducer = (state: PacksReducerStateType = initialPacksState, a
     }
 }
 
-export type CardsActionType =
-    ReturnType<typeof setCardsAC>
+export type PacksActionType =
+    ReturnType<typeof setPacksAC>
     | ReturnType<typeof setSearchTextAC>
     | ReturnType<typeof setCurrentPageAC>
     | ReturnType<typeof setMyAllAC>
@@ -78,7 +78,7 @@ export type CardsActionType =
     | ReturnType<typeof setSortPacksAC>
     | ReturnType<typeof addNewCardAC>
 
-export const setCardsAC = (cards: ResponseGetPacksType<CardPacksType[]>) => ({type: 'SET_CARDS', cards} as const)
+export const setPacksAC = (cards: ResponseGetPacksType<CardPacksType[]>) => ({type: 'SET_CARDS', cards} as const)
 export const addNewCardAC = (card: any) => ({type: 'ADD_NEW_CARD', card} as const)
 export const setSearchTextAC = (text: string) => ({type: 'SET_SEARCH_TEXT', text} as const)
 export const setCurrentPageAC = (page: number) => ({type: 'SET_CURRENT_PAGE', page} as const)
@@ -101,7 +101,7 @@ export const setCardsTC = () => (dispatch: ThunksDispatch, getState: () => AppSt
     if (myAll) {
         packAPI.getPacks(searchText, rangeValue1, rangeValue2, sortPacks, page, selectValue, _id)
             .then(res => {
-                dispatch(setCardsAC(res.data))
+                dispatch(setPacksAC(res.data))
             })
             .catch(err => console.log(err))
             .finally(() => {
@@ -110,7 +110,7 @@ export const setCardsTC = () => (dispatch: ThunksDispatch, getState: () => AppSt
     } else {
         packAPI.getPacks(searchText, rangeValue1, rangeValue2, sortPacks, page, selectValue)
             .then(res => {
-                dispatch(setCardsAC(res.data))
+                dispatch(setPacksAC(res.data))
             })
             .catch(err => console.log(err))
             .finally(() => {

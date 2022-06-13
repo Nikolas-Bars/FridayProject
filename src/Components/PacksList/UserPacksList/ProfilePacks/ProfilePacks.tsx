@@ -2,12 +2,11 @@ import React, {useEffect} from 'react';
 import {AppStoreType, useAppDispatch} from '../../../../Bll/store';
 import style from './ProfilePacks.module.css'
 import {useSelector} from "react-redux";
-import {setCardsTC} from "../../../../Bll/reducers/pack-reducer";
+import {setCardsTC, setCurrentPageAC} from "../../../../Bll/reducers/pack-reducer";
 import {Packs} from './Packs/Packs';
 import Select from '../../Select/Select';
 import Preloader from "../../../../Common/Preloader/Preloader";
 import Paginator from '../../../../Common/Paginator/Paginator';
-
 
 export const ProfilePacks = () => {
 
@@ -26,6 +25,10 @@ export const ProfilePacks = () => {
         dispatch(setCardsTC())
     }, [dispatch, my, sort, selectValue, page, searchText])
 
+    const changePageNumber = (page: number) => {
+        dispatch(setCurrentPageAC(page))
+    }
+
     return (
         <div className={style.packList__container}>
             {
@@ -36,9 +39,11 @@ export const ProfilePacks = () => {
                         <Select/>
 
                         <Paginator
+                            currentPage={page}
                             totalItemsCount={cardPacksTotalCount}
                             pageSize={pageCount}
                             portionSize={5}
+                            changePageNumber={changePageNumber}
                         />
                     </>
             }

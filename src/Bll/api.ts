@@ -32,8 +32,8 @@ export const userAPI = {
     checkAuth() {
         return instance.post<null, AxiosResponse<RegistrationResponseType>>('/auth/me')
     },
-    changeUserData(data:{name?: string, avatar?: string}){
-        return instance.put<{name?: string, avatar?: string}, AxiosResponse<ResponseTypeUser<User>>>('/auth/me', data)
+    changeUserData(data: { name?: string, avatar?: string }) {
+        return instance.put<{ name?: string, avatar?: string }, AxiosResponse<ResponseTypeUser<User>>>('/auth/me', data)
     }
 }
 
@@ -51,9 +51,21 @@ export const packAPI = {
             }
         })
     },
-    newPack(name: string){
+    newPack(name: string) {
         return instance.post<{}, AxiosResponse<ResponseNewCardType<CardPacksType>>>('/cards/pack', {cardsPack: {name}})
-     },
+    },
+}
+
+export const cardAPI = {
+    getCards(cardsPack_id: string, page: number, pageCount: number) {
+        return instance.get<{}, AxiosResponse<ResponseCardsType<CardType>>>('/cards/card', {
+            params: {
+                cardsPack_id,
+                page,
+                pageCount
+            }
+        })
+    },
 }
 
 
@@ -76,11 +88,12 @@ export type CardsDataType = {
     user_id?: string;
 }
 export type PostCardPack = {
-    cardsPack:{
+    cardsPack: {
         name: string,
         deckCover: string,
         private: boolean
-    }}
+    }
+}
 export type ResponseDataCardType = {
     data: {
         cardPacks: CardPacksType[]
@@ -119,24 +132,24 @@ export type User = {
     verified: boolean
     rememberMe: boolean
 }
+
 type ResponseTypeUser<D = {}> = {
     token: string
     tokenDeathTime: number
     updatedUser: D
 }
+
 export type NewUserType = {
     email: string
     password: string
     rememberMe?: boolean
 }
 
-
 type ResponseNewCardType<D = {}> = {
     token: string
     tokenDeathTime: number
     newCardsPack: D
 }
-
 
 export type ResponseGetPacksType<D = []> = {
     cardPacks: D
@@ -147,4 +160,30 @@ export type ResponseGetPacksType<D = []> = {
     pageCount: number
     token: string
     tokenDeathTime: number
+}
+
+export type ResponseCardsType<D = {}> = {
+    cards: D[]
+    cardsTotalCount: number
+    maxGrade: number
+    minGrade: number
+    packUserId: string
+    page: number
+    pageCount: number
+}
+
+export type CardType = {
+    answer: string
+    cardsPack_id: string
+    comments: string
+    created: string
+    grade: number
+    more_id: string
+    question: string
+    rating: number
+    shots: number
+    type: string
+    updated: string
+    user_id: string
+    _id: string
 }
