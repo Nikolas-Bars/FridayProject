@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
-import style from "./AddPack.module.css";
-import SuperInputText from "../../../../../Common/c1-SuperInputText/SuperInputText";
-import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
-import {newCardPackTC} from "../../../../../Bll/reducers/card-reducer";
-import {AppStoreType, useAppDispatch} from "../../../../../Bll/store";
-import closeIcon from '../../../../../Common/img/delete/delete.png'
-import {setModalActiveAC} from "../../../../../Bll/reducers/profile-reducer";
+import style from "./AddCard.module.css";
 import {useSelector} from "react-redux";
+import {AppStoreType, useAppDispatch} from "../../../../Bll/store";
+import {newCardPackTC} from "../../../../Bll/reducers/pack-reducer";
+import {setModalActiveAC} from "../../../../Bll/reducers/profile-reducer";
+import SuperInputText from "../../../../Common/c1-SuperInputText/SuperInputText";
+import SuperButton from "../../../../Common/c2-SuperButton/SuperButton";
 
-export const AddPack = () => {
+export const AddCard = () => {
 
     const dispatch = useAppDispatch()
+
     const disableButton = useSelector<AppStoreType, boolean>(state => state.profile.helpers.disableButton)
     const errorMessage = useSelector<AppStoreType, string | null>(state => state.profile.helpers.errorMessage)
 
@@ -28,29 +28,33 @@ export const AddPack = () => {
 
     return (
         <div className={style.addPack}>
-            <div className={style.addPack__header}>
-                <div className={style.addPack__title}>
-                    Add new pack
-                </div>
-
-                {
-                    !disableButton &&
-                    <img
-                        onClick={onClickCloseModal}
-                        src={closeIcon}
-                        alt="close"
-                    />
-                }
-
+            <div className={style.addPack__title}>
+                Card info
             </div>
             <div className={style.addPack__body}>
-                <label>Name pack</label>
+                <label>Question</label>
                 <SuperInputText
                     className={style.addPack__input}
                     value={newPackName}
                     onChangeText={setNewPackName}
                     type='text'
-                    placeholder='Enter name'
+                    placeholder='Enter the text'
+                />
+                <SuperInputText
+                    type='file'
+                />
+            </div>
+            <div className={style.addPack__body}>
+                <label>Answer</label>
+                <SuperInputText
+                    className={style.addPack__input}
+                    value={newPackName}
+                    onChangeText={setNewPackName}
+                    type='text'
+                    placeholder='Enter the text'
+                />
+                <SuperInputText
+                    type='file'
                 />
             </div>
             {

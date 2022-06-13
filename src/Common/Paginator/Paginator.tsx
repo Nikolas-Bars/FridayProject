@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import style from './Paginator.module.css'
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../Bll/store";
-import {setCurrentPageAC} from "../../Bll/reducers/card-reducer";
+import {setCurrentPageAC} from "../../Bll/reducers/pack-reducer";
 import SuperButton from "../c2-SuperButton/SuperButton";
 
 type PaginatorType = {
@@ -13,7 +13,7 @@ type PaginatorType = {
 
 const Paginator = ({totalItemsCount, pageSize, portionSize}: PaginatorType) => {
 
-    const currentPage = useSelector<AppStoreType, number>(state => state.cards.page)
+    const currentPage = useSelector<AppStoreType, number>(state => state.packs.page)
 
     const dispatch = useAppDispatch()
 

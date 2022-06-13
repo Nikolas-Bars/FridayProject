@@ -37,8 +37,8 @@ export const userAPI = {
     }
 }
 
-export const cardsAPI = {
-    getCards(packName: string, min: number, max: number, sortPacks: string, page: number, pageCount: number, user_id?: string) {
+export const packAPI = {
+    getPacks(packName: string, min: number, max: number, sortPacks: string, page: number, pageCount: number, user_id?: string) {
         return instance.get<{}, AxiosResponse<ResponseGetPacksType<CardPacksType[]>>>('/cards/pack', {
             params: {
                 packName,
@@ -51,7 +51,7 @@ export const cardsAPI = {
             }
         })
     },
-    newCardPack(name: string){
+    newPack(name: string){
         return instance.post<{}, AxiosResponse<ResponseNewCardType<CardPacksType>>>('/cards/pack', {cardsPack: {name}})
      },
 }

@@ -3,15 +3,15 @@ import style from './Packs.module.css'
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../../Bll/store";
-import {CardType, setSortPacksAC} from '../../../../../Bll/reducers/card-reducer';
+import {PacksType, setSortPacksAC} from '../../../../../Bll/reducers/pack-reducer';
 import SuperButton from '../../../../../Common/c2-SuperButton/SuperButton';
 import sortIcon from '../../../../../Common/img/sort/sort.png'
 
 export const Packs = () => {
 
-    const packs = useSelector<AppStoreType, CardType[]>(state => state.cards.cardPacks)
-    const sortPacks = useSelector<AppStoreType, string>(state => state.cards.sortPacks)
-    const sortNumber = useSelector<AppStoreType, number>(state => state.cards.sortNumber)
+    const packs = useSelector<AppStoreType, PacksType[]>(state => state.packs.cardPacks)
+    const sortPacks = useSelector<AppStoreType, string>(state => state.packs.sortPacks)
+    const sortNumber = useSelector<AppStoreType, number>(state => state.packs.sortNumber)
 
     const dispatch = useAppDispatch()
 
@@ -102,7 +102,7 @@ export const Packs = () => {
                             className={style.packList__list}
                         >
                             <span className={style.packList__name_none_clicked}>
-                                  <NavLink to={'/packs/' + pack._id}>
+                                  <NavLink to={'/cards/' + pack._id}>
                                      {pack.name}
                                   </NavLink>
                             </span>

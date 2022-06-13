@@ -1,12 +1,12 @@
 import {applyMiddleware, combineReducers, legacy_createStore as createStore} from "redux";
 import {ProfileActionsType, profileReducer} from "./reducers/profile-reducer";
 import thunk, {ThunkDispatch} from 'redux-thunk'
-import {CardsActionType, CardsReducer} from "./reducers/card-reducer";
+import {CardsActionType, packsReducer} from "./reducers/pack-reducer";
 import {useDispatch} from "react-redux";
 
 const reducers = combineReducers({
     profile: profileReducer,
-    cards: CardsReducer,
+    packs: packsReducer,
 })
 
 //@ts-ignore

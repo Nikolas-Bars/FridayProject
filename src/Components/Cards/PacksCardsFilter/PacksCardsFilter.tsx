@@ -2,11 +2,11 @@ import React, {memo} from 'react';
 import style from './PacksCardsFilter.module.css'
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../Bll/store";
-import {setMyAllAC} from "../../../Bll/reducers/card-reducer";
+import {setMyAllAC} from "../../../Bll/reducers/pack-reducer";
 
 export const PacksCardsFilter = memo(() => {
 
-    const profileData = useSelector<AppStoreType, boolean>(state => state.cards.myAll)
+    const profileData = useSelector<AppStoreType, boolean>(state => state.packs.myAll)
     const dispatch = useAppDispatch()
 
     const changeActivePacksToUser = () => {

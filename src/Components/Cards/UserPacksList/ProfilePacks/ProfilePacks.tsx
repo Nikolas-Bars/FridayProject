@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {AppStoreType, useAppDispatch} from '../../../../Bll/store';
 import style from './ProfilePacks.module.css'
 import {useSelector} from "react-redux";
-import {setCardsTC} from "../../../../Bll/reducers/card-reducer";
+import {setCardsTC} from "../../../../Bll/reducers/pack-reducer";
 import {Packs} from './Packs/Packs';
 import Select from '../../Select/Select';
 import Preloader from "../../../../Common/Preloader/Preloader";
@@ -12,13 +12,13 @@ import Paginator from '../../../../Common/Paginator/Paginator';
 export const ProfilePacks = () => {
 
     const loadingStatus = useSelector<AppStoreType, boolean>(state => state.profile.helpers.loadingStatus) // for preloader
-    const cardPacksTotalCount = useSelector<AppStoreType, number>(state => state.cards.cardPacksTotalCount)
-    const page = useSelector<AppStoreType, number>(state => state.cards.page)
-    const pageCount = useSelector<AppStoreType, number>(state => state.cards.pageCount)
-    const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
-    const sort = useSelector<AppStoreType, string>(state => state.cards.sortPacks)
-    const my = useSelector<AppStoreType, boolean>(state => state.cards.myAll)
-    const searchText = useSelector<AppStoreType, string>(state => state.cards.searchText)
+    const cardPacksTotalCount = useSelector<AppStoreType, number>(state => state.packs.cardPacksTotalCount)
+    const page = useSelector<AppStoreType, number>(state => state.packs.page)
+    const pageCount = useSelector<AppStoreType, number>(state => state.packs.pageCount)
+    const selectValue = useSelector<AppStoreType, number>(state => state.packs.selectValue) // количество элементов на одной странице
+    const sort = useSelector<AppStoreType, string>(state => state.packs.sortPacks)
+    const my = useSelector<AppStoreType, boolean>(state => state.packs.myAll)
+    const searchText = useSelector<AppStoreType, string>(state => state.packs.searchText)
 
     const dispatch = useAppDispatch()
 
@@ -32,11 +32,13 @@ export const ProfilePacks = () => {
                 loadingStatus
                     ? <Preloader/>
                     : <>
-                        <Packs />
+                        <Packs/>
                         <Select/>
 
-                        <Paginator totalItemsCount={cardPacksTotalCount}
-                                   pageSize={pageCount} portionSize={5}
+                        <Paginator
+                            totalItemsCount={cardPacksTotalCount}
+                            pageSize={pageCount}
+                            portionSize={5}
                         />
                     </>
             }

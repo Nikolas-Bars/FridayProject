@@ -1,15 +1,14 @@
 import React, {ChangeEvent} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType} from "../../../Bll/store";
-import {setSelectValueAC} from "../../../Bll/reducers/card-reducer";
-import {Dispatch} from "redux";
+import {useSelector} from "react-redux";
+import {AppStoreType, useAppDispatch} from "../../../Bll/store";
+import {setSelectValueAC} from "../../../Bll/reducers/pack-reducer";
 
 
 const Select = () => {
 
-    const dispatch = useDispatch<Dispatch<any>>()
+    const dispatch = useAppDispatch()
 
-    const selectValue = useSelector<AppStoreType, number>(state => state.cards.selectValue) // количество элементов на одной странице
+    const selectValue = useSelector<AppStoreType, number>(state => state.packs.selectValue) // количество элементов на одной странице
 
     const selectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
         dispatch(setSelectValueAC(Number(e.currentTarget.value)))

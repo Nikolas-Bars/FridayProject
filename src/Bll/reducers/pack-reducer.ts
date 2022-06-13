@@ -1,10 +1,10 @@
-import {CardPacksType, cardsAPI, ResponseGetPacksType} from "../api";
+import {CardPacksType, packAPI, ResponseGetPacksType} from "../api";
 import {setDisableButtonAC, setErrorToProfileAC, setLoadingStatusAC, setModalActiveAC} from "./profile-reducer";
 import {AppStoreType, ThunksDispatch} from "../store";
 
 
-let initialState: CardReducerStateType = {
-    cardPacks: [] as CardType[],
+let initialPacksState: PacksReducerStateType = {
+    cardPacks: [] as PacksType[],
     cardPacksTotalCount: 0,
     // количество колод
     maxCardsCount: 0,
@@ -19,8 +19,8 @@ let initialState: CardReducerStateType = {
     sortNumber: 0
 }
 
-export type CardReducerStateType = {
-    cardPacks: CardType[]
+export type PacksReducerStateType = {
+    cardPacks: PacksType[]
     cardPacksTotalCount: number // количество колод
     maxCardsCount: number
     minCardsCount: number
@@ -34,7 +34,7 @@ export type CardReducerStateType = {
     sortNumber: number
 }
 
-export type CardType = {
+export type PacksType = {
     _id: string
     user_id: string
     name: string
@@ -43,7 +43,7 @@ export type CardType = {
     updated: string
 }
 
-export const CardsReducer = (state: CardReducerStateType = initialState, action: CardsActionType): CardReducerStateType => {
+export const packsReducer = (state: PacksReducerStateType = initialPacksState, action: CardsActionType): PacksReducerStateType => {
     switch (action.type) {
         case "SET_CARDS":
             return {...state, ...action.cards}
@@ -93,13 +93,13 @@ export const setCardsTC = () => (dispatch: ThunksDispatch, getState: () => AppSt
     dispatch(setLoadingStatusAC(true))
 
     let {_id} = getState().profile
-    let rangeValue1 = getState().cards.rangeValue[0]
-    let rangeValue2 = getState().cards.rangeValue[1]
+    let rangeValue1 = getState().packs.rangeValue[0]
+    let rangeValue2 = getState().packs.rangeValue[1]
 
-    let {searchText, sortPacks, page, selectValue, myAll} = getState().cards
+    let {searchText, sortPacks, page, selectValue, myAll} = getState().packs
 
     if (myAll) {
-        cardsAPI.getCards(searchText, rangeValue1, rangeValue2, sortPacks, page, selectValue, _id)
+        packAPI.getPacks(searchText, rangeValue1, rangeValue2, sortPacks, page, selectValue, _id)
             .then(res => {
                 dispatch(setCardsAC(res.data))
             })
@@ -108,7 +108,7 @@ export const setCardsTC = () => (dispatch: ThunksDispatch, getState: () => AppSt
                 dispatch(setLoadingStatusAC(false))
             })
     } else {
-        cardsAPI.getCards(searchText, rangeValue1, rangeValue2, sortPacks, page, selectValue)
+        packAPI.getPacks(searchText, rangeValue1, rangeValue2, sortPacks, page, selectValue)
             .then(res => {
                 dispatch(setCardsAC(res.data))
             })
@@ -122,7 +122,7 @@ export const setCardsTC = () => (dispatch: ThunksDispatch, getState: () => AppSt
 
 export const newCardPackTC = (name: string) => (dispatch: ThunksDispatch) => {
     dispatch(setDisableButtonAC(true))
-    cardsAPI.newCardPack(name)
+    packAPI.newPack(name)
         .then(res => {
             dispatch(addNewCardAC(res.data.newCardsPack))
             dispatch(setModalActiveAC(false))

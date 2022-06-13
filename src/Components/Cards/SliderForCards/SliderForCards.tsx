@@ -1,7 +1,7 @@
 import React from 'react';
 import s from "./SliderForCards.module.css";
 import SuperDoubleRange from "../../../Common/c8-SuperDoubleRange/SuperDoubleRange";
-import {setCardsTC, setRangeValueAC} from "../../../Bll/reducers/card-reducer";
+import {setCardsTC, setRangeValueAC} from "../../../Bll/reducers/pack-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {Dispatch} from "redux";
 import {AppStoreType} from "../../../Bll/store";
@@ -10,7 +10,7 @@ const SliderForCards = () => {
 
     const dispatch = useDispatch<Dispatch<any>>()
 
-    const rangeValue = useSelector<AppStoreType, number[]>(state => state.cards.rangeValue)
+    const rangeValue = useSelector<AppStoreType, number[]>(state => state.packs.rangeValue)
 
     const onMouseUpHandler = () => {
         dispatch(setCardsTC())

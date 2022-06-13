@@ -1,7 +1,8 @@
 import React from 'react';
 import style from "./UserPacksList.module.css";
-import {SearchBarAddPack} from "./SearchBar_addPack/SearchBarAddPack";
 import {ProfilePacks} from './ProfilePacks/ProfilePacks';
+import {AddPack} from "../SearchBar_addPack/AddPack/AddPack";
+import { SearchBarAddPack } from '../SearchBar_addPack/SearchBarAddPack';
 
 export const UserPacksList = () => {
 
@@ -11,7 +12,10 @@ export const UserPacksList = () => {
                 My packs list
             </h2>
 
-            <SearchBarAddPack />
+            <SearchBarAddPack
+                buttonName='Add new pack'
+                ModalComponent={AddPack}
+            />
 
             <ProfilePacks/>
 

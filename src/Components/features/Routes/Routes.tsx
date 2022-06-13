@@ -8,6 +8,7 @@ import {Registration} from "../Registration/Registration";
 import {RestorePassword} from "../RestorePassword/RestorePassword";
 import {CheckEmail} from '../RestorePassword/CheckEmail/CheckEmail';
 import {SetNewPassword} from '../RestorePassword/SetNewPassword/SetNewPassword';
+import { Pack } from '../../Cards/UserPacksList/ProfilePacks/Packs/Pack/Pack';
 
 function Routess() {
 
@@ -22,6 +23,7 @@ function Routess() {
             <Route path='*' element={<Notfound/>}/>
             <Route path='/profile' element={<Profile/>}/>
             <Route path='/cards' element={<Cards/>}/>
+            <Route path='/cards/:card' element={<Pack/>}/>
         </Routes>
     );
 }

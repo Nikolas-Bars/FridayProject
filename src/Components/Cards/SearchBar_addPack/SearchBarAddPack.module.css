@@ -1,6 +1,7 @@
 .profile__body_inputs_bar {
     margin-top: 15px;
     display: flex;
+    position: relative;
 }
 
 .profile__body_input_search {
@@ -15,7 +16,7 @@
     position: absolute;
     height: 13px;
     width: 13px;
-    top: 61px;
+    top: 13px;
     left: 7px;
 }
 

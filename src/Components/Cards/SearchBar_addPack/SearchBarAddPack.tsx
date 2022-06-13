@@ -1,16 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import style from "./SearchBarAddPack.module.css";
-import {useAppDispatch} from "../../../../Bll/store";
-import {useDebounce} from "../../../features/CustomHooks/useDebounce/useDebounce";
-import SuperInputText from '../../../../Common/c1-SuperInputText/SuperInputText';
-import SuperButton from '../../../../Common/c2-SuperButton/SuperButton';
-import search from '../../../../Common/img/search_bar/search.png'
-import {setSearchTextAC} from "../../../../Bll/reducers/card-reducer";
-import {Modal} from '../../../../Common/Modal/Modal';
-import {AddPack} from "./AddPack/AddPack";
-import {setModalActiveAC} from "../../../../Bll/reducers/profile-reducer";
+import {useAppDispatch} from "../../../Bll/store";
+import {useDebounce} from "../../features/CustomHooks/useDebounce/useDebounce";
+import {setModalActiveAC} from "../../../Bll/reducers/profile-reducer";
+import {setSearchTextAC} from "../../../Bll/reducers/pack-reducer";
+import SuperInputText from "../../../Common/c1-SuperInputText/SuperInputText";
+import SuperButton from "../../../Common/c2-SuperButton/SuperButton";
+import { Modal } from '../../../Common/Modal/Modal';
+import search from '../../../Common/img/search_bar/search.png'
 
-export const SearchBarAddPack = () => {
+
+type SearchBarAddPack = {
+    buttonName: string
+    ModalComponent: React.ComponentType
+}
+
+export const SearchBarAddPack = memo(({buttonName, ModalComponent}: SearchBarAddPack) => {
 
     const dispatch = useAppDispatch()
 
@@ -48,11 +53,11 @@ export const SearchBarAddPack = () => {
                 className={style.profile__body_input_button}
                 onClick={onClickOpenModal}
             >
-                Add new pack
+                {buttonName}
             </SuperButton>
             <Modal>
-                <AddPack />
+                <ModalComponent />
             </Modal>
         </div>
     )
-}
+})
