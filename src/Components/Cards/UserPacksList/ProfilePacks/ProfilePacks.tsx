@@ -24,7 +24,7 @@ export const ProfilePacks = () => {
 
     useEffect(() => {
         dispatch(setCardsTC())
-    }, [dispatch, my,  sort, selectValue, page, searchText])
+    }, [dispatch, my, sort, selectValue, page, searchText])
 
     return (
         <div className={style.packList__container}>
@@ -37,7 +37,7 @@ export const ProfilePacks = () => {
 
                         <Paginator totalItemsCount={cardPacksTotalCount}
                                    pageSize={pageCount} portionSize={5}
-                                   />
+                        />
                     </>
             }
         </div>

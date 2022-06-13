@@ -3,7 +3,7 @@ import {setDisableButtonAC, setErrorToProfileAC, setLoadingStatusAC, setModalAct
 import {AppStoreType, ThunksDispatch} from "../store";
 
 
-let initialState: CardReduserStateType = {
+let initialState: CardReducerStateType = {
     cardPacks: [] as CardType[],
     cardPacksTotalCount: 0,
     // количество колод
@@ -18,8 +18,7 @@ let initialState: CardReduserStateType = {
     sortPacks: '',
 }
 
-
-export type CardReduserStateType = {
+export type CardReducerStateType = {
     cardPacks: CardType[]
     cardPacksTotalCount: number // количество колод
     maxCardsCount: number
@@ -42,7 +41,7 @@ export type CardType = {
     updated: string
 }
 
-export const CardsReducer = (state: CardReduserStateType = initialState, action: CardsActionType): CardReduserStateType => {
+export const CardsReducer = (state: CardReducerStateType = initialState, action: CardsActionType): CardReducerStateType => {
     switch (action.type) {
         case "SET_CARDS":
             return {...state, ...action.cards}
