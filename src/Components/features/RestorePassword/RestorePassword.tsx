@@ -47,7 +47,6 @@ export function RestorePassword() {
         return <div style={{display: "flex", alignItems: 'center', height: '100vh'}}><Preloader/></div>
     } else
         return (
-            <div className={style.main}>
             <div className={style.forgotPass__container}>
                 <div className={style.forgotPass__edit_body}>
                     <Formik
@@ -102,7 +101,6 @@ export function RestorePassword() {
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         )
 }

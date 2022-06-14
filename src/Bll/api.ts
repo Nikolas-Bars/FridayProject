@@ -32,13 +32,13 @@ export const userAPI = {
     checkAuth() {
         return instance.post<null, AxiosResponse<RegistrationResponseType>>('/auth/me')
     },
-    changeUserData(data:{name?: string, avatar?: string}){
-        return instance.put<{name?: string, avatar?: string}, AxiosResponse<ResponseType<User>>>('/auth/me', data)
+    changeUserData(data: { name?: string, avatar?: string }) {
+        return instance.put<{ name?: string, avatar?: string }, AxiosResponse<ResponseTypeUser<User>>>('/auth/me', data)
     }
 }
 
-export const cardsAPI = {
-    getCards(packName: string, min: number, max: number, sortPacks: string, page: number, pageCount: number, user_id?: string) {
+export const packAPI = {
+    getPacks(packName: string, min: number, max: number, sortPacks: string, page: number, pageCount: number, user_id?: string) {
         return instance.get<{}, AxiosResponse<ResponseGetPacksType<CardPacksType[]>>>('/cards/pack', {
             params: {
                 packName,
@@ -51,11 +51,23 @@ export const cardsAPI = {
             }
         })
     },
-    newCardPack(){
-        return instance.post('/cards/pack')
-     },
+    newPack(name: string) {
+        return instance.post<{}, AxiosResponse<ResponseNewCardType<CardPacksType>>>('/cards/pack', {cardsPack: {name}})
+    },
     deleteCardPack(id: string){
         return instance.delete(`/cards/pack?id=${id}`)
+    },
+}
+
+export const cardAPI = {
+    getCards(cardsPack_id: string, page: number, pageCount: number) {
+        return instance.get<{}, AxiosResponse<ResponseCardsType<CardType>>>('/cards/card', {
+            params: {
+                cardsPack_id,
+                page,
+                pageCount
+            }
+        })
     },
 }
 
@@ -69,8 +81,6 @@ export type CardPacksType = {
     updated: string
 }
 
-
-
 export type CardsDataType = {
     pageCount?: number;
     page?: number;
@@ -80,24 +90,17 @@ export type CardsDataType = {
     max?: number;
     user_id?: string;
 }
+
 export type PostCardPack = {
-    cardsPack:{
+    cardsPack: {
         name: string,
         deckCover: string,
         private: boolean
-    }}
+    }
+}
 export type ResponseDataCardType = {
     data: {
-        cardPacks: [
-            {
-                _id: string
-                user_id: string
-                name: string
-                cardsCount: number
-                created: string
-                updated: string
-            },
-        ]
+        cardPacks: CardPacksType[]
         cardPacksTotalCount: number
         // количество колод
         maxCardsCount: number
@@ -133,15 +136,23 @@ export type User = {
     verified: boolean
     rememberMe: boolean
 }
-type ResponseType<D = {}> = {
+
+type ResponseTypeUser<D = {}> = {
     token: string
     tokenDeathTime: number
     updatedUser: D
 }
+
 export type NewUserType = {
     email: string
     password: string
     rememberMe?: boolean
+}
+
+type ResponseNewCardType<D = {}> = {
+    token: string
+    tokenDeathTime: number
+    newCardsPack: D
 }
 
 export type ResponseGetPacksType<D = []> = {
@@ -153,4 +164,30 @@ export type ResponseGetPacksType<D = []> = {
     pageCount: number
     token: string
     tokenDeathTime: number
+}
+
+export type ResponseCardsType<D = {}> = {
+    cards: D[]
+    cardsTotalCount: number
+    maxGrade: number
+    minGrade: number
+    packUserId: string
+    page: number
+    pageCount: number
+}
+
+export type CardType = {
+    answer: string
+    cardsPack_id: string
+    comments: string
+    created: string
+    grade: number
+    more_id: string
+    question: string
+    rating: number
+    shots: number
+    type: string
+    updated: string
+    user_id: string
+    _id: string
 }

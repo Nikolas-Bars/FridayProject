@@ -1,52 +1,46 @@
-.registration__container {
-    max-width: 415px;
+.addPack {
+    max-width: 450px;
     width: 100%;
-    background-color: #F9F9FE;
-    margin: 0 auto;
-    border-radius: 8px;
-}
-
-.registration__edit_body {
-    padding: 30px;
-    max-width: 415px;
     display: flex;
     flex-direction: column;
 }
 
-.registration__edit_body h2 {
-    font-weight: 600;
-    font-size: 22px;
-    line-height: 33px;
-    align-self: center;
+.addPack__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.registration__form_body {
-    width: 100%;
-    margin-top: 40px;
+.addPack__header > img {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
 }
 
-.registration__edit {
-    position: relative;
-    margin-top: 25px;
+.addPack__title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    color: #2D2E46;
+}
+
+.addPack__body {
     display: flex;
     flex-direction: column;
+    margin-top: 50px;
 }
 
-.registration__edit > label {
+.addPack__body > label {
     font-style: normal;
     font-weight: 400;
     font-size: 13px;
     line-height: 20px;
     color: #24254A;
+    opacity: 0.5;
 }
 
-.registration__edit_buttons {
-    margin-top: 100px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.registration__edit_input {
+.addPack__input {
     margin-top: 8px;
     width: 100%;
     border: none;
@@ -54,20 +48,17 @@
     padding: 5px 0;
 }
 
-.registration__edit_input:focus {
+.addPack__input:focus {
     outline: none;
 }
 
-.registration__show_hide_pass {
-    cursor: pointer;
-    position: absolute;
-    bottom: 11px;
-    height: 16px;
-    right: 0;
-    top: 33px;
+.addPack__buttons {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
 }
 
-.registration__edit_buttonCancel {
+.addPack__button_cancel {
     max-width: 125px;
     width: 100%;
     height: 36px;
@@ -85,8 +76,8 @@
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
 }
 
-.registration__edit_buttonRegistration {
-    max-width: 186px;
+.addPack__button_save {
+    max-width: 125px;
     width: 100%;
     height: 36px;
     border: none;
@@ -102,11 +93,11 @@
     color: #ECECF9;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
-.registration__edit_buttonCancel:hover, .registration__edit_buttonRegistration:hover {
+.addPack__button_cancel:hover, .addPack__button_save:hover {
     cursor: pointer;
 }
 
-.registration__edit_buttonCancel:active, .registration__edit_buttonRegistration:active {
+.addPack__button_cancel:active, .addPack__button_save:active {
     box-shadow: 0 1px #666;
     transform: translateY(1px);
 }
@@ -117,22 +108,11 @@ button[disabled] {
     color: #6666
 }
 
-
-/*Error field show*/
-
-.registration_error {
-    color: red;
-}
-
-.registration_server_error {
+.addPack_server_error {
     max-width: 250px;
     width: 100%;
     color: red;
     margin: 10px 0;
-}
-
-.fakeDivAvatarUrl {
-    height: 35px;
 }
 
 .fakeDiv {

@@ -1,40 +1,36 @@
-.newPass__container {
-    max-width: 415px;
+.addPack {
+    max-width: 450px;
     width: 100%;
-    background-color: #F9F9FE;
-    margin: 0 auto;
-    border-radius: 8px;
-}
-
-.newPass__edit_body {
-    padding: 30px;
-    max-width: 415px;
     display: flex;
     flex-direction: column;
 }
 
-.newPass__edit_body h2 {
+.addPack__title {
+    display: flex;
+    justify-content: center;
     font-style: normal;
-    font-weight: 600;
-    font-size: 22px;
-    line-height: 33px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
     color: #2D2E46;
-    text-align: center;
 }
 
-.newPass__form_body {
-    width: 100%;
-    margin-top: 40px;
-}
-
-.newPass__edit {
-    position: relative;
-    margin-top: 25px;
+.addPack__body {
     display: flex;
     flex-direction: column;
+    margin-top: 50px;
 }
 
-.newPass__edit_input {
+.addPack__body > label {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+    color: #24254A;
+    opacity: 0.5;
+}
+
+.addPack__input {
     margin-top: 8px;
     width: 100%;
     border: none;
@@ -42,37 +38,36 @@
     padding: 5px 0;
 }
 
-.newPass__edit_input:focus {
+.addPack__input:focus {
     outline: none;
 }
 
-.newPass__show_hide_pass {
-    cursor: pointer;
-    position: absolute;
-    bottom: 11px;
-    height: 16px;
-    right: 0;
-    top: 15px;
-}
-
-.newPass__text_helper {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #2D2E46;
-    opacity: 0.5;
-    text-align: justify;
-}
-
-.newPass__edit_button {
-    margin-top: 70px;
+.addPack__buttons {
+    margin-top: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
-.newPass__edit_buttonSubmit {
-    max-width: 266px;
+.addPack__button_cancel {
+    max-width: 125px;
+    width: 100%;
+    height: 36px;
+    border: none;
+    border-radius: 30px;
+    background: #D7D8EF;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    letter-spacing: 0.01em;
+    color: #21268F;
+    opacity: 0.8;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+.addPack__button_save {
+    max-width: 125px;
     width: 100%;
     height: 36px;
     border: none;
@@ -88,11 +83,11 @@
     color: #ECECF9;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
-.newPass__edit_buttonSubmit:hover {
+.addPack__button_cancel:hover, .addPack__button_save:hover {
     cursor: pointer;
 }
 
-.newPass__edit_buttonSubmit:active {
+.addPack__button_cancel:active, .addPack__button_save:active {
     box-shadow: 0 1px #666;
     transform: translateY(1px);
 }
@@ -103,21 +98,11 @@ button[disabled] {
     color: #6666
 }
 
-/*Error field show*/
-
-.newPass_error {
-    color: red;
-}
-
-.newPass_server_error {
+.addPack_server_error {
     max-width: 250px;
     width: 100%;
     color: red;
     margin: 10px 0;
-}
-
-.fakeDivAvatarUrl {
-    height: 35px;
 }
 
 .fakeDiv {

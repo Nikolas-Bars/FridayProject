@@ -1,17 +1,19 @@
-import React, {useState} from "react";
-import s from './Paginator.module.css'
-import {useSelector} from "react-redux";
-import {AppStoreType, useAppDispatch} from "../../Bll/store";
-import {setCurrentPageAC} from "../../Bll/reducers/card-reducer";
+import React, {useEffect, useState} from "react";
+import style from './Paginator.module.css'
+import SuperButton from "../c2-SuperButton/SuperButton";
 
+type PaginatorType = {
+    currentPage: number
+    totalItemsCount: number
+    pageSize: number
+    portionSize: number
+    changePageNumber: (page: number) => void
+}
 
-const Paginator = ({totalItemsCount, pageSize, portionSize}: any) => {
+const Paginator = ({currentPage, totalItemsCount, pageSize, portionSize, changePageNumber}: PaginatorType) => {
 
-    const currentPage = useSelector<AppStoreType>(state => state.cards.page)
-
-    const dispatch = useAppDispatch()
     const onPageChange = (page: number) => {
-        dispatch(setCurrentPageAC(page))
+        changePageNumber(page)
     }
 
     let pagesCount = Math.ceil(totalItemsCount / pageSize) // делим все приходящие с сервера элементы на кол-во элементов отображаемых на одной странице
@@ -23,33 +25,61 @@ const Paginator = ({totalItemsCount, pageSize, portionSize}: any) => {
     }
 
     let portionCount = Math.ceil(pages.length / portionSize) // делим количество страниц из массива на размер порций (151 / 10) (порция - количество отображаемых на пагинаторе элементов (а справа и слева будут кнопки))
-    let [portinonNumber, setPortionNumber] = useState(1)
-    let leftPortionPageNumber = (portinonNumber - 1) * portionSize + 1
-    let rightPortionPageNumber = portinonNumber * portionSize
+    let [portionNumber, setPortionNumber] = useState<number>(1)
+    let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1
+    let rightPortionPageNumber = portionNumber * portionSize
 
-    return <div className={s.paginator}>
-        {portinonNumber > 1 &&
-        <button onClick={() => {
-            setPortionNumber(portinonNumber - 1)
-        }}>PREV</button>}
-        {pages
-            .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
-            .map((p) => {
+    useEffect(() => {
+        setPortionNumber(Math.ceil(currentPage / portionSize))
+    }, [currentPage, portionSize])
 
-                return <div key={p}
-                            onClick={() => {
-                                onPageChange(p)
-                            }} className={p === currentPage ? s.active : s.pageNumber}>{p}</div>
-            })}
+    return (
+        <div className={style.paginator}>
 
+            {
+                (portionNumber === 1) &&
+                <div
+                    className={style.fakeDiv}
+                />
+            }
 
-        {portionCount > portinonNumber &&
-        <button onClick={() => {
-            setPortionNumber(portinonNumber + 1)
-        }}>NEXT</button>}
+            {
+                portionNumber > 1 &&
+                <SuperButton
+                    className={style.prev_button}
+                    onClick={() => setPortionNumber(portionNumber - 1)}
+                >
+                    &lt;
+                </SuperButton>
+            }
 
-    </div>
+            {
+                pages
+                    .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
+                    .map((p) => {
+                        return (
+                            <div
+                                key={p}
+                                onClick={() => onPageChange(p)}
+                                className={p === currentPage ? style.active : style.pageNumber}
+                            >
+                                {p}
+                            </div>
+                        )
+                    })}
 
+            {
+                portionCount > portionNumber &&
+                <SuperButton
+                    className={style.next_button}
+                    onClick={() => setPortionNumber(portionNumber + 1)}
+                >
+                    &gt;
+                </SuperButton>
+            }
+
+        </div>
+    )
 }
 
 
