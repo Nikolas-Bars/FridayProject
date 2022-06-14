@@ -1,18 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import style from './Packs.module.css'
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../../Bll/store";
-import {PacksType, setSortPacksAC} from '../../../../../Bll/reducers/pack-reducer';
+import {deleteCardPackTC, setSortPacksAC} from '../../../../../Bll/reducers/pack-reducer';
 import SuperButton from '../../../../../Common/c2-SuperButton/SuperButton';
 import sortIcon from '../../../../../Common/img/sort/sort.png'
+import {PacksType} from "../../../../../Bll/reducers/pack-reducer";
+import {Modal} from "../../../../../Common/Modal/Modal";
+import EditPack from "./Cards/EditPack";
+import {setModalActiveAC} from "../../../../../Bll/reducers/profile-reducer";
+
+
+
 
 export const Packs = () => {
 
     const packs = useSelector<AppStoreType, PacksType[]>(state => state.packs.cardPacks)
     const sortPacks = useSelector<AppStoreType, string>(state => state.packs.sortPacks)
     const sortNumber = useSelector<AppStoreType, number>(state => state.packs.sortNumber)
-
+    const userID = useSelector<AppStoreType, string>(state => state.profile._id)
+    const [toggleModal, setToggleModal] = useState<boolean>(false)
     const dispatch = useAppDispatch()
 
     const handleSortField = (e: React.MouseEvent<HTMLSpanElement>) => {
@@ -24,6 +32,15 @@ export const Packs = () => {
                 dispatch(setSortPacksAC(0 + trigger, 0))
             }
         }
+    }
+
+    const deletePack = (id: string) => {
+        dispatch(deleteCardPackTC(id))
+    }
+
+    const setModal = () => {
+        dispatch(setModalActiveAC(true))
+        setToggleModal(true)
     }
 
     return (
@@ -115,12 +132,21 @@ export const Packs = () => {
                                 {pack.user_name}
                             </span>
                             <span className={style.packList__action}>
-                                <SuperButton className={style.packList__button_delete}>
+                                {userID === pack.user_id && <> <SuperButton onClick={() => {
+                                    deletePack(pack._id)
+                                }} className={style.packList__button_delete}>
                                     Delete
                                 </SuperButton>
-                                <SuperButton className={style.packList__button_edit_learn}>
-                                    Edit
-                                </SuperButton>
+                                    <SuperButton onClick={setModal} className={style.packList__button_edit_learn}>
+                                        Edit
+                                    </SuperButton></>}
+
+                                {toggleModal && <Modal>
+                                    <EditPack toggleModal={toggleModal} setToggleModal={(toggle)=>{setToggleModal(toggle)}}/>
+                                </Modal>}
+
+
+
                                 <SuperButton className={style.packList__button_edit_learn}>
                                     Learn
                                 </SuperButton>

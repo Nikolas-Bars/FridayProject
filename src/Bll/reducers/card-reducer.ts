@@ -41,10 +41,6 @@ export const cardsReducer = (state: CardsReducerStateType = initialCardsState, a
                 page: action.page
             }
         }
-        case "DELETE_CARD_PACK":
-            return {...state, cardPacks: state.cardPacks.filter(el => el._id !== action.id)}
-        case "DELETE_CARD_PACK":
-            return {...state, cardPacks: state.cardPacks.filter(el => el._id !== action.id)}
             default: {
             return state
         }
@@ -52,10 +48,8 @@ export const cardsReducer = (state: CardsReducerStateType = initialCardsState, a
 }
 
 export type CardsActionType =
-    ReturnType<typeof setCardsAC> | | ReturnType<typeof deleteCardPackAC>
+    ReturnType<typeof setCardsAC>
 
-
-export const deleteCardPackAC = (id: string) => ({type: 'DELETE_CARD_PACK', id} as const)
 
 
 export const setCardsAC = (cards: CardsReducerStateType) => ({
@@ -76,15 +70,3 @@ export const getCards = (id: string) => (dispatch: ThunksDispatch, getState: () 
         })
 }
 
-export const deleteCardPackTC = (id: string) => (dispatch: Dispatch) => {
-    dispatch(setLoadingStatusAC(true))
-    cardsAPI.deleteCardPack(id)
-        .then(res => {
-            // @ts-ignore
-            dispatch(setCardsTC())
-            dispatch(deleteCardPackAC(id))
-        })
-        .catch(err => console.log(err))
-        .finally(()=>{dispatch(setLoadingStatusAC(false))})
-
-}

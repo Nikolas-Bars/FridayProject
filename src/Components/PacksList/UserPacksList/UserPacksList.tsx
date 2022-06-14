@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import style from "./UserPacksList.module.css";
 import {ProfilePacks} from './ProfilePacks/ProfilePacks';
 import {AddPack} from "../SearchBar_addPack/AddPack/AddPack";
@@ -14,7 +14,6 @@ export const UserPacksList = () => {
 
             <SearchBarAddPack
                 buttonName='Add new pack'
-                ModalComponent={AddPack}
             />
 
             <ProfilePacks/>

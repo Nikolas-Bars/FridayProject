@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import style from "./Cards.module.css";
 import {AppStoreType, useAppDispatch} from "../../../../../../Bll/store";
@@ -25,6 +25,7 @@ export const Cards = () => {
     const pageCount = useSelector<AppStoreType, number>(state => state.cards.pageCount)
 
 
+
     useEffect(() => {
         if (card) {
             dispatch(getCards(card))
@@ -48,7 +49,6 @@ export const Cards = () => {
 
                 <SearchBarAddPack
                     buttonName='Add new card'
-                    ModalComponent={AddCard}
                 />
 
                 {
