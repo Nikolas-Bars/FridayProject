@@ -57,6 +57,9 @@ export const packAPI = {
     deleteCardPack(id: string){
         return instance.delete(`/cards/pack?id=${id}`)
     },
+    editPack(cardsPack: {_id: string, name: string}){
+        return instance.put(`/cards/pack`, {cardsPack: cardsPack})
+    },
 }
 
 export const cardAPI = {

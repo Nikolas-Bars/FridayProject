@@ -10,8 +10,7 @@ import {PacksType} from "../../../../../Bll/reducers/pack-reducer";
 import {Modal} from "../../../../../Common/Modal/Modal";
 import EditPack from "./Cards/EditPack";
 import {setModalActiveAC} from "../../../../../Bll/reducers/profile-reducer";
-
-
+import DeletePackModal from "./Cards/DeletePackModal";
 
 
 export const Packs = () => {
@@ -21,6 +20,8 @@ export const Packs = () => {
     const sortNumber = useSelector<AppStoreType, number>(state => state.packs.sortNumber)
     const userID = useSelector<AppStoreType, string>(state => state.profile._id)
     const [toggleModal, setToggleModal] = useState<boolean>(false)
+    const [packIDForEditMode, setPackIDForEditMode] = useState<string>('')
+    const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false)
     const dispatch = useAppDispatch()
 
     const handleSortField = (e: React.MouseEvent<HTMLSpanElement>) => {
@@ -38,9 +39,18 @@ export const Packs = () => {
         dispatch(deleteCardPackTC(id))
     }
 
-    const setModal = () => {
-        dispatch(setModalActiveAC(true))
-        setToggleModal(true)
+    const setModal = (type: 'edit' | 'delete', id: string) => {
+        setPackIDForEditMode(id)
+        if (type === "edit") {
+            dispatch(setModalActiveAC(true))
+            setToggleModal(true)
+
+
+        } else {
+            dispatch(setModalActiveAC(true))
+            setToggleDeleteModal(true)
+        }
+
     }
 
     return (
@@ -132,19 +142,28 @@ export const Packs = () => {
                                 {pack.user_name}
                             </span>
                             <span className={style.packList__action}>
-                                {userID === pack.user_id && <> <SuperButton onClick={() => {
-                                    deletePack(pack._id)
-                                }} className={style.packList__button_delete}>
+                                {userID === pack.user_id && <>
+
+                           <SuperButton onClick={() => {setModal("delete", pack._id)}} className={style.packList__button_delete}>
                                     Delete
-                                </SuperButton>
-                                    <SuperButton onClick={setModal} className={style.packList__button_edit_learn}>
+                           </SuperButton>
+                                    {toggleDeleteModal &&
+
+                                    <Modal><DeletePackModal deletePack={() => {deletePack(packIDForEditMode)}} toggleModal={toggleDeleteModal} setToggleModal={(toggle) => {
+                                                         setToggleDeleteModal(toggle)}}/>
+                                    </Modal>}
+
+
+                                    <SuperButton onClick={() => {setModal('edit', pack._id)}} className={style.packList__button_edit_learn}>
                                         Edit
-                                    </SuperButton></>}
+                                    </SuperButton>
 
-                                {toggleModal && <Modal>
-                                    <EditPack toggleModal={toggleModal} setToggleModal={(toggle)=>{setToggleModal(toggle)}}/>
-                                </Modal>}
+                                    {toggleModal &&
+                                    <Modal>
+                                        <EditPack packID={packIDForEditMode} toggleModal={toggleModal} setToggleModal={(toggle) => {setToggleModal(toggle)}}/>
+                                    </Modal>}
 
+                                </>}
 
 
                                 <SuperButton className={style.packList__button_edit_learn}>

@@ -7,19 +7,30 @@ import s from './EditPack.module.css'
 import closeIcon from "../../../../../../Common/img/delete/delete.png";
 import style from "../../../../SearchBar_addPack/AddPack/AddPack.module.css";
 import SuperButton from "../../../../../../Common/c2-SuperButton/SuperButton";
+import {editPackAC, editPackTC} from "../../../../../../Bll/reducers/pack-reducer";
+import {ThunkDispatch} from "redux-thunk";
+import {ThunksDispatch} from "../../../../../../Bll/store";
 
 type PropsType = {
     toggleModal: boolean,
     setToggleModal: (toggle: boolean)=>void
+    packID: string
 }
 
-const EditPack = ({toggleModal, setToggleModal}:PropsType) => {
-
+const EditPack = ({toggleModal, setToggleModal, packID}:PropsType) => {
+    console.log(packID)
     const [value, setValue] = useState<string>('')
 
-    const dispatch = useDispatch<Dispatch>()
+    const dispatch = useDispatch<ThunksDispatch>()
 
     const onClickCloseModal = () => {
+        dispatch(setModalActiveAC(false))
+        setToggleModal(false)
+
+    }
+
+    const saveButtonHandler =()=>{
+        dispatch(editPackTC(packID, value))
         dispatch(setModalActiveAC(false))
         setToggleModal(false)
     }
@@ -61,7 +72,7 @@ const EditPack = ({toggleModal, setToggleModal}:PropsType) => {
                 </SuperButton>
                 <SuperButton
                     className={style.addPack__button_save}
-                    onClick={()=>{}}
+                    onClick={saveButtonHandler}
 
                 >
                     Save

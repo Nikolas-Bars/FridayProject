@@ -23,7 +23,7 @@ let initialPacksState: PacksReducerStateType = {
     rangeValue: [0, 110],
     sortPacks: '0updated',
     sortNumber: 0,
-    editPackMode: false,
+
 }
 
 export type PacksReducerStateType = {
@@ -39,7 +39,7 @@ export type PacksReducerStateType = {
     rangeValue: number[],
     sortPacks: string
     sortNumber: number
-    editPackMode: boolean
+
 }
 
 export type PacksType = {
@@ -72,8 +72,14 @@ export const packsReducer = (state: PacksReducerStateType = initialPacksState, a
             return {...state, sortPacks: action.sort, sortNumber: action.sortNumber}
         case "DELETE_CARD_PACK":
             return {...state, cardPacks: state.cardPacks.filter(el => el._id !== action.id)}
-        case "SET_EDIT_PACK_MODE":
-            return {...state, editPackMode: action.editMode}
+        case "SET_EDIT_PACK":
+            debugger
+            return {
+                ...state,
+                cardPacks: state.cardPacks.map(el => {
+                    debugger
+                    return el._id === action.cardsPack.id ? {...el, name: action.cardsPack.newTitle} : {...el}
+                })}
         default: {
             return state
         }
@@ -90,7 +96,8 @@ export type PacksActionType =
     | ReturnType<typeof setSortPacksAC>
     | ReturnType<typeof addNewCardAC>
     | ReturnType<typeof deleteCardPackAC>
-    | ReturnType<typeof setModalEditPackActiveType>
+    | ReturnType<typeof editPackAC>
+
 
 export const setPacksAC = (cards: ResponseGetPacksType<CardPacksType[]>) => ({type: 'SET_CARDS', cards} as const)
 export const addNewCardAC = (card: any) => ({type: 'ADD_NEW_CARD', card} as const)
@@ -101,7 +108,7 @@ export const setMyAllAC = (newValue: boolean) => ({type: 'SET_MYALL', newValue} 
 export const setSelectValueAC = (selectValue: number) => ({type: 'SET_SELECT_VALUE', selectValue} as const)
 export const setRangeValueAC = (rangeValue: number[]) => ({type: 'SET_RANGE_VALUE', rangeValue} as const)
 export const deleteCardPackAC = (id: string) => ({type: 'DELETE_CARD_PACK', id} as const)
-export const setModalEditPackActiveType = (editMode: boolean) => ({type: "SET_EDIT_PACK_MODE", editMode}as const)
+export const editPackAC = (cardsPack:{id: string, newTitle: string}) => ({type: "SET_EDIT_PACK", cardsPack}as const)
 
 
 export const setCardsTC = () => (dispatch: ThunksDispatch, getState: () => AppStoreType) => {
@@ -161,6 +168,17 @@ export const deleteCardPackTC = (id: string) => (dispatch: ThunksDispatch) => {
         .then(res => {
             dispatch(setCardsTC())
             dispatch(deleteCardPackAC(id))
+        })
+        .catch(err => console.log(err))
+        .finally(()=>{dispatch(setLoadingStatusAC(false))})
+
+}
+
+export const editPackTC = (id: string, newTitle: string) => (dispatch: ThunksDispatch) => {
+    dispatch(setLoadingStatusAC(true))
+    packAPI.editPack({_id: id, name: newTitle})
+        .then(res => {
+            dispatch(editPackAC({id, newTitle}))
         })
         .catch(err => console.log(err))
         .finally(()=>{dispatch(setLoadingStatusAC(false))})
