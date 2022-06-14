@@ -6,7 +6,7 @@ import arrow from '../../../../../../Common/img/arrow/arrow.png'
 import {Questions} from "./Questions/Questions";
 import {AddCard} from "../../../../SearchBar_addPack/AddCard/AddCard";
 import {SearchBarAddPack} from "../../../../SearchBar_addPack/SearchBarAddPack";
-import {getCards} from "../../../../../../Bll/reducers/card-reducer";
+import {getCardsTC} from "../../../../../../Bll/reducers/card-reducer";
 import Paginator from '../../../../../../Common/Paginator/Paginator';
 import {useSelector} from "react-redux";
 import {setCurrentPageAC} from "../../../../../../Bll/reducers/pack-reducer";
@@ -15,7 +15,7 @@ import Preloader from "../../../../../../Common/Preloader/Preloader";
 
 export const Cards = () => {
 
-    const {card} = useParams<'card'>()
+    const {cardId} = useParams<'cardId'>()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
@@ -26,10 +26,10 @@ export const Cards = () => {
 
 
     useEffect(() => {
-        if (card) {
-            dispatch(getCards(card))
+        if (cardId) {
+            dispatch(getCardsTC(cardId))
         }
-    }, [dispatch, card, page])
+    }, [dispatch, cardId, page])
 
     const changePageNumber = (page: number) => {
         dispatch(setCurrentPageAC(page))

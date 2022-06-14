@@ -52,7 +52,7 @@ export const packAPI = {
         })
     },
     newPack(name: string) {
-        return instance.post<{}, AxiosResponse<ResponseNewCardType<CardPacksType>>>('/cards/pack', {cardsPack: {name}})
+        return instance.post<{}, AxiosResponse<ResponseNewPackType<CardPacksType>>>('/cards/pack', {cardsPack: {name}})
     },
 }
 
@@ -66,8 +66,10 @@ export const cardAPI = {
             }
         })
     },
+    addCard(cardsPack_id: string, question: string, answer: string) {
+        return instance.post<{cardsPack_id: string, question: string, answer: string}, AxiosResponse<ResponseNewCardType<CardType>>>('/cards/card', {card: {cardsPack_id, question, answer}})
+    }
 }
-
 
 export type CardPacksType = {
     _id: string
@@ -77,7 +79,6 @@ export type CardPacksType = {
     user_name: string
     updated: string
 }
-
 export type CardsDataType = {
     pageCount?: number;
     page?: number;
@@ -107,7 +108,6 @@ export type ResponseDataCardType = {
 
     }
 }
-
 export type RegistrationResponseType = {
     created: string
     email: string
@@ -132,24 +132,27 @@ export type User = {
     verified: boolean
     rememberMe: boolean
 }
-
 type ResponseTypeUser<D = {}> = {
     token: string
     tokenDeathTime: number
     updatedUser: D
 }
-
 export type NewUserType = {
     email: string
     password: string
     rememberMe?: boolean
 }
-
-type ResponseNewCardType<D = {}> = {
+type ResponseNewPackType<D = {}> = {
     token: string
     tokenDeathTime: number
     newCardsPack: D
 }
+type ResponseNewCardType<D = {}> = {
+    token: string
+    tokenDeathTime: number
+    newCard: D
+}
+
 
 export type ResponseGetPacksType<D = []> = {
     cardPacks: D

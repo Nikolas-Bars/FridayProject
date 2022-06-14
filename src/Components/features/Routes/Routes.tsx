@@ -23,7 +23,7 @@ function Routess() {
             <Route path='*' element={<Notfound/>}/>
             <Route path='/profile' element={<Profile/>}/>
             <Route path='/packs' element={<PacksList/>}/>
-            <Route path='/packs/:card' element={<Cards/>}/>
+            <Route path='/packs/:cardId' element={<Cards/>}/>
         </Routes>
     );
 }

@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import style from "./AddCard.module.css";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../Bll/store";
-import {newCardPackTC} from "../../../../Bll/reducers/pack-reducer";
 import {setModalActiveAC} from "../../../../Bll/reducers/profile-reducer";
 import SuperInputText from "../../../../Common/c1-SuperInputText/SuperInputText";
 import SuperButton from "../../../../Common/c2-SuperButton/SuperButton";
+import {addCardTC} from "../../../../Bll/reducers/card-reducer";
 
 export const AddCard = () => {
 
@@ -14,11 +14,12 @@ export const AddCard = () => {
     const disableButton = useSelector<AppStoreType, boolean>(state => state.profile.helpers.disableButton)
     const errorMessage = useSelector<AppStoreType, string | null>(state => state.profile.helpers.errorMessage)
 
-    const [newPackName, setNewPackName] = useState<string>('');
+    const [newQuestion, setNewQuestion] = useState<string>('');
+    const [newAnswer, setNewAnswer] = useState<string>('');
 
-    const addNewPack = () => {
-        if (newPackName.trim() !== '') {
-            dispatch(newCardPackTC(newPackName))
+    const addNewQuestion = () => {
+        if (newQuestion.trim() !== '' && newAnswer.trim() !== '') {
+            dispatch(addCardTC(newQuestion, newAnswer))
         }
     }
 
@@ -35,26 +36,30 @@ export const AddCard = () => {
                 <label>Question</label>
                 <SuperInputText
                     className={style.addPack__input}
-                    value={newPackName}
-                    onChangeText={setNewPackName}
+                    value={newQuestion}
+                    onChangeText={setNewQuestion}
                     type='text'
-                    placeholder='Enter the text'
+                    placeholder='Enter the Question'
+                    disabled={disableButton}
                 />
                 <SuperInputText
                     type='file'
+                    disabled={disableButton}
                 />
             </div>
             <div className={style.addPack__body}>
                 <label>Answer</label>
                 <SuperInputText
                     className={style.addPack__input}
-                    value={newPackName}
-                    onChangeText={setNewPackName}
+                    value={newAnswer}
+                    onChangeText={setNewAnswer}
                     type='text'
-                    placeholder='Enter the text'
+                    placeholder='Enter the Answer'
+                    disabled={disableButton}
                 />
                 <SuperInputText
                     type='file'
+                    disabled={disableButton}
                 />
             </div>
             {
@@ -77,7 +82,7 @@ export const AddCard = () => {
                 </SuperButton>
                 <SuperButton
                     className={style.addPack__button_save}
-                    onClick={addNewPack}
+                    onClick={addNewQuestion}
                     disabled={disableButton}
                 >
                     Save

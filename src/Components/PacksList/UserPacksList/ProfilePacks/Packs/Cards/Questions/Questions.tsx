@@ -8,6 +8,14 @@ export const Questions = () => {
 
     const questions = useSelector<AppStoreType, CardType[]>(state => state.cards.cards)
 
+    if (!questions.length) {
+        return (
+            <div className={style.question__empty}>
+                This pack is empty. Click add new card to fill this pack
+            </div>
+        )
+    }
+
     return (
         <div className={style.question__container}>
             <div className={style.question__row}>
@@ -28,7 +36,10 @@ export const Questions = () => {
             {
                 questions && questions.map(quest => {
                     return (
-                        <div className={style.question__list}>
+                        <div
+                            key={quest._id}
+                            className={style.question__list}
+                        >
                             <span className={style.question__question}>
                                 {quest.question}
                             </span>

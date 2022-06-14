@@ -126,6 +126,7 @@ export const newCardPackTC = (name: string) => (dispatch: ThunksDispatch) => {
         .then(res => {
             dispatch(addNewCardAC(res.data.newCardsPack))
             dispatch(setModalActiveAC(false))
+            dispatch(setDisableButtonAC(false))
         })
         .catch(err => {
             if (err.response.data) {
@@ -133,8 +134,5 @@ export const newCardPackTC = (name: string) => (dispatch: ThunksDispatch) => {
             } else {
                 dispatch(setErrorToProfileAC(err.message))
             }
-        })
-        .finally(() => {
-            dispatch(setDisableButtonAC(false))
         })
 }
