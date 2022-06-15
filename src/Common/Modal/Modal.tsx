@@ -14,11 +14,7 @@ export const Modal = ({children}: PropsType) => {
     const isAuth = useSelector<AppStoreType, boolean>(state => state.profile.helpers.isLoggedIn)
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        if (isAuth) {
-            dispatch(dispatch(setModalActiveAC(false)))
-        }
-    }, [isAuth, dispatch])
+
 
     return (
         <div className={active ? `${style.modal} ${style.active}` : style.modal}>

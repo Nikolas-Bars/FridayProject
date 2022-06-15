@@ -8,16 +8,18 @@ import SuperInputText from "../../../Common/c1-SuperInputText/SuperInputText";
 import SuperButton from "../../../Common/c2-SuperButton/SuperButton";
 import { Modal } from '../../../Common/Modal/Modal';
 import search from '../../../Common/img/search_bar/search.png'
+import {AddPack} from "./AddPack/AddPack";
 
 
 type SearchBarAddPack = {
     buttonName: string
-    ModalComponent: React.ComponentType
 }
 
-export const SearchBarAddPack = memo(({buttonName, ModalComponent}: SearchBarAddPack) => {
+export const SearchBarAddPack = memo(({buttonName}: SearchBarAddPack) => {
 
     const dispatch = useAppDispatch()
+
+    const [toggleModal, setToggleModal] = useState<boolean>(false)
 
     const [searchPack, setSearchPack] = useState<string>('')
 
@@ -31,6 +33,7 @@ export const SearchBarAddPack = memo(({buttonName, ModalComponent}: SearchBarAdd
 
     const onClickOpenModal = () => {
         dispatch(setModalActiveAC(true))
+        setToggleModal(true)
     }
 
     useEffect(() => {
@@ -56,7 +59,7 @@ export const SearchBarAddPack = memo(({buttonName, ModalComponent}: SearchBarAdd
                 {buttonName}
             </SuperButton>
             <Modal>
-                <ModalComponent />
+                <AddPack toggleModal={toggleModal} setToggleModal={(toggle)=> {setToggleModal(toggle)}}/>
             </Modal>
         </div>
     )

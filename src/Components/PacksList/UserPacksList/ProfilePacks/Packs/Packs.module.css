@@ -1,11 +1,13 @@
 .packList__body {
     flex: 1 1 auto;
+
 }
 
 .packList__row {
     display: flex;
     background-color: #ECECF9;
     padding: 16px 0 16px 24px;
+
 }
 
 .packList__row > span {
@@ -21,15 +23,18 @@
     align-items: center;
     background-color: #fff;
     padding: 16px 0 16px 24px;
-}
 
-.packList__list:nth-child(even) {
-    background-color: #F8F7FD;
 
 }
 
 .packList__list:nth-child(even) {
     background-color: #F8F7FD;
+
+}
+
+.packList__list:nth-child(even) {
+    background-color: #F8F7FD;
+
 }
 
 .packList__list > span {
@@ -47,6 +52,7 @@
 
 .packList__name_none_clicked {
     flex: 0 1 25%;
+    overflow: hidden;
 }
 
 .packList__cards {

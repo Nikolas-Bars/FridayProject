@@ -54,6 +54,12 @@ export const packAPI = {
     newPack(name: string) {
         return instance.post<{}, AxiosResponse<ResponseNewPackType<CardPacksType>>>('/cards/pack', {cardsPack: {name}})
     },
+    deleteCardPack(id: string){
+        return instance.delete(`/cards/pack?id=${id}`)
+    },
+    editPack(cardsPack: {_id: string, name: string}){
+        return instance.put(`/cards/pack`, {cardsPack: cardsPack})
+    },
 }
 
 export const cardAPI = {
@@ -88,6 +94,7 @@ export type CardsDataType = {
     max?: number;
     user_id?: string;
 }
+
 export type PostCardPack = {
     cardsPack: {
         name: string,

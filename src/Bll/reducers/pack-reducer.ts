@@ -1,5 +1,11 @@
 import {CardPacksType, packAPI, ResponseGetPacksType} from "../api";
-import {setDisableButtonAC, setErrorToProfileAC, setLoadingStatusAC, setModalActiveAC} from "./profile-reducer";
+import {
+    ACTIONS_PROFILE_TYPE,
+    setDisableButtonAC,
+    setErrorToProfileAC,
+    setLoadingStatusAC,
+    setModalActiveAC
+} from "./profile-reducer";
 import {AppStoreType, ThunksDispatch} from "../store";
 
 
@@ -16,7 +22,8 @@ let initialPacksState: PacksReducerStateType = {
     selectValue: 10,
     rangeValue: [0, 110],
     sortPacks: '0updated',
-    sortNumber: 0
+    sortNumber: 0,
+
 }
 
 export type PacksReducerStateType = {
@@ -32,6 +39,7 @@ export type PacksReducerStateType = {
     rangeValue: number[],
     sortPacks: string
     sortNumber: number
+
 }
 
 export type PacksType = {
@@ -62,6 +70,16 @@ export const packsReducer = (state: PacksReducerStateType = initialPacksState, a
             return {...state, rangeValue: action.rangeValue}
         case "SET_SORT_PACKS":
             return {...state, sortPacks: action.sort, sortNumber: action.sortNumber}
+        case "DELETE_CARD_PACK":
+            return {...state, cardPacks: state.cardPacks.filter(el => el._id !== action.id)}
+        case "SET_EDIT_PACK":
+            debugger
+            return {
+                ...state,
+                cardPacks: state.cardPacks.map(el => {
+                    debugger
+                    return el._id === action.cardsPack.id ? {...el, name: action.cardsPack.newTitle} : {...el}
+                })}
         default: {
             return state
         }
@@ -77,6 +95,9 @@ export type PacksActionType =
     | ReturnType<typeof setRangeValueAC>
     | ReturnType<typeof setSortPacksAC>
     | ReturnType<typeof addNewCardAC>
+    | ReturnType<typeof deleteCardPackAC>
+    | ReturnType<typeof editPackAC>
+
 
 export const setPacksAC = (cards: ResponseGetPacksType<CardPacksType[]>) => ({type: 'SET_CARDS', cards} as const)
 export const addNewCardAC = (card: any) => ({type: 'ADD_NEW_CARD', card} as const)
@@ -86,6 +107,8 @@ export const setSortPacksAC = (sort: string, sortNumber: number) => ({type: 'SET
 export const setMyAllAC = (newValue: boolean) => ({type: 'SET_MYALL', newValue} as const) // перключатель - мои либо все колоды отображаются
 export const setSelectValueAC = (selectValue: number) => ({type: 'SET_SELECT_VALUE', selectValue} as const)
 export const setRangeValueAC = (rangeValue: number[]) => ({type: 'SET_RANGE_VALUE', rangeValue} as const)
+export const deleteCardPackAC = (id: string) => ({type: 'DELETE_CARD_PACK', id} as const)
+export const editPackAC = (cardsPack:{id: string, newTitle: string}) => ({type: "SET_EDIT_PACK", cardsPack}as const)
 
 
 export const setCardsTC = () => (dispatch: ThunksDispatch, getState: () => AppStoreType) => {
@@ -135,4 +158,27 @@ export const newCardPackTC = (name: string) => (dispatch: ThunksDispatch) => {
                 dispatch(setErrorToProfileAC(err.message))
             }
         })
+}
+
+export const deleteCardPackTC = (id: string) => (dispatch: ThunksDispatch) => {
+    dispatch(setLoadingStatusAC(true))
+    packAPI.deleteCardPack(id)
+        .then(res => {
+            dispatch(setCardsTC())
+            dispatch(deleteCardPackAC(id))
+        })
+        .catch(err => console.log(err))
+        .finally(()=>{dispatch(setLoadingStatusAC(false))})
+
+}
+
+export const editPackTC = (id: string, newTitle: string) => (dispatch: ThunksDispatch) => {
+    dispatch(setLoadingStatusAC(true))
+    packAPI.editPack({_id: id, name: newTitle})
+        .then(res => {
+            dispatch(editPackAC({id, newTitle}))
+        })
+        .catch(err => console.log(err))
+        .finally(()=>{dispatch(setLoadingStatusAC(false))})
+
 }

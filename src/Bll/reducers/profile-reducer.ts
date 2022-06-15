@@ -218,6 +218,7 @@ export const changeUserNameInfoAC = (name: string) => ({type: ACTIONS_PROFILE_TY
 export const setModalActiveAC = (active: boolean) => ({type: ACTIONS_PROFILE_TYPE.SET_MODAL_IS_ACTIVE, active} as const)
 
 
+
 //Types Actions
 type LoginActionType = ReturnType<typeof setLoggedInAC>
 type SetDisableButtonSaveButtonEditProfileType = ReturnType<typeof setDisableButtonAC>

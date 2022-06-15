@@ -7,6 +7,7 @@ import {Packs} from './Packs/Packs';
 import Select from '../../Select/Select';
 import Preloader from "../../../../Common/Preloader/Preloader";
 import Paginator from '../../../../Common/Paginator/Paginator';
+import EditPack from "./Packs/Cards/EditPack";
 
 export const ProfilePacks = () => {
 
@@ -35,7 +36,7 @@ export const ProfilePacks = () => {
                 loadingStatus
                     ? <Preloader/>
                     : <>
-                        <Packs/>
+                        <Packs />
                         <Select/>
 
                         <Paginator
