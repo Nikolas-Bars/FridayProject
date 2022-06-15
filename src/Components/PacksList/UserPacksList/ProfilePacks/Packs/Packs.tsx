@@ -4,11 +4,12 @@ import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../../Bll/store";
 import {deleteCardPackTC, editPackTC, PacksType, setSortPacksAC} from '../../../../../Bll/reducers/pack-reducer';
-import SuperButton from '../../../../../Common/c2-SuperButton/SuperButton';
 import sortIcon from '../../../../../Common/img/sort/sort.png'
 import {Modal} from "../../../../../Common/Modal/Modal";
-import DeletePackModal from "./Cards/DeletePackModal";
-import EditPack from "./Cards/EditPack";
+import DeleteAction from "../../../../../Common/Modal/DeleteModal/DeleteAction";
+import EditPack from "../../../../../Common/Modal/EditModal/EditAction";
+import {ActionButtons} from "./ActionButtons/ActionButtons";
+import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
 
 export const Packs = () => {
 
@@ -19,7 +20,7 @@ export const Packs = () => {
     const [toggleModal, setToggleModal] = useState<boolean>(false)
     const [currentModal, setCurrentModal] = useState<string>('');
 
-    const [packIDForEditMode, setPackIDForEditMode] = useState<string>('')
+    const [cardIDForEditMode, setCardIDForEditMode] = useState<string>('')
 
     const [packName, setPackName] = useState<string>('');
 
@@ -36,24 +37,25 @@ export const Packs = () => {
         }
     }
 
-    const clickActiveModal = (packId: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>, packName?: string) => {
-        setPackIDForEditMode(packId)
+    const clickActiveModal = (packId: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>, packName: string) => {
+        setCardIDForEditMode(packId)
         if (e.currentTarget.textContent === 'Delete') {
-            setToggleModal(true)
-            setCurrentModal(e.currentTarget.textContent)
-        } else if (e.currentTarget.textContent === 'Edit') {
-            setToggleModal(true)
-            setCurrentModal(e.currentTarget.textContent)
             packName && setPackName(packName)
+            setCurrentModal(e.currentTarget.textContent)
+            setToggleModal(true)
+        } else if (e.currentTarget.textContent === 'Edit') {
+            packName && setPackName(packName)
+            setCurrentModal(e.currentTarget.textContent)
+            setToggleModal(true)
         }
     }
 
-    const deletePack = (id: string) => {
-        dispatch(deleteCardPackTC(id))
+    const deletePack = () => {
+        dispatch(deleteCardPackTC(cardIDForEditMode))
     }
 
     const changePackName = (value: string) => {
-        dispatch(editPackTC(packIDForEditMode, value))
+        dispatch(editPackTC(cardIDForEditMode, value))
     }
 
     return (
@@ -130,11 +132,14 @@ export const Packs = () => {
 
                     {
                         currentModal === 'Delete' ?
-                            <DeletePackModal
-                                deletePack={() => deletePack(packIDForEditMode)}
+                            <DeleteAction
+                                currentMode='packs'
+                                initialName={packName}
+                                deletePack={deletePack}
                                 setToggleModal={(toggle) => setToggleModal(toggle)}
                             />
                             : <EditPack
+                                currentMode='packs'
                                 packName={packName}
                                 changePackName={changePackName}
                                 setToggleModal={(toggle) => setToggleModal(toggle)}
@@ -157,36 +162,30 @@ export const Packs = () => {
                                   </NavLink>
                             </span>
                             <span className={style.packList__cards_none_clicked}>
-                                {pack.cardsCount}</span>
+                                {pack.cardsCount}
+                            </span>
                             <span className={style.packList__updates_none_clicked}>
                                     {pack.updated}
                             </span>
                             <span className={style.packList__create_none_clicked}>
                                 {pack.user_name}
                             </span>
-                            <span className={style.packList__action}>
 
-                                {
-                                    userID === pack.user_id &&
-                                    <>
-                                        <SuperButton
-                                            onClick={(e) => clickActiveModal(pack._id, e)}
-                                            className={style.packList__button_delete}
-                                        >
-                                            Delete
-                                        </SuperButton>
+                            <span className={style.actionButtons__action}>
 
+                            {
+                                (userID === pack.user_id) &&
 
-                                        <SuperButton
-                                            onClick={(e) => clickActiveModal(pack._id, e, pack.name)}
-                                            className={style.packList__button_edit_learn}
-                                        >
-                                            Edit
-                                        </SuperButton>
-                                    </>
-                                }
+                                <ActionButtons
+                                    attributeId={pack._id}
+                                    nameAttribute={pack.name}
+                                    clickActiveModal={clickActiveModal}
+                                />
 
-                                <SuperButton className={style.packList__button_edit_learn}>
+                            }
+                                <SuperButton
+                                    className={style.actionButtons__button_edit_learn}
+                                >
                                     Learn
                                 </SuperButton>
                             </span>

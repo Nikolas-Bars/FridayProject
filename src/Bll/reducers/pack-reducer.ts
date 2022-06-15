@@ -66,11 +66,9 @@ export const packsReducer = (state: PacksReducerStateType = initialPacksState, a
         case "DELETE_CARD_PACK":
             return {...state, cardPacks: state.cardPacks.filter(el => el._id !== action.id)}
         case "SET_EDIT_PACK":
-            debugger
             return {
                 ...state,
                 cardPacks: state.cardPacks.map(el => {
-                    debugger
                     return el._id === action.cardsPack.id ? {...el, name: action.cardsPack.newTitle} : {...el}
                 })
             }

@@ -13,6 +13,7 @@ export const UserPacksList = () => {
             </h2>
 
             <SearchBarAddPack
+                show
                 buttonName='Add new pack'
                 ModalComponent={AddPack}
             />

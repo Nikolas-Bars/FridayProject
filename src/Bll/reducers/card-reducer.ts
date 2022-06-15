@@ -31,6 +31,8 @@ let initialCardsState: CardsReducerStateType = {
 export enum ACTIONS_CARDS_TYPE {
     SET_CARDS = 'CARDS/SET_CARDS',
     SET_NEW_CARD = 'CARDS/SET_NEW_CARD',
+    EDIT_CARD = 'CARDS/EDIT_CARD',
+    DELETE_CARD = 'CARDS/DELETE_CARD',
     SET_CURRENT_PAGE = 'CARDS/SET_CURRENT_PAGE',
 }
 
@@ -48,6 +50,18 @@ export const cardsReducer = (state: CardsReducerStateType = initialCardsState, a
                 cards: [action.card, ...state.cards]
             }
         }
+        case ACTIONS_CARDS_TYPE.DELETE_CARD: {
+            return {
+                ...state,
+                cards: state.cards.filter(card => card._id !== action.cardId)
+            }
+        }
+        case ACTIONS_CARDS_TYPE.EDIT_CARD: {
+            return {
+                ...state,
+                cards: state.cards.map(card => card._id === action.card._id ? {...action.card} : {...card})
+            }
+        }
         case "SET_CURRENT_PAGE": {
             return {
                 ...state,
@@ -63,6 +77,8 @@ export const cardsReducer = (state: CardsReducerStateType = initialCardsState, a
 export type CardsActionType =
     ReturnType<typeof setCardsAC>
     | ReturnType<typeof setNewCardAC>
+    | ReturnType<typeof deleteCardAC>
+    | ReturnType<typeof editCardAC>
 
 export const setCardsAC = (cards: CardsStateType, pack_id: string) => ({
     type: ACTIONS_CARDS_TYPE.SET_CARDS,
@@ -73,6 +89,15 @@ export const setNewCardAC = (card: CardType) => ({
     type: ACTIONS_CARDS_TYPE.SET_NEW_CARD,
     card
 } as const)
+export const editCardAC = (card: CardType) => ({
+    type: ACTIONS_CARDS_TYPE.EDIT_CARD,
+    card
+} as const)
+export const deleteCardAC = (cardId: string) => ({
+    type: ACTIONS_CARDS_TYPE.DELETE_CARD,
+    cardId
+} as const)
+
 
 export const getCardsTC = (id: string) => (dispatch: ThunksDispatch, getState: () => AppStoreType) => {
     dispatch(setLoadingStatusAC(true))
@@ -93,6 +118,42 @@ export const addCardTC = (question: string, answer: string) => (dispatch: Thunks
         .then(res => {
             dispatch(setNewCardAC(res.data.newCard))
             dispatch(setDisableButtonAC(false))
+        })
+        .catch(err => {
+            if (err.response.data) {
+                dispatch(setErrorToProfileAC(err.response.data.error))
+            } else {
+                dispatch(setErrorToProfileAC(err.message))
+            }
+        })
+        .finally(() => {
+            dispatch(setDisableButtonAC(false))
+        })
+}
+
+export const editCardTC = (cardId: string, question: string, answer?: string) => (dispatch: ThunksDispatch) => {
+    dispatch(setDisableButtonAC(true))
+    cardAPI.editCard(cardId, question, answer)
+        .then((res) => {
+            dispatch(editCardAC(res.data.updatedCard))
+        })
+        .catch(err => {
+            if (err.response.data) {
+                dispatch(setErrorToProfileAC(err.response.data.error))
+            } else {
+                dispatch(setErrorToProfileAC(err.message))
+            }
+        })
+        .finally(() => {
+            dispatch(setDisableButtonAC(false))
+        })
+}
+
+export const deleteCardTC = (cardId: string) => (dispatch: ThunksDispatch) => {
+    dispatch(setDisableButtonAC(true))
+    cardAPI.deleteCard(cardId)
+        .then(() => {
+            dispatch(deleteCardAC(cardId))
         })
         .catch(err => {
             if (err.response.data) {

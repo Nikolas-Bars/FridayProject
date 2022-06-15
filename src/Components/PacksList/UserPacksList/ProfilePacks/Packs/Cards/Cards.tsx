@@ -24,8 +24,6 @@ export const Cards = () => {
     const page = useSelector<AppStoreType, number>(state => state.cards.page)
     const pageCount = useSelector<AppStoreType, number>(state => state.cards.pageCount)
 
-
-
     useEffect(() => {
         if (cardId) {
             dispatch(getCardsTC(cardId))

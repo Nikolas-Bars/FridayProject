@@ -74,6 +74,12 @@ export const cardAPI = {
     },
     addCard(cardsPack_id: string, question: string, answer: string) {
         return instance.post<{cardsPack_id: string, question: string, answer: string}, AxiosResponse<ResponseNewCardType<CardType>>>('/cards/card', {card: {cardsPack_id, question, answer}})
+    },
+    editCard(_id: string, question: string, answer?: string) {
+        return instance.put('/cards/card', {card: {_id, question, answer}})
+    },
+    deleteCard(id: string) {
+        return instance.delete('/cards/card', {params: {id}})
     }
 }
 
