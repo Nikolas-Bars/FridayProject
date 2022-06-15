@@ -6,6 +6,8 @@ import { SearchBarAddPack } from '../SearchBar_addPack/SearchBarAddPack';
 
 export const UserPacksList = () => {
 
+
+
     return (
         <div className={style.packs__body}>
             <h2>
@@ -14,6 +16,7 @@ export const UserPacksList = () => {
 
             <SearchBarAddPack
                 buttonName='Add new pack'
+                ModalComponent={AddPack}
             />
 
             <ProfilePacks/>

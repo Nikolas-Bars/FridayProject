@@ -8,13 +8,10 @@ import {setModalActiveAC} from "../../../../Bll/reducers/profile-reducer";
 import SuperInputText from "../../../../Common/c1-SuperInputText/SuperInputText";
 import SuperButton from "../../../../Common/c2-SuperButton/SuperButton";
 
-type PropsType = {
-    toggleModal: boolean,
-    setToggleModal: (toggle: boolean)=>void
-}
 
-export const AddPack = ({toggleModal, setToggleModal}:PropsType) => {
-debugger
+
+export const AddPack = () => {
+
     const dispatch = useAppDispatch()
     const disableButton = useSelector<AppStoreType, boolean>(state => state.profile.helpers.disableButton)
     const errorMessage = useSelector<AppStoreType, string | null>(state => state.profile.helpers.errorMessage)
@@ -29,12 +26,12 @@ debugger
 
     const onClickCloseModal = () => {
         dispatch(setModalActiveAC(false))
-        setToggleModal(false)
+
     }
 
-    if(!toggleModal){
+/*    if(!toggleModal){
         return <></>
-    }
+    }*/
 
     return (
         <div className={style.addPack}>

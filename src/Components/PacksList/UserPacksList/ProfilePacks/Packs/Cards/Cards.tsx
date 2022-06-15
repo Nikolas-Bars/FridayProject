@@ -4,13 +4,13 @@ import style from "./Cards.module.css";
 import {AppStoreType, useAppDispatch} from "../../../../../../Bll/store";
 import arrow from '../../../../../../Common/img/arrow/arrow.png'
 import {Questions} from "./Questions/Questions";
-import {AddCard} from "../../../../SearchBar_addPack/AddCard/AddCard";
 import {SearchBarAddPack} from "../../../../SearchBar_addPack/SearchBarAddPack";
 import {getCardsTC} from "../../../../../../Bll/reducers/card-reducer";
 import Paginator from '../../../../../../Common/Paginator/Paginator';
 import {useSelector} from "react-redux";
 import {setCurrentPageAC} from "../../../../../../Bll/reducers/pack-reducer";
 import Preloader from "../../../../../../Common/Preloader/Preloader";
+import {AddCard} from "../../../../SearchBar_addPack/AddCard/AddCard";
 
 
 export const Cards = () => {
@@ -49,6 +49,7 @@ export const Cards = () => {
 
                 <SearchBarAddPack
                     buttonName='Add new card'
+                    ModalComponent={AddCard}
                 />
 
                 {

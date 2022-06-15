@@ -13,9 +13,10 @@ import {AddPack} from "./AddPack/AddPack";
 
 type SearchBarAddPack = {
     buttonName: string
+    ModalComponent: React.ComponentType
 }
 
-export const SearchBarAddPack = memo(({buttonName}: SearchBarAddPack) => {
+export const SearchBarAddPack = memo(({buttonName, ModalComponent}: SearchBarAddPack) => {
 
     const dispatch = useAppDispatch()
 
@@ -33,7 +34,7 @@ export const SearchBarAddPack = memo(({buttonName}: SearchBarAddPack) => {
 
     const onClickOpenModal = () => {
         dispatch(setModalActiveAC(true))
-        setToggleModal(true)
+
     }
 
     useEffect(() => {
@@ -59,7 +60,7 @@ export const SearchBarAddPack = memo(({buttonName}: SearchBarAddPack) => {
                 {buttonName}
             </SuperButton>
             <Modal>
-                <AddPack toggleModal={toggleModal} setToggleModal={(toggle)=> {setToggleModal(toggle)}}/>
+                <ModalComponent />
             </Modal>
         </div>
     )
