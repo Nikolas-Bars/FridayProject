@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import style from "./Cards.module.css";
 import {AppStoreType, useAppDispatch} from "../../../../../../Bll/store";

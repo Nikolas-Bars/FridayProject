@@ -40,7 +40,6 @@ export type InitialProfileStateType = FakeUserStateType & {
         tempEmailToRecover: string | null
         loadingStatus: boolean
         newPassSet: boolean
-        activeModal: boolean
     }
 }
 
@@ -65,7 +64,6 @@ const initialState: InitialProfileStateType = {
         tempEmailToRecover: null,
         loadingStatus: false,
         newPassSet: false,
-        activeModal: false
     }
 }
 
@@ -81,7 +79,6 @@ export enum ACTIONS_PROFILE_TYPE {
     SET_ERROR_TO_PROFILE = 'PROFILE/SET_ERROR_TO_PROFILE',
     SET_INITIALIZED_CONTENT = 'PROFILE/SET_INITIALIZED_CONTENT',
     SET_LOADING_PAGE = 'PROFILE/SET_LOADING_PAGE',
-    SET_MODAL_IS_ACTIVE = 'PROFILE/SET_MODAL_IS_ACTIVE',
 }
 
 export const profileReducer = (state: InitialProfileStateType = initialState, action: ProfileActionsType): InitialProfileStateType => {
@@ -172,15 +169,6 @@ export const profileReducer = (state: InitialProfileStateType = initialState, ac
                 }
             }
         }
-        case ACTIONS_PROFILE_TYPE.SET_MODAL_IS_ACTIVE: {
-            return {
-                ...state,
-                helpers: {
-                    ...state.helpers,
-                    activeModal: action.active
-                }
-            }
-        }
         default:
             return state
     }
@@ -215,8 +203,6 @@ export const setLoadingStatusAC = (loading: boolean) => ({
 export const setInitializedContentAC = () => ({type: ACTIONS_PROFILE_TYPE.SET_INITIALIZED_CONTENT} as const)
 export const setUserInfoAC = (info: User) => ({type: ACTIONS_PROFILE_TYPE.SET_NEW_NAME_AVATAR, info} as const)
 export const changeUserNameInfoAC = (name: string) => ({type: ACTIONS_PROFILE_TYPE.SET_NEW_NAME, name} as const)
-export const setModalActiveAC = (active: boolean) => ({type: ACTIONS_PROFILE_TYPE.SET_MODAL_IS_ACTIVE, active} as const)
-
 
 
 //Types Actions
@@ -230,8 +216,6 @@ type SetInitializedContentType = ReturnType<typeof setInitializedContentAC>
 type SetLoadingStatusType = ReturnType<typeof setLoadingStatusAC>
 type SetUserInfoType = ReturnType<typeof setUserInfoAC>
 type ChangeUserNameInfoType = ReturnType<typeof changeUserNameInfoAC>
-type SetModalActiveType = ReturnType<typeof setModalActiveAC>
-
 
 export type ProfileActionsType =
     LoginActionType
@@ -244,7 +228,6 @@ export type ProfileActionsType =
     | SetLoadingStatusType
     | SetUserInfoType
     | ChangeUserNameInfoType
-    | SetModalActiveType
 
 //Thunk
 export const registrationNewUserTC = (data: NewUserType) => (dispatch: ThunksDispatch) => {

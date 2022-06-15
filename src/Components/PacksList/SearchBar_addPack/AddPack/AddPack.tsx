@@ -4,13 +4,14 @@ import closeIcon from '../../../../Common/img/delete/delete.png'
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../Bll/store";
 import {newCardPackTC} from "../../../../Bll/reducers/pack-reducer";
-import {setModalActiveAC} from "../../../../Bll/reducers/profile-reducer";
 import SuperInputText from "../../../../Common/c1-SuperInputText/SuperInputText";
 import SuperButton from "../../../../Common/c2-SuperButton/SuperButton";
 
+type AddPackType = {
+    setToggleModal: (toggle: boolean) => void
+}
 
-
-export const AddPack = () => {
+export const AddPack = ({setToggleModal}: AddPackType) => {
 
     const dispatch = useAppDispatch()
     const disableButton = useSelector<AppStoreType, boolean>(state => state.profile.helpers.disableButton)
@@ -21,17 +22,13 @@ export const AddPack = () => {
     const addNewPack = () => {
         if (newPackName.trim() !== '') {
             dispatch(newCardPackTC(newPackName))
+            setToggleModal(false)
         }
     }
 
     const onClickCloseModal = () => {
-        dispatch(setModalActiveAC(false))
-
+        setToggleModal(false)
     }
-
-/*    if(!toggleModal){
-        return <></>
-    }*/
 
     return (
         <div className={style.addPack}>

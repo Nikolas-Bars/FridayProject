@@ -3,15 +3,12 @@ import style from './Packs.module.css'
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../../Bll/store";
-import {deleteCardPackTC, setSortPacksAC} from '../../../../../Bll/reducers/pack-reducer';
+import {deleteCardPackTC, editPackTC, PacksType, setSortPacksAC} from '../../../../../Bll/reducers/pack-reducer';
 import SuperButton from '../../../../../Common/c2-SuperButton/SuperButton';
 import sortIcon from '../../../../../Common/img/sort/sort.png'
-import {PacksType} from "../../../../../Bll/reducers/pack-reducer";
 import {Modal} from "../../../../../Common/Modal/Modal";
-import EditPack from "./Cards/EditPack";
-import {setModalActiveAC} from "../../../../../Bll/reducers/profile-reducer";
 import DeletePackModal from "./Cards/DeletePackModal";
-
+import EditPack from "./Cards/EditPack";
 
 export const Packs = () => {
 
@@ -20,8 +17,12 @@ export const Packs = () => {
     const sortNumber = useSelector<AppStoreType, number>(state => state.packs.sortNumber)
     const userID = useSelector<AppStoreType, string>(state => state.profile._id)
     const [toggleModal, setToggleModal] = useState<boolean>(false)
+    const [currentModal, setCurrentModal] = useState<string>('');
+
     const [packIDForEditMode, setPackIDForEditMode] = useState<string>('')
-    const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false)
+
+    const [packName, setPackName] = useState<string>('');
+
     const dispatch = useAppDispatch()
 
     const handleSortField = (e: React.MouseEvent<HTMLSpanElement>) => {
@@ -35,22 +36,24 @@ export const Packs = () => {
         }
     }
 
+    const clickActiveModal = (packId: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>, packName?: string) => {
+        setPackIDForEditMode(packId)
+        if (e.currentTarget.textContent === 'Delete') {
+            setToggleModal(true)
+            setCurrentModal(e.currentTarget.textContent)
+        } else if (e.currentTarget.textContent === 'Edit') {
+            setToggleModal(true)
+            setCurrentModal(e.currentTarget.textContent)
+            packName && setPackName(packName)
+        }
+    }
+
     const deletePack = (id: string) => {
         dispatch(deleteCardPackTC(id))
     }
 
-    const setModal = (type: 'edit' | 'delete', id: string) => {
-        setPackIDForEditMode(id)
-        if (type === "edit") {
-            dispatch(setModalActiveAC(true))
-            setToggleModal(true)
-
-
-        } else {
-            dispatch(setModalActiveAC(true))
-            setToggleDeleteModal(true)
-        }
-
+    const changePackName = (value: string) => {
+        dispatch(editPackTC(packIDForEditMode, value))
     }
 
     return (
@@ -122,6 +125,26 @@ export const Packs = () => {
             </div>
 
             {
+                toggleModal &&
+                <Modal toggleModal={toggleModal}>
+
+                    {
+                        currentModal === 'Delete' ?
+                            <DeletePackModal
+                                deletePack={() => deletePack(packIDForEditMode)}
+                                setToggleModal={(toggle) => setToggleModal(toggle)}
+                            />
+                            : <EditPack
+                                packName={packName}
+                                changePackName={changePackName}
+                                setToggleModal={(toggle) => setToggleModal(toggle)}
+                            />
+                    }
+
+                </Modal>
+            }
+
+            {
                 packs && packs.map(pack => {
                     return (
                         <div
@@ -142,29 +165,26 @@ export const Packs = () => {
                                 {pack.user_name}
                             </span>
                             <span className={style.packList__action}>
-                                {userID === pack.user_id && <>
 
-                           <SuperButton onClick={() => {setModal("delete", pack._id)}} className={style.packList__button_delete}>
-                                    Delete
-                           </SuperButton>
-                                    {toggleDeleteModal &&
+                                {
+                                    userID === pack.user_id &&
+                                    <>
+                                        <SuperButton
+                                            onClick={(e) => clickActiveModal(pack._id, e)}
+                                            className={style.packList__button_delete}
+                                        >
+                                            Delete
+                                        </SuperButton>
 
-                                    <Modal><DeletePackModal deletePack={() => {deletePack(packIDForEditMode)}} toggleModal={toggleDeleteModal} setToggleModal={(toggle) => {
-                                                         setToggleDeleteModal(toggle)}}/>
-                                    </Modal>}
 
-
-                                    <SuperButton onClick={() => {setModal('edit', pack._id)}} className={style.packList__button_edit_learn}>
-                                        Edit
-                                    </SuperButton>
-
-                                    {toggleModal &&
-                                    <Modal>
-                                        <EditPack packID={packIDForEditMode} toggleModal={toggleModal} setToggleModal={(toggle) => {setToggleModal(toggle)}}/>
-                                    </Modal>}
-
-                                </>}
-
+                                        <SuperButton
+                                            onClick={(e) => clickActiveModal(pack._id, e, pack.name)}
+                                            className={style.packList__button_edit_learn}
+                                        >
+                                            Edit
+                                        </SuperButton>
+                                    </>
+                                }
 
                                 <SuperButton className={style.packList__button_edit_learn}>
                                     Learn

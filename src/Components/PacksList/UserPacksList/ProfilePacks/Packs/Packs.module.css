@@ -132,7 +132,6 @@
 }
 
 .packList__name_none_clicked > a {
-    text-decoration: none;
     font-style: normal;
     font-weight: 400;
     font-size: 13px;

@@ -2,12 +2,15 @@ import React, {useState} from 'react';
 import style from "./AddCard.module.css";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../Bll/store";
-import {setModalActiveAC} from "../../../../Bll/reducers/profile-reducer";
 import SuperInputText from "../../../../Common/c1-SuperInputText/SuperInputText";
 import SuperButton from "../../../../Common/c2-SuperButton/SuperButton";
 import {addCardTC} from "../../../../Bll/reducers/card-reducer";
 
-export const AddCard = () => {
+type AddCardType = {
+    setToggleModal: (toggle: boolean) => void
+}
+
+export const AddCard = ({setToggleModal}: AddCardType) => {
 
     const dispatch = useAppDispatch()
 
@@ -20,11 +23,12 @@ export const AddCard = () => {
     const addNewQuestion = () => {
         if (newQuestion.trim() !== '' && newAnswer.trim() !== '') {
             dispatch(addCardTC(newQuestion, newAnswer))
+            setToggleModal(false)
         }
     }
 
     const onClickCloseModal = () => {
-        dispatch(setModalActiveAC(false))
+        setToggleModal(false)
     }
 
     return (

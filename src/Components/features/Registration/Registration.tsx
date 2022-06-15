@@ -80,7 +80,9 @@ export const Registration = () => {
     }
 
     if (loadingStatus) {
-        return <div style={{display: "flex", alignItems: 'center', height: '100vh'}}><Preloader/></div>
+        return <div style={{display: "flex", alignItems: 'center', height: '100vh'}}>
+            <Preloader/>
+        </div>
     }
 
     return (

@@ -1,42 +1,31 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SuperInputText from "../../../../../../Common/c1-SuperInputText/SuperInputText";
-import {setModalActiveAC} from "../../../../../../Bll/reducers/profile-reducer";
-import {useDispatch} from "react-redux";
-import {Dispatch} from "redux";
 import s from './EditPack.module.css'
 import closeIcon from "../../../../../../Common/img/delete/delete.png";
 import style from "../../../../SearchBar_addPack/AddPack/AddPack.module.css";
 import SuperButton from "../../../../../../Common/c2-SuperButton/SuperButton";
-import {editPackAC, editPackTC} from "../../../../../../Bll/reducers/pack-reducer";
-import {ThunkDispatch} from "redux-thunk";
-import {ThunksDispatch} from "../../../../../../Bll/store";
 
 type PropsType = {
-    toggleModal: boolean,
-    setToggleModal: (toggle: boolean)=>void
-    packID: string
+    packName: string
+    setToggleModal: (toggle: boolean) => void
+    changePackName: (value: string) => void
 }
 
-const EditPack = ({toggleModal, setToggleModal, packID}:PropsType) => {
-    console.log(packID)
+const EditPack = ({packName, setToggleModal, changePackName}: PropsType) => {
+
     const [value, setValue] = useState<string>('')
 
-    const dispatch = useDispatch<ThunksDispatch>()
+    useEffect(() => {
+        setValue(packName)
+    }, [packName])
 
     const onClickCloseModal = () => {
-        dispatch(setModalActiveAC(false))
-        setToggleModal(false)
-
-    }
-
-    const saveButtonHandler =()=>{
-        dispatch(editPackTC(packID, value))
-        dispatch(setModalActiveAC(false))
         setToggleModal(false)
     }
 
-    if(!toggleModal){
-        return <></>
+    const saveButtonHandler = () => {
+        changePackName(value)
+        setToggleModal(false)
     }
 
     return (
@@ -45,11 +34,11 @@ const EditPack = ({toggleModal, setToggleModal, packID}:PropsType) => {
                 <div className={s.title}>
                     Edit Pack
                 </div>
-                    <img
-                        onClick={onClickCloseModal}
-                        src={closeIcon}
-                        alt="close"
-                    />
+                <img
+                    onClick={onClickCloseModal}
+                    src={closeIcon}
+                    alt="close"
+                />
             </div>
 
             <div className={s.body}>
@@ -66,14 +55,12 @@ const EditPack = ({toggleModal, setToggleModal, packID}:PropsType) => {
                 <SuperButton
                     className={s.addPack__button_cancel}
                     onClick={onClickCloseModal}
-
                 >
                     Cancel
                 </SuperButton>
                 <SuperButton
                     className={style.addPack__button_save}
                     onClick={saveButtonHandler}
-
                 >
                     Save
                 </SuperButton>

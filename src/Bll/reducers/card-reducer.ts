@@ -1,7 +1,7 @@
 import {cardAPI, CardType} from "../api";
 import {AppStoreType, ThunksDispatch} from "../store";
 import {PacksActionType} from "./pack-reducer";
-import {setDisableButtonAC, setErrorToProfileAC, setLoadingStatusAC, setModalActiveAC} from "./profile-reducer";
+import {setDisableButtonAC, setErrorToProfileAC, setLoadingStatusAC} from "./profile-reducer";
 
 export type CardsStateType = {
     cards: CardType[]
@@ -92,7 +92,6 @@ export const addCardTC = (question: string, answer: string) => (dispatch: Thunks
     cardAPI.addCard(pack_id, question, answer)
         .then(res => {
             dispatch(setNewCardAC(res.data.newCard))
-            dispatch(setModalActiveAC(false))
             dispatch(setDisableButtonAC(false))
         })
         .catch(err => {
@@ -101,5 +100,8 @@ export const addCardTC = (question: string, answer: string) => (dispatch: Thunks
             } else {
                 dispatch(setErrorToProfileAC(err.message))
             }
+        })
+        .finally(() => {
+            dispatch(setDisableButtonAC(false))
         })
 }

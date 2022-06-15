@@ -2,21 +2,21 @@ import React, {memo, useEffect, useState} from 'react';
 import style from "./SearchBarAddPack.module.css";
 import {useAppDispatch} from "../../../Bll/store";
 import {useDebounce} from "../../features/CustomHooks/useDebounce/useDebounce";
-import {setModalActiveAC} from "../../../Bll/reducers/profile-reducer";
 import {setSearchTextAC} from "../../../Bll/reducers/pack-reducer";
 import SuperInputText from "../../../Common/c1-SuperInputText/SuperInputText";
 import SuperButton from "../../../Common/c2-SuperButton/SuperButton";
-import { Modal } from '../../../Common/Modal/Modal';
+import {Modal} from '../../../Common/Modal/Modal';
 import search from '../../../Common/img/search_bar/search.png'
-import {AddPack} from "./AddPack/AddPack";
 
 
-type SearchBarAddPack = {
+type SearchBarAddPackType = {
     buttonName: string
-    ModalComponent: React.ComponentType
+    ModalComponent: (props: {
+        setToggleModal: (toggle: boolean) => void
+    }) => JSX.Element
 }
 
-export const SearchBarAddPack = memo(({buttonName, ModalComponent}: SearchBarAddPack) => {
+export const SearchBarAddPack = memo(({buttonName, ModalComponent}: SearchBarAddPackType) => {
 
     const dispatch = useAppDispatch()
 
@@ -33,8 +33,7 @@ export const SearchBarAddPack = memo(({buttonName, ModalComponent}: SearchBarAdd
     }
 
     const onClickOpenModal = () => {
-        dispatch(setModalActiveAC(true))
-
+        setToggleModal(true)
     }
 
     useEffect(() => {
@@ -59,8 +58,12 @@ export const SearchBarAddPack = memo(({buttonName, ModalComponent}: SearchBarAdd
             >
                 {buttonName}
             </SuperButton>
-            <Modal>
-                <ModalComponent />
+            <Modal
+                toggleModal={toggleModal}
+            >
+                <ModalComponent
+                    setToggleModal={setToggleModal}
+                />
             </Modal>
         </div>
     )

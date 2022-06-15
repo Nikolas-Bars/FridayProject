@@ -1,11 +1,5 @@
 import {CardPacksType, packAPI, ResponseGetPacksType} from "../api";
-import {
-    ACTIONS_PROFILE_TYPE,
-    setDisableButtonAC,
-    setErrorToProfileAC,
-    setLoadingStatusAC,
-    setModalActiveAC
-} from "./profile-reducer";
+import {setDisableButtonAC, setErrorToProfileAC, setLoadingStatusAC} from "./profile-reducer";
 import {AppStoreType, ThunksDispatch} from "../store";
 
 
@@ -39,7 +33,6 @@ export type PacksReducerStateType = {
     rangeValue: number[],
     sortPacks: string
     sortNumber: number
-
 }
 
 export type PacksType = {
@@ -79,7 +72,8 @@ export const packsReducer = (state: PacksReducerStateType = initialPacksState, a
                 cardPacks: state.cardPacks.map(el => {
                     debugger
                     return el._id === action.cardsPack.id ? {...el, name: action.cardsPack.newTitle} : {...el}
-                })}
+                })
+            }
         default: {
             return state
         }
@@ -103,12 +97,16 @@ export const setPacksAC = (cards: ResponseGetPacksType<CardPacksType[]>) => ({ty
 export const addNewCardAC = (card: any) => ({type: 'ADD_NEW_CARD', card} as const)
 export const setSearchTextAC = (text: string) => ({type: 'SET_SEARCH_TEXT', text} as const)
 export const setCurrentPageAC = (page: number) => ({type: 'SET_CURRENT_PAGE', page} as const)
-export const setSortPacksAC = (sort: string, sortNumber: number) => ({type: 'SET_SORT_PACKS', sort, sortNumber} as const)
+export const setSortPacksAC = (sort: string, sortNumber: number) => ({
+    type: 'SET_SORT_PACKS',
+    sort,
+    sortNumber
+} as const)
 export const setMyAllAC = (newValue: boolean) => ({type: 'SET_MYALL', newValue} as const) // перключатель - мои либо все колоды отображаются
 export const setSelectValueAC = (selectValue: number) => ({type: 'SET_SELECT_VALUE', selectValue} as const)
 export const setRangeValueAC = (rangeValue: number[]) => ({type: 'SET_RANGE_VALUE', rangeValue} as const)
 export const deleteCardPackAC = (id: string) => ({type: 'DELETE_CARD_PACK', id} as const)
-export const editPackAC = (cardsPack:{id: string, newTitle: string}) => ({type: "SET_EDIT_PACK", cardsPack}as const)
+export const editPackAC = (cardsPack: { id: string, newTitle: string }) => ({type: "SET_EDIT_PACK", cardsPack} as const)
 
 
 export const setCardsTC = () => (dispatch: ThunksDispatch, getState: () => AppStoreType) => {
@@ -148,7 +146,6 @@ export const newCardPackTC = (name: string) => (dispatch: ThunksDispatch) => {
     packAPI.newPack(name)
         .then(res => {
             dispatch(addNewCardAC(res.data.newCardsPack))
-            dispatch(setModalActiveAC(false))
             dispatch(setDisableButtonAC(false))
         })
         .catch(err => {
@@ -163,22 +160,25 @@ export const newCardPackTC = (name: string) => (dispatch: ThunksDispatch) => {
 export const deleteCardPackTC = (id: string) => (dispatch: ThunksDispatch) => {
     dispatch(setLoadingStatusAC(true))
     packAPI.deleteCardPack(id)
-        .then(res => {
-            dispatch(setCardsTC())
+        .then(() => {
             dispatch(deleteCardPackAC(id))
         })
         .catch(err => console.log(err))
-        .finally(()=>{dispatch(setLoadingStatusAC(false))})
+        .finally(() => {
+            dispatch(setLoadingStatusAC(false))
+        })
 
 }
 
 export const editPackTC = (id: string, newTitle: string) => (dispatch: ThunksDispatch) => {
     dispatch(setLoadingStatusAC(true))
     packAPI.editPack({_id: id, name: newTitle})
-        .then(res => {
+        .then(() => {
             dispatch(editPackAC({id, newTitle}))
         })
         .catch(err => console.log(err))
-        .finally(()=>{dispatch(setLoadingStatusAC(false))})
+        .finally(() => {
+            dispatch(setLoadingStatusAC(false))
+        })
 
 }
