@@ -11,8 +11,6 @@ import {useSelector} from "react-redux";
 import {setCurrentPageAC} from "../../../../../../Bll/reducers/pack-reducer";
 import Preloader from "../../../../../../Common/Preloader/Preloader";
 import {AddCard} from "../../../../SearchBar_addPack/AddCard/AddCard";
-import LearnPack from "../../LearnPack/LearnPack";
-
 
 export const Cards = () => {
 

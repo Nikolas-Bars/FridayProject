@@ -1,13 +1,12 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
 import style from './LearnPack.module.css'
 import closeIcon from "../../../../../Common/img/delete/delete.png"
 import {useDispatch, useSelector} from "react-redux";
-import {Dispatch} from "redux";
 import {setLearnToggleAC, updateRaitingCardTC} from "../../../../../Bll/reducers/card-reducer";
 import {AppStoreType, ThunksDispatch} from "../../../../../Bll/store";
 import {CardType} from "../../../../../Bll/api";
-import {PacksType, setSelectValueAC} from "../../../../../Bll/reducers/pack-reducer";
+import {PacksType} from "../../../../../Bll/reducers/pack-reducer";
 
 type PropsType = {
     packId: string
@@ -28,10 +27,6 @@ const LearnPack = React.memo((props: PropsType) => {
     const [index, setIndex] = useState<number>(props.index)
 
     const dispatch = useDispatch<ThunksDispatch>()
-
-    useEffect(()=>{
-
-    }, props.cards)
 
     const setToggleModal =()=>{
         dispatch(setLearnToggleAC(false, ''))

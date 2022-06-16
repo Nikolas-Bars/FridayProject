@@ -1,20 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import style from './Packs.module.css'
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../../Bll/store";
 import {deleteCardPackTC, editPackTC, PacksType, setSortPacksAC} from '../../../../../Bll/reducers/pack-reducer';
 import sortIcon from '../../../../../Common/img/sort/sort.png'
 import {Modal} from "../../../../../Common/Modal/Modal";
 import DeleteAction from "../../../../../Common/Modal/DeleteModal/DeleteAction";
-import EditPack from "../../../../../Common/Modal/EditModal/EditAction";
 import {ActionButtons} from "./ActionButtons/ActionButtons";
 import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
-import DeletePackModal from "./Cards/DeletePackModal";
-import EditPack from "./Cards/EditPack";
 import LearnPack from "../LearnPack/LearnPack";
-import {getCardsTC, setLearnToggleAC} from "../../../../../Bll/reducers/card-reducer";
-
+import {getCardsTC} from "../../../../../Bll/reducers/card-reducer";
+import EditPack from "../../../../../Common/Modal/EditModal/EditAction";
 
 export const Packs = () => {
 
@@ -34,8 +31,6 @@ export const Packs = () => {
     const [packName, setPackName] = useState<string>('');
 
     const dispatch = useAppDispatch()
-
-    const navigate = useNavigate()
 
     const handleSortField = (e: React.MouseEvent<HTMLSpanElement>) => {
         if (e.currentTarget.dataset.field) {
@@ -69,12 +64,12 @@ export const Packs = () => {
         dispatch(editPackTC(cardIDForEditMode, value))
     }
 
-    const setToggleLearn =(packId: string, packName: string)=>{
-        setPackIDForEditMode(packId)
+    const setToggleLearn = (packId: string) => {
+        setCardIDForEditMode(packId)
         dispatch(getCardsTC(packId, true))
     }
 
-    const index = cards.length > 0 ? Math.ceil((Math.random()*cards.length)) - 1 : 0
+    const index = cards.length > 0 ? Math.ceil((Math.random() * cards.length)) - 1 : 0
 
     return (
         <div className={style.packList__body}>
@@ -146,7 +141,7 @@ export const Packs = () => {
 
             {
                 toggleModal &&
-                <Modal toggleModal={toggleModal} >
+                <Modal toggleModal={toggleModal}>
 
                     {
                         currentModal === 'Delete' ?
@@ -170,8 +165,9 @@ export const Packs = () => {
             {toggleModalLearn && cards.length > 0 &&
             <Modal toggleModal={toggleModalLearn}>
 
-                    <LearnPack cards={cards} index={index} packId={packIDForEditMode}/>
-                </Modal>
+                <LearnPack cards={cards} index={index} packId={cardIDForEditMode}/>
+
+            </Modal>
             }
 
             {
@@ -209,7 +205,9 @@ export const Packs = () => {
 
                             }
                                 <SuperButton className={style.packList__button_edit_learn}
-                                             onClick={()=>{setToggleLearn(pack._id, pack.name)}}
+                                             onClick={() => {
+                                                 setToggleLearn(pack._id, pack.name)
+                                             }}
 
                                 >
                                     Learn
