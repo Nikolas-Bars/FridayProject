@@ -36,6 +36,7 @@ export enum ACTIONS_CARDS_TYPE {
     SET_NEW_CARD = 'CARDS/SET_NEW_CARD',
     SET_CURRENT_PAGE = 'CARDS/SET_CURRENT_PAGE',
     SET_LEARN_TOGGLE = 'CARDS/SET_LEARN_TOGGLE',
+    UPDATE_GRADE = 'UPDATE_GRADE',
 }
 
 export const cardsReducer = (state: CardsReducerStateType = initialCardsState, action: CardsActionType | PacksActionType): CardsReducerStateType => {
@@ -59,8 +60,10 @@ export const cardsReducer = (state: CardsReducerStateType = initialCardsState, a
             }
         }
         case ACTIONS_CARDS_TYPE.SET_LEARN_TOGGLE:
-
             return {...state, toggleModalLearn: action.toggle, pack_id: action.packID}
+        case ACTIONS_CARDS_TYPE.UPDATE_GRADE: {
+            return {...state, cards: state.cards.map(card => card._id === action.card_id ? {...card, grade: action.grade} : card)}
+        }
         default: {
             return state
         }
@@ -71,6 +74,8 @@ export type CardsActionType =
     ReturnType<typeof setCardsAC>
     | ReturnType<typeof setNewCardAC>
     | ReturnType<typeof setLearnToggleAC>
+    | ReturnType<typeof updateRaitingCard>
+
 
 export const setCardsAC = (cards: CardsStateType, pack_id: string) => ({
     type: ACTIONS_CARDS_TYPE.SET_CARDS,
@@ -84,6 +89,8 @@ export const setNewCardAC = (card: CardType) => ({
 
 export const setLearnToggleAC = (toggle: boolean, packID: string) => ({
     type: ACTIONS_CARDS_TYPE.SET_LEARN_TOGGLE, toggle, packID} as const)
+
+export const updateRaitingCard =(card_id: string, grade: number)=>({type: ACTIONS_CARDS_TYPE.UPDATE_GRADE, card_id, grade}as const)
 
 export const getCardsTC = (id: string, toggleLearnModal?: boolean) => (dispatch: ThunksDispatch, getState: () => AppStoreType) => {
     dispatch(setLoadingStatusAC(true))
@@ -123,5 +130,8 @@ export const addCardTC = (question: string, answer: string) => (dispatch: Thunks
 
 
 export const updateRaitingCardTC = (data: RequestRaitingType) => (dispatch: ThunksDispatch) => {
-    cardAPI.updateCardRaiting(data).then(res => console.log(res)).catch(err => console.log(err))
+    cardAPI.updateCardRaiting(data).then(res => {
+        dispatch(updateRaitingCard(data.card_id, data.grade))
+        console.log(res)
+    }).catch(err => console.log(err))
 }
