@@ -74,6 +74,25 @@ export const cardAPI = {
     },
     addCard(cardsPack_id: string, question: string, answer: string) {
         return instance.post<{cardsPack_id: string, question: string, answer: string}, AxiosResponse<ResponseNewCardType<CardType>>>('/cards/card', {card: {cardsPack_id, question, answer}})
+    },
+    updateCardRaiting(data: RequestRaitingType){
+        return instance.put<RequestRaitingType, AxiosResponse<ResponseNewCardType<ResponseRaitingType>>>('/cards/grade', data)
+    },
+}
+
+export type RequestRaitingType = {
+    grade: number,
+    card_id: string
+}
+
+export type ResponseRaitingType = {
+    updatedGrade: {
+        _id: string
+        cardsPack_id: string
+        card_id: string
+        user_id: string
+        grade: number
+        shots: number
     }
 }
 
@@ -180,6 +199,7 @@ export type ResponseCardsType<D = {}> = {
     packUserId: string
     page: number
     pageCount: number
+    toggleModalLearn: boolean
 }
 
 export type CardType = {
@@ -196,4 +216,5 @@ export type CardType = {
     updated: string
     user_id: string
     _id: string
+
 }
