@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import style from './Packs.module.css'
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../../Bll/store";
 import {deleteCardPackTC, editPackTC, PacksType, setSortPacksAC} from '../../../../../Bll/reducers/pack-reducer';
@@ -32,7 +32,7 @@ export const Packs = () => {
 
     const dispatch = useAppDispatch()
 
-
+    const navigate = useNavigate()
 
     const handleSortField = (e: React.MouseEvent<HTMLSpanElement>) => {
         if (e.currentTarget.dataset.field) {

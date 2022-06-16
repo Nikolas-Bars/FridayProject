@@ -23,6 +23,8 @@ const LearnPack = React.memo((props: PropsType) => {
 
     const [answer, setAnswer] = useState<boolean>(false)
 
+    const [index, setIndex] = useState<number>(props.index)
+
     const dispatch = useDispatch<Dispatch>()
 
     useEffect(()=>{
@@ -33,8 +35,13 @@ const LearnPack = React.memo((props: PropsType) => {
         dispatch(setLearnToggleAC(false, ''))
     }
 
+    const nextAnswer = () =>{
+        setAnswer(false)
+        setIndex(index < (props.cards.length - 1) ? index + 1 : 0)
+    }
+
     debugger
-   // const index = props.cards.length > 0 ? Math.ceil((Math.random()*props.cards.length)) - 1 : 0
+   //const index = props.cards.length > 0 ? Math.ceil((Math.random()*props.cards.length)) - 1 : 0
 
         return (
            <div className={style.learn}>
@@ -50,7 +57,7 @@ const LearnPack = React.memo((props: PropsType) => {
                         />
                 </div>
                 <div className={style.learn__body}>
-                    <h4>Question: {props.index >=0 && props.cards[props.index].question}</h4>
+                    <h4>Question: {index >=0 && props.cards[index].question}</h4>
                 </div>
                 <div className={style.learn__buttons}>
                     {!answer ? <div className={style.learn__buttons}><SuperButton
@@ -68,8 +75,13 @@ const LearnPack = React.memo((props: PropsType) => {
                 </div>
                {answer &&
                <div>
-                   {props.cards[props.index].answer}
+                   {props.cards[index].answer}
+                   <SuperButton
+                       className={style.learn__button_save}
+                       onClick={nextAnswer}
+                   >NextAnswer</SuperButton>
                </div>
+
                }
             </div>
 
