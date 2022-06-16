@@ -7,20 +7,26 @@ import {deleteCardPackTC, editPackTC, PacksType, setSortPacksAC} from '../../../
 import sortIcon from '../../../../../Common/img/sort/sort.png'
 import {Modal} from "../../../../../Common/Modal/Modal";
 import DeleteAction from "../../../../../Common/Modal/DeleteModal/DeleteAction";
-import EditPack from "../../../../../Common/Modal/EditModal/EditAction";
 import {ActionButtons} from "./ActionButtons/ActionButtons";
 import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
+import LearnPack from "../LearnPack/LearnPack";
+import {getCardsTC} from "../../../../../Bll/reducers/card-reducer";
+import EditPack from "../../../../../Common/Modal/EditModal/EditAction";
 
 export const Packs = () => {
 
     const packs = useSelector<AppStoreType, PacksType[]>(state => state.packs.cardPacks)
+    const cards = useSelector<AppStoreType, any>(state => state.cards.cards)
     const sortPacks = useSelector<AppStoreType, string>(state => state.packs.sortPacks)
     const sortNumber = useSelector<AppStoreType, number>(state => state.packs.sortNumber)
+    const toggleModalLearn = useSelector<AppStoreType, boolean>(state => state.cards.toggleModalLearn)
     const userID = useSelector<AppStoreType, string>(state => state.profile._id)
+
     const [toggleModal, setToggleModal] = useState<boolean>(false)
     const [currentModal, setCurrentModal] = useState<string>('');
 
     const [cardIDForEditMode, setCardIDForEditMode] = useState<string>('')
+
 
     const [packName, setPackName] = useState<string>('');
 
@@ -57,6 +63,13 @@ export const Packs = () => {
     const changePackName = (value: string) => {
         dispatch(editPackTC(cardIDForEditMode, value))
     }
+
+    const setToggleLearn = (packId: string) => {
+        setCardIDForEditMode(packId)
+        dispatch(getCardsTC(packId, true))
+    }
+
+    const index = cards.length > 0 ? Math.ceil((Math.random() * cards.length)) - 1 : 0
 
     return (
         <div className={style.packList__body}>
@@ -157,6 +170,14 @@ export const Packs = () => {
                 </Modal>
             }
 
+            {toggleModalLearn && cards.length > 0 &&
+            <Modal toggleModal={toggleModalLearn}>
+
+                <LearnPack cards={cards} index={index} packId={cardIDForEditMode}/>
+
+            </Modal>
+            }
+
             {
                 packs && packs.map(pack => {
                     return (
@@ -191,8 +212,11 @@ export const Packs = () => {
                                 />
 
                             }
-                                <SuperButton
-                                    className={style.actionButtons__button_edit_learn}
+                                <SuperButton className={style.packList__button_edit_learn}
+                                             onClick={() => {
+                                                 setToggleLearn(pack._id, pack.name)
+                                             }}
+
                                 >
                                     Learn
                                 </SuperButton>

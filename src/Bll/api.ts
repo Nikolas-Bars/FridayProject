@@ -80,6 +80,25 @@ export const cardAPI = {
     },
     deleteCard(id: string) {
         return instance.delete('/cards/card', {params: {id}})
+    },
+    updateCardRaiting(data: RequestRaitingType){
+        return instance.put<RequestRaitingType, AxiosResponse<ResponseNewCardType<ResponseRaitingType>>>('/cards/grade', data)
+    },
+}
+
+export type RequestRaitingType = {
+    grade: number,
+    card_id: string
+}
+
+export type ResponseRaitingType = {
+    updatedGrade: {
+        _id: string
+        cardsPack_id: string
+        card_id: string
+        user_id: string
+        grade: number
+        shots: number
     }
 }
 
@@ -186,6 +205,7 @@ export type ResponseCardsType<D = {}> = {
     packUserId: string
     page: number
     pageCount: number
+    toggleModalLearn: boolean
 }
 
 export type CardType = {
@@ -202,4 +222,5 @@ export type CardType = {
     updated: string
     user_id: string
     _id: string
+
 }

@@ -12,7 +12,6 @@ import {setCurrentPageAC} from "../../../../../../Bll/reducers/pack-reducer";
 import Preloader from "../../../../../../Common/Preloader/Preloader";
 import {AddCard} from "../../../../SearchBar_addPack/AddCard/AddCard";
 
-
 export const Cards = () => {
 
     const {cardId} = useParams<'cardId'>()
@@ -34,8 +33,11 @@ export const Cards = () => {
         dispatch(setCurrentPageAC(page))
     }
 
+
     return (
         <div className={style.cards__container}>
+
+
             <div className={style.cards__body}>
                 <div className={style.cards__header}>
                     <img
