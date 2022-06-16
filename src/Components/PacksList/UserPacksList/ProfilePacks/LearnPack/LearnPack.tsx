@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
 import style from './LearnPack.module.css'
 import closeIcon from "../../../../../Common/img/delete/delete.png"
 import {useDispatch, useSelector} from "react-redux";
 import {Dispatch} from "redux";
-import {setLearnToggleAC} from "../../../../../Bll/reducers/card-reducer";
-import {AppStoreType} from "../../../../../Bll/store";
+import {setLearnToggleAC, updateRaitingCardTC} from "../../../../../Bll/reducers/card-reducer";
+import {AppStoreType, ThunksDispatch} from "../../../../../Bll/store";
 import {CardType} from "../../../../../Bll/api";
-import {PacksType} from "../../../../../Bll/reducers/pack-reducer";
+import {PacksType, setSelectValueAC} from "../../../../../Bll/reducers/pack-reducer";
 
 type PropsType = {
     packId: string
@@ -23,9 +23,11 @@ const LearnPack = React.memo((props: PropsType) => {
 
     const [answer, setAnswer] = useState<boolean>(false)
 
+    const [selectValue, setSelectValue] = useState<number>(5)
+
     const [index, setIndex] = useState<number>(props.index)
 
-    const dispatch = useDispatch<Dispatch>()
+    const dispatch = useDispatch<ThunksDispatch>()
 
     useEffect(()=>{
 
@@ -35,18 +37,23 @@ const LearnPack = React.memo((props: PropsType) => {
         dispatch(setLearnToggleAC(false, ''))
     }
 
-    const nextAnswer = () =>{
+    const nextAnswer = (carId: string) =>{
+        dispatch(updateRaitingCardTC({grade: selectValue, card_id: carId}))
         setAnswer(false)
         setIndex(index < (props.cards.length - 1) ? index + 1 : 0)
     }
 
-    debugger
+    const selectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+        setSelectValue(Number(e.currentTarget.value))
+    }
+
    //const index = props.cards.length > 0 ? Math.ceil((Math.random()*props.cards.length)) - 1 : 0
 
         return (
            <div className={style.learn}>
-
+               <h6>Текущий рейтинг вопроса: {Math.ceil(props.cards[index].grade)}</h6>
                 <div className={style.learn__header}>
+
                     <div className={style.learn__title}>
                         Learn {packName[0].name}
                     </div>
@@ -57,9 +64,10 @@ const LearnPack = React.memo((props: PropsType) => {
                         />
                 </div>
                 <div className={style.learn__body}>
-                    <h4>Question: {index >=0 && props.cards[index].question}</h4>
+                    <h4 style={{textAlign: "center" }}>Question: <span> {index >=0 && props.cards[index].question}</span></h4>
                 </div>
-                <div className={style.learn__buttons}>
+
+                <div>
                     {!answer ? <div className={style.learn__buttons}><SuperButton
                         className={style.learn__button_cancel}
                         onClick={setToggleModal}
@@ -75,11 +83,32 @@ const LearnPack = React.memo((props: PropsType) => {
                 </div>
                {answer &&
                <div>
-                   {props.cards[index].answer}
+                   <div style={{textAlign: "center" }}><span style={{margin: '0 auto'}}>{props.cards[index].answer}</span></div>
+
+                  <div>Оцените вопрос:
+
+                      <div>
+                          <select value={selectValue} onChange={selectHandler}>
+                              <option value={1}>1</option>
+                              <option value={2}>2</option>
+                              <option value={3}>3</option>
+                              <option value={4}>4</option>
+                              <option value={5}>5</option>
+                          </select>
+                      </div>
+
+
+                  </div>
+                   <div className={style.learn__buttons}><SuperButton
+                       className={style.learn__button_cancel}
+                       onClick={setToggleModal}
+                   >
+                       Cancel
+                   </SuperButton>
                    <SuperButton
                        className={style.learn__button_save}
-                       onClick={nextAnswer}
-                   >NextAnswer</SuperButton>
+                       onClick={()=>{nextAnswer(props.cards[index]._id)}}
+                   >NextAnswer</SuperButton></div>
                </div>
 
                }

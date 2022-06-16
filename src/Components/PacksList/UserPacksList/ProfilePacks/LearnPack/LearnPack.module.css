@@ -23,6 +23,7 @@
     font-size: 18px;
     line-height: 27px;
     color: #2D2E46;
+    margin: 0 auto;
 }
 
 .learn__body {
@@ -79,6 +80,7 @@
 }
 
 .learn__button_save {
+
     max-width: 125px;
     width: 100%;
     height: 36px;
