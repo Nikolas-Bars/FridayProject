@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
 import style from './LearnPack.module.css'
 import closeIcon from "../../../../../Common/img/delete/delete.png"
@@ -12,24 +12,29 @@ import {PacksType} from "../../../../../Bll/reducers/pack-reducer";
 type PropsType = {
     packId: string
     cards: CardType[]
+    index: number
 }
 
-const LearnPack = (props: PropsType) => {
-
+const LearnPack = React.memo((props: PropsType) => {
 
     const packID = useSelector<AppStoreType, string>(state => state.cards.pack_id)
+
     const packName = useSelector<AppStoreType, PacksType[]>(state => state.packs.cardPacks.filter(el => el._id === packID))
 
-    const answer = useState<boolean>(false)
+    const [answer, setAnswer] = useState<boolean>(false)
 
     const dispatch = useDispatch<Dispatch>()
+
+    useEffect(()=>{
+
+    }, props.cards)
 
     const setToggleModal =()=>{
         dispatch(setLearnToggleAC(false, ''))
     }
 
     debugger
-    const index = props.cards.length > 0 ? Math.ceil((Math.random()*props.cards.length)) - 1 : 0
+   // const index = props.cards.length > 0 ? Math.ceil((Math.random()*props.cards.length)) - 1 : 0
 
         return (
            <div className={style.learn}>
@@ -45,10 +50,10 @@ const LearnPack = (props: PropsType) => {
                         />
                 </div>
                 <div className={style.learn__body}>
-                    <h4>Question: {index >=0 && props.cards[index].question}</h4>
+                    <h4>Question: {props.index >=0 && props.cards[props.index].question}</h4>
                 </div>
                 <div className={style.learn__buttons}>
-                    <SuperButton
+                    {!answer ? <div className={style.learn__buttons}><SuperButton
                         className={style.learn__button_cancel}
                         onClick={setToggleModal}
                     >
@@ -56,18 +61,19 @@ const LearnPack = (props: PropsType) => {
                     </SuperButton>
                     <SuperButton
                         className={style.learn__button_save}
+                        onClick={()=>{setAnswer(true)}}
                     >
                         Show answer
-                    </SuperButton>
+                    </SuperButton></div> : ''}
                 </div>
                {answer &&
                <div>
-
+                   {props.cards[props.index].answer}
                </div>
                }
             </div>
 
     );
-};
+})
 
 export default LearnPack;

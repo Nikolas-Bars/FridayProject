@@ -70,6 +70,8 @@ export const Packs = () => {
         dispatch(getCardsTC(packId, true))
     }
 
+    const index = cards.length > 0 ? Math.ceil((Math.random()*cards.length)) - 1 : 0
+
     return (
         <div className={style.packList__body}>
             <div className={style.packList__row}>
@@ -160,7 +162,8 @@ export const Packs = () => {
 
             {toggleModalLearn && cards.length > 0 &&
             <Modal toggleModal={toggleModalLearn}>
-                    <LearnPack cards={cards} packId={packIDForEditMode}/>
+
+                    <LearnPack cards={cards} index={index} packId={packIDForEditMode}/>
                 </Modal>
             }
 
