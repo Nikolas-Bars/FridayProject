@@ -67,6 +67,7 @@ export const Packs = () => {
                     onClick={handleSortField}
                 >
                     Name
+
                     {
                         sortPacks.includes('name') &&
                         <img
@@ -75,6 +76,7 @@ export const Packs = () => {
                             alt="sort"
                         />
                     }
+
                 </span>
                 <span
                     className={style.packList__cards}
@@ -82,6 +84,7 @@ export const Packs = () => {
                     onClick={handleSortField}
                 >
                     Cards
+
                     {
                         sortPacks.includes('cardsCount') &&
                         <img
@@ -90,6 +93,7 @@ export const Packs = () => {
                             alt="sort"
                         />
                     }
+
                 </span>
                 <span
                     className={style.packList__updates}
@@ -97,6 +101,7 @@ export const Packs = () => {
                     onClick={handleSortField}
                 >
                         Last Updated
+
                     {
                         sortPacks.includes('updated') &&
                         <img
@@ -105,6 +110,7 @@ export const Packs = () => {
                             alt="sort"
                         />
                     }
+
                 </span>
                 <span
                     className={style.packList__create}
@@ -112,6 +118,7 @@ export const Packs = () => {
                     onClick={handleSortField}
                 >
                     Created by
+
                     {
                         sortPacks.includes('user_name') &&
                         <img
@@ -120,6 +127,7 @@ export const Packs = () => {
                             alt="sort"
                         />
                     }
+
                 </span>
                 <span className={style.packList__action}>
                     Actions
