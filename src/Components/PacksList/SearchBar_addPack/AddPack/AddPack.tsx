@@ -30,6 +30,8 @@ export const AddPack = ({setToggleModal}: AddPackType) => {
         setToggleModal(false)
     }
 
+
+
     return (
         <div className={style.addPack}>
             <div className={style.addPack__header}>

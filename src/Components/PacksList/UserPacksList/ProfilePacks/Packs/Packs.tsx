@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './Packs.module.css'
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {AppStoreType, useAppDispatch} from "../../../../../Bll/store";
 import {deleteCardPackTC, editPackTC, PacksType, setSortPacksAC} from '../../../../../Bll/reducers/pack-reducer';
@@ -10,21 +10,32 @@ import DeleteAction from "../../../../../Common/Modal/DeleteModal/DeleteAction";
 import EditPack from "../../../../../Common/Modal/EditModal/EditAction";
 import {ActionButtons} from "./ActionButtons/ActionButtons";
 import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
+import DeletePackModal from "./Cards/DeletePackModal";
+import EditPack from "./Cards/EditPack";
+import LearnPack from "../LearnPack/LearnPack";
+import {getCardsTC, setLearnToggleAC} from "../../../../../Bll/reducers/card-reducer";
+
 
 export const Packs = () => {
 
     const packs = useSelector<AppStoreType, PacksType[]>(state => state.packs.cardPacks)
+    const cards = useSelector<AppStoreType, any>(state => state.cards.cards)
     const sortPacks = useSelector<AppStoreType, string>(state => state.packs.sortPacks)
     const sortNumber = useSelector<AppStoreType, number>(state => state.packs.sortNumber)
+    const toggleModalLearn = useSelector<AppStoreType, boolean>(state => state.cards.toggleModalLearn)
     const userID = useSelector<AppStoreType, string>(state => state.profile._id)
+
     const [toggleModal, setToggleModal] = useState<boolean>(false)
     const [currentModal, setCurrentModal] = useState<string>('');
 
     const [cardIDForEditMode, setCardIDForEditMode] = useState<string>('')
 
+
     const [packName, setPackName] = useState<string>('');
 
     const dispatch = useAppDispatch()
+
+    const navigate = useNavigate()
 
     const handleSortField = (e: React.MouseEvent<HTMLSpanElement>) => {
         if (e.currentTarget.dataset.field) {
@@ -57,6 +68,13 @@ export const Packs = () => {
     const changePackName = (value: string) => {
         dispatch(editPackTC(cardIDForEditMode, value))
     }
+
+    const setToggleLearn =(packId: string, packName: string)=>{
+        setPackIDForEditMode(packId)
+        dispatch(getCardsTC(packId, true))
+    }
+
+    const index = cards.length > 0 ? Math.ceil((Math.random()*cards.length)) - 1 : 0
 
     return (
         <div className={style.packList__body}>
@@ -128,7 +146,7 @@ export const Packs = () => {
 
             {
                 toggleModal &&
-                <Modal toggleModal={toggleModal}>
+                <Modal toggleModal={toggleModal} >
 
                     {
                         currentModal === 'Delete' ?
@@ -146,6 +164,13 @@ export const Packs = () => {
                             />
                     }
 
+                </Modal>
+            }
+
+            {toggleModalLearn && cards.length > 0 &&
+            <Modal toggleModal={toggleModalLearn}>
+
+                    <LearnPack cards={cards} index={index} packId={packIDForEditMode}/>
                 </Modal>
             }
 
@@ -183,8 +208,9 @@ export const Packs = () => {
                                 />
 
                             }
-                                <SuperButton
-                                    className={style.actionButtons__button_edit_learn}
+                                <SuperButton className={style.packList__button_edit_learn}
+                                             onClick={()=>{setToggleLearn(pack._id, pack.name)}}
+
                                 >
                                     Learn
                                 </SuperButton>
