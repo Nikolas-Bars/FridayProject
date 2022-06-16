@@ -8,6 +8,7 @@ import {Modal} from "../../../../../../../Common/Modal/Modal";
 import DeleteAction from "../../../../../../../Common/Modal/DeleteModal/DeleteAction";
 import EditPack from "../../../../../../../Common/Modal/EditModal/EditAction";
 import {deleteCardTC, editCardTC} from "../../../../../../../Bll/reducers/card-reducer";
+import {Rating} from "../../../../../../features/Rating/Rating";
 
 export const Questions = () => {
 
@@ -52,9 +53,19 @@ export const Questions = () => {
 
     if (!questions.length) {
         return (
-            <div className={style.question__empty}>
-                This pack is empty. Click add new card to fill this pack
-            </div>
+            <>
+                {
+                    packUserId === userId
+                        ?
+                        <div className={style.question__empty}>
+                            This pack is empty. Click add new card to fill this pack
+                        </div>
+                        :
+                        <div className={style.question__empty}>
+                            This pack is empty.
+                        </div>
+                }
+            </>
         )
     }
 
@@ -124,7 +135,9 @@ export const Questions = () => {
                                 {quest.updated}
                             </span>
                             <span className={style.question__grade}>
-                                {quest.grade}
+                                <Rating
+                                    rating={quest.grade}
+                                />
                             </span>
 
                             {
@@ -137,8 +150,8 @@ export const Questions = () => {
                                         clickActiveModal={clickActiveModal}
                                     />
                                  </span>
-
                             }
+
                         </div>
                     )
                 })

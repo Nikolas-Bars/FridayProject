@@ -170,12 +170,13 @@ export const Packs = () => {
                 </Modal>
             }
 
-            {toggleModalLearn && cards.length > 0 &&
-            <Modal toggleModal={toggleModalLearn}>
+            {
+                toggleModalLearn && cards.length > 0 &&
+                <Modal toggleModal={toggleModalLearn}>
 
-                <LearnPack cards={cards} index={index} packId={cardIDForEditMode}/>
+                    <LearnPack cards={cards} index={index} packId={cardIDForEditMode}/>
 
-            </Modal>
+                </Modal>
             }
 
             {
@@ -212,11 +213,9 @@ export const Packs = () => {
                                 />
 
                             }
-                                <SuperButton className={style.packList__button_edit_learn}
-                                             onClick={() => {
-                                                 setToggleLearn(pack._id, pack.name)
-                                             }}
-
+                                <SuperButton
+                                    className={style.packList__button_edit_learn}
+                                    onClick={() => setToggleLearn(pack._id)}
                                 >
                                     Learn
                                 </SuperButton>

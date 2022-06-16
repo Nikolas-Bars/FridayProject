@@ -35,6 +35,7 @@ export enum ACTIONS_CARDS_TYPE {
     SET_CARDS = 'CARDS/SET_CARDS',
     SET_NEW_CARD = 'CARDS/SET_NEW_CARD',
     EDIT_CARD = 'CARDS/EDIT_CARD',
+    SET_SELECT_VALUE_CARDS = 'CARDS/SET_SELECT_VALUE_CARDS',
     DELETE_CARD = 'CARDS/DELETE_CARD',
     SET_CURRENT_PAGE = 'CARDS/SET_CURRENT_PAGE',
     SET_LEARN_TOGGLE = 'CARDS/SET_LEARN_TOGGLE',
@@ -67,6 +68,12 @@ export const cardsReducer = (state: CardsReducerStateType = initialCardsState, a
                 cards: state.cards.map(card => card._id === action.card._id ? {...action.card} : {...card})
             }
         }
+        case ACTIONS_CARDS_TYPE.SET_SELECT_VALUE_CARDS: {
+            return {
+                ...state,
+                pageCount: action.selectValue
+            }
+        }
         case "SET_CURRENT_PAGE": {
             return {
                 ...state,
@@ -76,7 +83,10 @@ export const cardsReducer = (state: CardsReducerStateType = initialCardsState, a
         case ACTIONS_CARDS_TYPE.SET_LEARN_TOGGLE:
             return {...state, toggleModalLearn: action.toggle, pack_id: action.packID}
         case ACTIONS_CARDS_TYPE.UPDATE_GRADE: {
-            return {...state, cards: state.cards.map(card => card._id === action.card_id ? {...card, grade: action.grade} : card)}
+            return {
+                ...state,
+                cards: state.cards.map(card => card._id === action.card_id ? {...card, grade: action.grade} : card)
+            }
         }
         default: {
             return state
@@ -91,12 +101,17 @@ export type CardsActionType =
     | ReturnType<typeof editCardAC>
     | ReturnType<typeof setLearnToggleAC>
     | ReturnType<typeof updateRaitingCard>
+    | ReturnType<typeof setSelectValueCardsAC>
 
 
 export const setCardsAC = (cards: CardsStateType, pack_id: string) => ({
     type: ACTIONS_CARDS_TYPE.SET_CARDS,
     cards,
     pack_id
+} as const)
+export const setSelectValueCardsAC = (selectValue: number) => ({
+    type: ACTIONS_CARDS_TYPE.SET_SELECT_VALUE_CARDS,
+    selectValue
 } as const)
 export const setNewCardAC = (card: CardType) => ({
     type: ACTIONS_CARDS_TYPE.SET_NEW_CARD,
@@ -113,9 +128,14 @@ export const deleteCardAC = (cardId: string) => ({
 
 
 export const setLearnToggleAC = (toggle: boolean, packID: string) => ({
-    type: ACTIONS_CARDS_TYPE.SET_LEARN_TOGGLE, toggle, packID} as const)
+    type: ACTIONS_CARDS_TYPE.SET_LEARN_TOGGLE, toggle, packID
+} as const)
 
-export const updateRaitingCard =(card_id: string, grade: number)=>({type: ACTIONS_CARDS_TYPE.UPDATE_GRADE, card_id, grade}as const)
+export const updateRaitingCard = (card_id: string, grade: number) => ({
+    type: ACTIONS_CARDS_TYPE.UPDATE_GRADE,
+    card_id,
+    grade
+} as const)
 
 export const getCardsTC = (id: string, toggleLearnModal?: boolean) => (dispatch: ThunksDispatch, getState: () => AppStoreType) => {
     dispatch(setLoadingStatusAC(true))
@@ -123,7 +143,6 @@ export const getCardsTC = (id: string, toggleLearnModal?: boolean) => (dispatch:
     cardAPI.getCards(id, page, pageCount)
         .then(res => {
             dispatch(setCardsAC(res.data, id))
-
         })
         .finally(() => {
             dispatch(setLoadingStatusAC(false))
@@ -186,7 +205,6 @@ export const deleteCardTC = (cardId: string) => (dispatch: ThunksDispatch) => {
             dispatch(setDisableButtonAC(false))
         })
 }
-
 
 
 export const updateRaitingCardTC = (data: RequestRaitingType) => (dispatch: ThunksDispatch) => {

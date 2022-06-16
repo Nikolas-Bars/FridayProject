@@ -1,17 +1,14 @@
 import React, {ChangeEvent} from 'react';
-import {useSelector} from "react-redux";
-import {AppStoreType, useAppDispatch} from "../../../Bll/store";
-import {setSelectValueAC} from "../../../Bll/reducers/pack-reducer";
 
+type SelectValueType = {
+    selectValue: number
+    handleSelectChange: (e: ChangeEvent<HTMLSelectElement>) => void
+}
 
-const Select = () => {
-
-    const dispatch = useAppDispatch()
-
-    const selectValue = useSelector<AppStoreType, number>(state => state.packs.selectValue) // количество элементов на одной странице
+const Select = ({selectValue, handleSelectChange}: SelectValueType) => {
 
     const selectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setSelectValueAC(Number(e.currentTarget.value)))
+        handleSelectChange(e)
     }
 
     return (

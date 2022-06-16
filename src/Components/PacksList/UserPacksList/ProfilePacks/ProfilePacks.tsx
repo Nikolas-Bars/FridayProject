@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React, {ChangeEvent, useEffect} from 'react';
 import {AppStoreType, useAppDispatch} from '../../../../Bll/store';
 import style from './ProfilePacks.module.css'
 import {useSelector} from "react-redux";
-import {setCardsTC, setCurrentPageAC} from "../../../../Bll/reducers/pack-reducer";
+import {setCardsTC, setCurrentPageAC, setSelectValueAC} from "../../../../Bll/reducers/pack-reducer";
 import {Packs} from './Packs/Packs';
 import Select from '../../Select/Select';
 import Preloader from "../../../../Common/Preloader/Preloader";
@@ -21,6 +21,10 @@ export const ProfilePacks = () => {
 
     const dispatch = useAppDispatch()
 
+    const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setSelectValueAC(Number(e.currentTarget.value)))
+    }
+
     useEffect(() => {
         dispatch(setCardsTC())
     }, [dispatch, my, sort, selectValue, page, searchText])
@@ -36,7 +40,10 @@ export const ProfilePacks = () => {
                     ? <Preloader/>
                     : <>
                         <Packs />
-                        <Select/>
+                        <Select
+                            selectValue={selectValue}
+                            handleSelectChange={handleSelectChange}
+                        />
 
                         <Paginator
                             currentPage={page}

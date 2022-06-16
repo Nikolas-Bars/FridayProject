@@ -1,16 +1,17 @@
-import React, {useEffect} from 'react';
+import React, {ChangeEvent, useEffect} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import style from "./Cards.module.css";
 import {AppStoreType, useAppDispatch} from "../../../../../../Bll/store";
 import arrow from '../../../../../../Common/img/arrow/arrow.png'
 import {Questions} from "./Questions/Questions";
 import {SearchBarAddPack} from "../../../../SearchBar_addPack/SearchBarAddPack";
-import {getCardsTC} from "../../../../../../Bll/reducers/card-reducer";
+import {getCardsTC, setSelectValueCardsAC} from "../../../../../../Bll/reducers/card-reducer";
 import Paginator from '../../../../../../Common/Paginator/Paginator';
 import {useSelector} from "react-redux";
 import {setCurrentPageAC} from "../../../../../../Bll/reducers/pack-reducer";
 import Preloader from "../../../../../../Common/Preloader/Preloader";
 import {AddCard} from "../../../../SearchBar_addPack/AddCard/AddCard";
+import Select from "../../../../Select/Select";
 
 export const Cards = () => {
 
@@ -22,12 +23,17 @@ export const Cards = () => {
     const cardTotalCount = useSelector<AppStoreType, number>(state => state.cards.cardsTotalCount)
     const page = useSelector<AppStoreType, number>(state => state.cards.page)
     const pageCount = useSelector<AppStoreType, number>(state => state.cards.pageCount)
+    const selectValue = useSelector<AppStoreType, number>(state => state.cards.pageCount) // количество элементов на одной странице
+
+    const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setSelectValueCardsAC(Number(e.currentTarget.value)))
+    }
 
     useEffect(() => {
         if (cardId) {
             dispatch(getCardsTC(cardId))
         }
-    }, [dispatch, cardId, page])
+    }, [dispatch, cardId, page, selectValue])
 
     const changePageNumber = (page: number) => {
         dispatch(setCurrentPageAC(page))
@@ -57,6 +63,11 @@ export const Cards = () => {
                         ? <Preloader/>
                         : <>
                             <Questions/>
+
+                            <Select
+                                selectValue={selectValue}
+                                handleSelectChange={handleSelectChange}
+                            />
 
                             <Paginator
                                 currentPage={page}
