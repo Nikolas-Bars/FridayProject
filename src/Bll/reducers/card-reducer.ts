@@ -2,7 +2,7 @@ import {cardAPI, CardType, RequestRaitingType} from "../api";
 import {AppStoreType, ThunksDispatch} from "../store";
 import {PacksActionType} from "./pack-reducer";
 import {setDisableButtonAC, setErrorToProfileAC, setLoadingStatusAC} from "./profile-reducer";
-import {log} from "util";
+
 
 export type CardsStateType = {
     cards: CardType[]
@@ -59,7 +59,7 @@ export const cardsReducer = (state: CardsReducerStateType = initialCardsState, a
             }
         }
         case ACTIONS_CARDS_TYPE.SET_LEARN_TOGGLE:
-            debugger
+
             return {...state, toggleModalLearn: action.toggle, pack_id: action.packID}
         default: {
             return state
@@ -91,10 +91,11 @@ export const getCardsTC = (id: string, toggleLearnModal?: boolean) => (dispatch:
     cardAPI.getCards(id, page, pageCount)
         .then(res => {
             dispatch(setCardsAC(res.data, id))
+
         })
         .finally(() => {
             dispatch(setLoadingStatusAC(false))
-            toggleLearnModal && dispatch(setLearnToggleAC(toggleLearnModal, id))
+            dispatch(setLearnToggleAC(true, id))
         })
 }
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './Packs.module.css'
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
@@ -32,6 +32,8 @@ export const Packs = () => {
 
     const dispatch = useAppDispatch()
 
+
+
     const handleSortField = (e: React.MouseEvent<HTMLSpanElement>) => {
         if (e.currentTarget.dataset.field) {
             const trigger: string = e.currentTarget.dataset.field
@@ -64,7 +66,6 @@ export const Packs = () => {
     }
 
     const setToggleLearn =(packId: string, packName: string)=>{
-        debugger
         setPackIDForEditMode(packId)
         dispatch(getCardsTC(packId, true))
     }
@@ -157,9 +158,9 @@ export const Packs = () => {
                 </Modal>
             }
 
-            {toggleModalLearn &&
-                <Modal toggleModal={toggleModalLearn}>
-                    <LearnPack packId={packIDForEditMode}/>
+            {toggleModalLearn && cards.length > 0 &&
+            <Modal toggleModal={toggleModalLearn}>
+                    <LearnPack cards={cards} packId={packIDForEditMode}/>
                 </Modal>
             }
 

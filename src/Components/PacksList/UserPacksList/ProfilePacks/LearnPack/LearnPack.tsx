@@ -1,5 +1,4 @@
-import React from 'react';
-import SuperInputText from "../../../../../Common/c1-SuperInputText/SuperInputText";
+import React, {useState} from 'react';
 import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
 import style from './LearnPack.module.css'
 import closeIcon from "../../../../../Common/img/delete/delete.png"
@@ -12,23 +11,27 @@ import {PacksType} from "../../../../../Bll/reducers/pack-reducer";
 
 type PropsType = {
     packId: string
+    cards: CardType[]
 }
 
 const LearnPack = (props: PropsType) => {
 
-    const cards = useSelector<AppStoreType, CardType[]>(state => state.cards.cards)
 
     const packID = useSelector<AppStoreType, string>(state => state.cards.pack_id)
     const packName = useSelector<AppStoreType, PacksType[]>(state => state.packs.cardPacks.filter(el => el._id === packID))
 
+    const answer = useState<boolean>(false)
 
     const dispatch = useDispatch<Dispatch>()
 
     const setToggleModal =()=>{
         dispatch(setLearnToggleAC(false, ''))
     }
-debugger
-    return (
+
+    debugger
+    const index = props.cards.length > 0 ? Math.ceil((Math.random()*props.cards.length)) - 1 : 0
+
+        return (
            <div className={style.learn}>
 
                 <div className={style.learn__header}>
@@ -42,7 +45,7 @@ debugger
                         />
                 </div>
                 <div className={style.learn__body}>
-                    <h4>Question: {cards.length > 0 && cards[Math.ceil((Math.random()*cards.length)-1)] .question}</h4>
+                    <h4>Question: {index >=0 && props.cards[index].question}</h4>
                 </div>
                 <div className={style.learn__buttons}>
                     <SuperButton
@@ -57,6 +60,11 @@ debugger
                         Show answer
                     </SuperButton>
                 </div>
+               {answer &&
+               <div>
+
+               </div>
+               }
             </div>
 
     );
