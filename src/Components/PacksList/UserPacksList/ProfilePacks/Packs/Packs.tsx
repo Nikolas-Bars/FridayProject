@@ -7,16 +7,12 @@ import {deleteCardPackTC, editPackTC, PacksType, setSortPacksAC} from '../../../
 import sortIcon from '../../../../../Common/img/sort/sort.png'
 import {Modal} from "../../../../../Common/Modal/Modal";
 import DeleteAction from "../../../../../Common/Modal/DeleteModal/DeleteAction";
-
 import {ActionButtons} from "./ActionButtons/ActionButtons";
 import SuperButton from "../../../../../Common/c2-SuperButton/SuperButton";
-
-
 import LearnPack from "../LearnPack/LearnPack";
 import {getCardsTC} from "../../../../../Bll/reducers/card-reducer";
 import EditPack from "../../../../../Common/Modal/EditModal/EditAction";
-import {getCardsTC} from "../../../../../Bll/reducers/card-reducer";
-import EditPack from "../../../../../Common/Modal/EditModal/EditAction";
+
 
 
 export const Packs = () => {
@@ -70,8 +66,6 @@ export const Packs = () => {
         dispatch(editPackTC(cardIDForEditMode, value))
     }
 
-    const setToggleLearn = (packId: string) => {
-        setCardIDForEditMode(packId)
     const setToggleLearn =(packId: string, packName: string)=>{
         setCardIDForEditMode(packId)
         dispatch(getCardsTC(packId, true))
@@ -222,7 +216,7 @@ export const Packs = () => {
                             }
                                 <SuperButton
                                     className={style.packList__button_edit_learn}
-                                    onClick={() => setToggleLearn(pack._id)}
+                                    onClick={() => setToggleLearn(pack._id, pack.name)}
                                 >
                                     Learn
                                 </SuperButton>
