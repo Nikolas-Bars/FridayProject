@@ -1,8 +1,8 @@
 import {applyMiddleware, combineReducers, legacy_createStore as createStore} from "redux";
 import {ProfileActionsType, profileReducer} from "./reducers/profile-reducer";
 import thunk, {ThunkDispatch} from 'redux-thunk'
-import {PacksActionType, packsReducer} from "./reducers/pack-reducer";
 import {useDispatch} from "react-redux";
+import {PacksActionType, packsReducer} from "./reducers/pack-reducer";
 import {CardsActionType, cardsReducer} from "./reducers/card-reducer";
 
 const reducers = combineReducers({
@@ -12,8 +12,7 @@ const reducers = combineReducers({
 })
 
 //@ts-ignore
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-export const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
+export const store = createStore(reducers, applyMiddleware(thunk))
 
 export type AppStoreType = ReturnType<typeof reducers>
 
