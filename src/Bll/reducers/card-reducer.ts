@@ -143,10 +143,12 @@ export const getCardsTC = (id: string, toggleLearnModal?: boolean) => (dispatch:
     cardAPI.getCards(id, page, pageCount)
         .then(res => {
             dispatch(setCardsAC(res.data, id))
+            toggleLearnModal && dispatch(setLearnToggleAC(toggleLearnModal, id))
+
         })
         .finally(() => {
             dispatch(setLoadingStatusAC(false))
-            dispatch(setLearnToggleAC(true, id))
+
         })
 }
 
@@ -205,6 +207,7 @@ export const deleteCardTC = (cardId: string) => (dispatch: ThunksDispatch) => {
             dispatch(setDisableButtonAC(false))
         })
 }
+
 
 
 export const updateRaitingCardTC = (data: RequestRaitingType) => (dispatch: ThunksDispatch) => {
